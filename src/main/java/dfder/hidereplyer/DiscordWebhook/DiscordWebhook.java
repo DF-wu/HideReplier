@@ -1,4 +1,4 @@
-package dfder.hidereplyer;
+package dfder.hidereplyer.DiscordWebhook;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.awt.Color;
