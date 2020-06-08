@@ -4,12 +4,12 @@ import dfder.hidereplyer.DiscordWebhook.DiscordWebhook;
 
 import java.awt.*;
 import java.io.IOException;
-
-public class discordwebhookTest {
+//
+public class discordTest {
     public static void main(String[] args) throws IOException
     {
         DiscordWebhook webhook = new DiscordWebhook("https://discord.com/api/webhooks/REDACTED/REDACTED");
-        webhook.setContent("幹恁娘");
+        webhook.setContent("hihihi");
         webhook.setAvatarUrl("https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light");
         webhook.setUsername("Custom Usernames!");
         // webhook.setTts(true);

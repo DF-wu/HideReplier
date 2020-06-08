@@ -13,7 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>hidereplyer</name>
-    <description>WBSE.final proj</description>
+    <description>WBSE final project</description>
 
     <properties>
         <java.version>11</java.version>
@@ -46,13 +46,13 @@
             </exclusions>
         </dependency>
 
+
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>2.11.0</version>
         </dependency>
-
     </dependencies>
 
     <build>
