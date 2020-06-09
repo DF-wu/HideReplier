@@ -1,6 +1,6 @@
 package dfder.hidereplyer.test;
 
-import dfder.hidereplyer.DiscordWebhook.DiscordWebhook;
+import dfder.hidereplyer.Entity.DiscordWebhook;
 
 import java.awt.*;
 import java.io.IOException;
