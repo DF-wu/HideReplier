@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -147,7 +148,9 @@ public class DiscordWebhook {
         connection.setRequestMethod("POST");
 
         OutputStream stream = connection.getOutputStream();
-        stream.write(json.toString().getBytes());
+        stream.write(json.toString().getBytes(StandardCharsets.UTF_8));
+            //original : stream.write(json.toString().getBytes());
+            //change: covert to UTF-8
         stream.flush();
         stream.close();
 
