@@ -1,5 +1,7 @@
 package dfder.hidereplyer.Entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.net.ssl.HttpsURLConnection;
 import java.awt.Color;
 import java.io.IOException;
@@ -16,6 +18,8 @@ import java.util.Set;
 /**
  * Class used to execute Discord Webhooks with low effort
  */
+
+@Document(collection = "DiscordCollection")
 public class DiscordWebhook {
 
     private final String url;
