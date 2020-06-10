@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hide Replyer</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/11.0.0/markdown-it.min.js"></script>
+
+
+</head>
+<body>
+<h1>我只會這個</h1>
+
+<div id="hi"></div>
+
+<script>
+    var md = window.markdownit();
+    var result = md.render('# markdown-it rulezz! \n ---');
+    document.getElementById("hi").innerHTML= result;
+</script>
+</body>
+
+
+</html>

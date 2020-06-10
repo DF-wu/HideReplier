@@ -9,7 +9,7 @@ public class discordTest {
     public static void main(String[] args) throws IOException
     {
         DiscordWebhook webhook = new DiscordWebhook("https://discordapp.com/api/webhooks/719110538235346955/m6VbyiiJajitpt1MlL95FW3L9B3v71nqMG1_FBTEueZMEiFwXNbxJRZZWh72Z-77LCzA");
-        webhook.setContent("hihihi");
+        webhook.setContent("i can not input chinese");
         webhook.setAvatarUrl("https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light");
         webhook.setUsername("Custom Usernames!");
         // webhook.setTts(true);
