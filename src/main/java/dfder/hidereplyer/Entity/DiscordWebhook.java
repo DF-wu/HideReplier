@@ -1,5 +1,6 @@
 package dfder.hidereplyer.Entity;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -21,7 +22,9 @@ import java.util.Set;
 
 @Document(collection = "DiscordCollection")
 public class DiscordWebhook {
-
+    @Id
+    private String id;
+    
     private final String url;
     private String content;
     private String username;
@@ -161,7 +164,17 @@ public class DiscordWebhook {
         connection.getInputStream().close(); //I'm not sure why but it doesn't work without getting the InputStream
         connection.disconnect();
     }
-
+    
+    public String getId()
+    {
+        return id;
+    }
+    
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+    
     public static class EmbedObject {
         private String title;
         private String description;
