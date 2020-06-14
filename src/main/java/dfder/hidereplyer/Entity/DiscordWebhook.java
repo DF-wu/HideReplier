@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,10 +21,14 @@ import java.util.Set;
  * Class used to execute Discord Webhooks with low effort
  */
 
-@Document(collection = "DiscordCollection")
+
 public class DiscordWebhook {
     @Id
     private String id;
+    
+    // df extend attribute
+    private LocalDateTime timeStamp;
+    public static String defaultUrl = "https://discordapp.com/api/webhooks/719110538235346955/m6VbyiiJajitpt1MlL95FW3L9B3v71nqMG1_FBTEueZMEiFwXNbxJRZZWh72Z-77LCzA";
     
     private final String url;
     private String content;
@@ -31,7 +36,17 @@ public class DiscordWebhook {
     private String avatarUrl;
     private boolean tts;
     private List<EmbedObject> embeds = new ArrayList<>();
-
+    
+    
+    public JSONDiscordWebhook toJSON(){
+        JSONDiscordWebhook json = new JSONDiscordWebhook();
+        json.setBotName(username);
+        json.setContent(content);
+        json.setTime(timeStamp);
+        return json;
+    }
+    
+    
     /**
      * Constructs a new DiscordWebhook instance
      *
@@ -173,6 +188,16 @@ public class DiscordWebhook {
     public void setId(String id)
     {
         this.id = id;
+    }
+    
+    public LocalDateTime getTimeStamp()
+    {
+        return timeStamp;
+    }
+    
+    public void setTimeStamp(LocalDateTime timeStamp)
+    {
+        this.timeStamp = timeStamp;
     }
     
     public static class EmbedObject {

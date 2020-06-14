@@ -13,14 +13,62 @@
 
 </head>
 <body>
-<h1>我只會這個</h1>
+<h1 id="title">我只會這個</h1>
 
-<div id="hi"></div>
+<div >
+  
+</div>
+
+<table border="1" cellspacing="1" cellpadding="1" id="messageForm">
+    <tr>
+        <td>機器人名稱：</td>
+        <td>匿名機器人-<input id="input_botname" type="text" size="10"></td>
+        
+    </tr>
+    <tr>
+        <td>內容:</td>
+        <td><textarea id="input_content" col="40" row="30"  ></textarea></td>
+    </tr>
+</table>
+<input id="summitPost" type="button" value="點我送出" onclick="postData()">
+<br>
+<div id="postData">回傳資訊</div>
+
+
 
 <script>
     var md = window.markdownit();
-    var result = md.render('# markdown-it rulezz! \n ---');
-    document.getElementById("hi").innerHTML= result;
+    var result = md.render('#### 匿名回覆機器人 \n---');
+    document.getElementById("title").innerHTML= result;
+
+    
+    function postData() {
+        url = "https://discordapp.com/api/webhooks/719110538235346955/m6VbyiiJajitpt1MlL95FW3L9B3v71nqMG1_FBTEueZMEiFwXNbxJRZZWh72Z-77LCzA";
+        content = document.getElementById("input_content").value;
+        botname = document.getElementById("input_botname").value;
+
+        json = {
+        username:botname,
+        content: content, 
+    }
+        // Default options are marked with *
+        return fetch(url, {
+          body: JSON.stringify(json), // must match 'Content-Type' header
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: 'same-origin', // include, same-origin, *omit
+          headers: {
+            'user-agent': 'Mozilla/4.0 MDN Example',
+            'content-type': 'application/json'
+          },
+          method: 'POST', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, cors, *same-origin
+          redirect: 'follow', // manual, *follow, error
+          referrer: 'no-referrer', // *client, no-referrer
+        })
+        .then(response => response.json()) // 輸出成 json
+        console.log(response);
+      }
+    
 </script>
 </body>
 
