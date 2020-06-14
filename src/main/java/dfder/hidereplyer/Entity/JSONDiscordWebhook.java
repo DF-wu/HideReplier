@@ -3,15 +3,20 @@ package dfder.hidereplyer.Entity;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Document(collection = "DiscordCollection")
 public class JSONDiscordWebhook {
     private String id;
     
+    
     private String content;
     private String botName;
     private LocalDateTime time;
+    private String ip;
     
+  
     public DiscordWebhook toDW(){
         DiscordWebhook dw = new DiscordWebhook(DiscordWebhook.defaultUrl);
         dw.setContent(content);

@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -28,10 +30,13 @@ public class DiscordService {
     // post a post to discord
     public JSONDiscordWebhook postApost(Map<String, Object> jsonObject) throws IOException
     {
+        
         JSONDiscordWebhook json = new JSONDiscordWebhook();
         json.setBotName((String) jsonObject.get("username"));
+        
         json.setContent((String) jsonObject.get("content"));
-        json.setTime(LocalDateTime.now());
+        final LocalDateTime TWtime = LocalDateTime.now(Clock.system(ZoneId.of("+8")));
+        json.setTime(TWtime);
         
         repo.insert(json);
         DiscordWebhook dw = json.toDW();

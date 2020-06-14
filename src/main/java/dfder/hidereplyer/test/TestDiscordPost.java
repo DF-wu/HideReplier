@@ -5,22 +5,24 @@ import dfder.hidereplyer.Entity.DiscordWebhook;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.Time;
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 //
 public class TestDiscordPost {
     public static void main(String[] args) throws IOException
     {
-        LocalDateTime currentTime = LocalDateTime.now();
-        System.out.println(currentTime);
+        postTest();
     }
     
     
     
-    public void postTest() throws IOException
+    public static void postTest() throws IOException
     {
         DiscordWebhook webhook = new DiscordWebhook("https://discord.com/api/webhooks/REDACTED/REDACTED");
-        webhook.setContent("i can not input chinese");
+        webhook.setContent("i can not input \nchinese");
         webhook.setAvatarUrl("https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light");
         webhook.setUsername("Custom Usernames!");
         // webhook.setTts(true);
