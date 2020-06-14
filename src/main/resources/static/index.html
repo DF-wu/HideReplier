@@ -43,7 +43,7 @@
 
     
     function postData() {
-        url = "https://discordapp.com/api/webhooks/719110538235346955/m6VbyiiJajitpt1MlL95FW3L9B3v71nqMG1_FBTEueZMEiFwXNbxJRZZWh72Z-77LCzA";
+        url = "http://localhost:8080/HideBot/discord";
         content = document.getElementById("input_content").value;
         botname = document.getElementById("input_botname").value;
 
@@ -65,9 +65,8 @@
           redirect: 'follow', // manual, *follow, error
           referrer: 'no-referrer', // *client, no-referrer
         })
-        .then(response => response.json()) // 輸出成 json
-        console.log(response);
-      }
+        .then(response => console.log(response.json()));
+    }  
     
 </script>
 </body>
