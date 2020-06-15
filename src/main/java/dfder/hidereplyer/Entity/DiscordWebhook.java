@@ -172,7 +172,7 @@ public class DiscordWebhook {
         
         connection.setDoOutput(true);
         OutputStream stream = connection.getOutputStream();
-        stream.write(json.toString().getBytes(StandardCharsets.UTF_8));
+        stream.write(json.toString().replace("\n", "\\n").getBytes(StandardCharsets.UTF_8));
         //original : stream.write(json.toString().getBytes());
         //change: covert to UTF-8
         stream.flush();
@@ -182,7 +182,7 @@ public class DiscordWebhook {
         // response
         int responseCode = connection.getResponseCode();
         System.out.println("\nSending 'POST' request to URL : " + url);
-        System.out.println("Post body " + json);
+        System.out.println("Post body " + json.toString().replace("\n", "\\n"));
         System.out.println("Response Code : " + responseCode);
         
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -313,7 +313,7 @@ public class DiscordWebhook {
             return this;
         }
         
-        private class Footer {
+        class Footer {
             private String text;
             private String iconUrl;
             
@@ -331,7 +331,7 @@ public class DiscordWebhook {
             }
         }
         
-        private class Thumbnail {
+        class Thumbnail {
             private String url;
             
             private Thumbnail(String url) {
@@ -343,7 +343,7 @@ public class DiscordWebhook {
             }
         }
         
-        private class Image {
+        class Image {
             private String url;
             
             private Image(String url) {
@@ -355,7 +355,7 @@ public class DiscordWebhook {
             }
         }
         
-        private class Author {
+        class Author {
             private String name;
             private String url;
             private String iconUrl;
@@ -379,7 +379,7 @@ public class DiscordWebhook {
             }
         }
         
-        private class Field {
+        class Field {
             private String name;
             private String value;
             private boolean inline;
