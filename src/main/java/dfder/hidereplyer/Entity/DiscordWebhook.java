@@ -167,7 +167,7 @@ public class DiscordWebhook {
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.addRequestProperty("Content-Type", "application/json");
-        connection.addRequestProperty("User-Agent", "Mozilla/5.0 D.F.");
+        connection.addRequestProperty("User-Agent", "Mozilla/5.0");
         
         
         connection.setDoOutput(true);
@@ -184,19 +184,11 @@ public class DiscordWebhook {
         System.out.println("\nSending 'POST' request to URL : " + url);
         System.out.println("Post body " + json.toString().replace("\n", "\\n"));
         System.out.println("Response Code : " + responseCode);
-        
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuilder response = new StringBuilder();
-        
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        System.out.println("!! response :" + response);
+
         //df add end
         
         // default
-        //connection.getInputStream().close(); //I'm not sure why but it doesn't work without getting the InputStream
+        connection.getInputStream().close(); //I'm not sure why but it doesn't work without getting the InputStream
         connection.disconnect();
     }
     

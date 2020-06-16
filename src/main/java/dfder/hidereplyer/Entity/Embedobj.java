@@ -20,6 +20,7 @@ public class Embedobj {
     
     private List<Field> fields = new ArrayList<>();
     
+    
     public List<Field> getFields(){
         return fields;
     }
@@ -77,14 +78,6 @@ public class Embedobj {
             this.text = text;
             this.iconUrl = iconUrl;
         }
-        
-        private String getText() {
-            return text;
-        }
-        
-        private String getIconUrl() {
-            return iconUrl;
-        }
     }
     
     public static class Thumbnail {
@@ -93,10 +86,6 @@ public class Embedobj {
         public Thumbnail(String url) {
             this.url = url;
         }
-        
-        private String getUrl() {
-            return url;
-        }
     }
     
     public static class Image {
@@ -104,10 +93,6 @@ public class Embedobj {
         
         public Image(String url) {
             this.url = url;
-        }
-        
-        private String getUrl() {
-            return url;
         }
     }
     
@@ -120,18 +105,6 @@ public class Embedobj {
             this.name = name;
             this.url = url;
             this.iconUrl = iconUrl;
-        }
-        
-        private String getName() {
-            return name;
-        }
-        
-        private String getUrl() {
-            return url;
-        }
-        
-        private String getIconUrl() {
-            return iconUrl;
         }
     }
     
@@ -148,36 +121,19 @@ public class Embedobj {
             this.inline = inline;
         }
         
-        public String getName()
-        {
-            return name;
-        }
-        
-        public String getValue()
-        {
-            return value;
-        }
-        
-        public boolean isInline()
-        {
-            return inline;
-        }
-        
     }
     
     
-    public static Embedobj makeEmbed(String title, String description, String url, Color color, Footer footer, Thumbnail thumbnail, Image image, Author author , Field field ){
-        Embedobj em = new Embedobj();
-        em.footer = footer;
-        em.thumbnail = thumbnail;
-        em.title = title;
-        em.description= description;
-        em.url = url;
-        em.color = color;
-        em.footer = footer;
-        em.image=image;
-        em.author = author;
-        em.fields.add(field);
-        return em;
+    public Embedobj makeEmbed(String title, String description, String url, Color color, Footer footer, Thumbnail thumbnail, Image image, Author author , Field field ){
+        this.footer = footer;
+        this.thumbnail = thumbnail;
+        this.title = title;
+        this.description= description;
+        this.url = url;
+        this.color = color;
+        this.image=image;
+        this.author = author;
+        this.fields.add(field);
+        return this;
     }
 }
