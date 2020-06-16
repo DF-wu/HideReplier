@@ -2,6 +2,7 @@ package dfder.hidereplyer.Entity;
 
 import com.google.gson.Gson;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -16,18 +17,27 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class DiscordMessage {
     @Id
     private String id;
     
-    // df extend attribute
-    @Field
-    private LocalDateTime timeStamp;
+
     
     public static String defaultUrl = "https://discord.com/api/webhooks/REDACTED/REDACTED";
     
+    public String getUrl()
+    {
+        return url;
+    }
+    
+    public void setUrl(String url)
+    {
+        this.url = url;
+    }
+    
     @Field
-    private final String url;
+    private String url;
     @Field
     private String content;
     @Field
@@ -37,7 +47,13 @@ public class DiscordMessage {
     @Field
     private boolean tts;
     @Field
-    private List<Embedobj> embeds = new ArrayList<>();
+    private ArrayList<Embedobj> embeds = new ArrayList<>();
+    
+    
+    public DiscordMessage()
+    {
+        this.url = defaultUrl;
+    }
     
     public void excute() throws IOException
     {
@@ -136,4 +152,6 @@ public class DiscordMessage {
     {
         this.tts = tts;
     }
+    
+
 }

@@ -1,4 +1,4 @@
-package dfder.hidereplyer.Entity;
+package dfder.hidereplyer.resource;
 
 import org.springframework.data.annotation.Id;
 
@@ -29,7 +29,7 @@ public class DiscordWebhook {
     
     // df extend attribute
     private LocalDateTime timeStamp;
-    public static String defaultUrl = "https://discord.com/api/webhooks/REDACTED/REDACTED";
+    
     
     private final String url;
     private String content;
@@ -39,13 +39,6 @@ public class DiscordWebhook {
     private List<EmbedObject> embeds = new ArrayList<>();
     
     
-    public JSONDiscordWebhook toJSON(){
-        JSONDiscordWebhook json = new JSONDiscordWebhook();
-        json.setBotName(username);
-        json.setContent(content);
-        json.setTime(timeStamp);
-        return json;
-    }
     
     
     /**

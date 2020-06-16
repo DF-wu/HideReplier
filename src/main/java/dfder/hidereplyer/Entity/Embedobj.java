@@ -1,9 +1,7 @@
 package dfder.hidereplyer.Entity;
 
-import javax.crypto.ExemptionMechanism;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 
 public class Embedobj {
@@ -11,17 +9,17 @@ public class Embedobj {
     private String title;
     private String description;
     private String url;
-    private Color color;
+    private int color;
     
     private Footer footer;
     private Thumbnail thumbnail;
     private Image image;
     private Author author;
     
-    private List<Field> fields = new ArrayList<>();
+    private ArrayList<Field> fields = new ArrayList<>();
     
     
-    public List<Field> getFields(){
+    public ArrayList<Field> getFields(){
         return fields;
     }
     
@@ -59,14 +57,14 @@ public class Embedobj {
         this.url = url;
     }
     
-    public Color getColor()
+    public int getColor()
     {
         return color;
     }
     
     public void setColor(Color color)
     {
-        this.color = color;
+        this.color = color.getRGB();
     }
     
     
@@ -130,10 +128,17 @@ public class Embedobj {
         this.title = title;
         this.description= description;
         this.url = url;
-        this.color = color;
+        this.color = getDecimalColor(color);
         this.image=image;
         this.author = author;
         this.fields.add(field);
         return this;
+    }
+    
+    public int getDecimalColor(Color color){
+        int rgb = color.getRed();
+        rgb = (rgb << 8) + color.getGreen();
+        rgb = (rgb << 8) + color.getBlue();
+        return rgb;
     }
 }
