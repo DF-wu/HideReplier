@@ -2,6 +2,7 @@ package dfder.hidereplyer.Entity;
 
 import com.google.gson.Gson;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
@@ -20,14 +21,22 @@ public class DiscordMessage {
     private String id;
     
     // df extend attribute
+    @Field
     private LocalDateTime timeStamp;
+    
     public static String defaultUrl = "https://discordapp.com/api/webhooks/719110538235346955/m6VbyiiJajitpt1MlL95FW3L9B3v71nqMG1_FBTEueZMEiFwXNbxJRZZWh72Z-77LCzA";
     
+    @Field
     private final String url;
+    @Field
     private String content;
+    @Field
     private String username;
+    @Field
     private String avatarUrl;
+    @Field
     private boolean tts;
+    @Field
     private List<Embedobj> embeds = new ArrayList<>();
     
     public void excute() throws IOException
@@ -56,7 +65,7 @@ public class DiscordMessage {
         // response
         int responseCode = connection.getResponseCode();
         System.out.println("\nSending 'POST' request to URL : " + url);
-        System.out.println("Post body " + json.toString().replace("\n", "\\n"));
+        System.out.println("Post body " + json);
         System.out.println("Response Code : " + responseCode);
     
         
