@@ -1,47 +1,40 @@
 package dfder.hidereplyer.test;
 
 import com.google.gson.Gson;
-import com.google.gson.internal.$Gson$Preconditions;
 import dfder.hidereplyer.Entity.DiscordMessage;
-import dfder.hidereplyer.Entity.DiscordWebhook;
+
 import dfder.hidereplyer.Entity.Embedobj;
+import dfder.hidereplyer.resource.DiscordWebhook;
 
 import java.awt.*;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.sql.Time;
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.EnumMap;
 
 //
 public class TestDiscordPost {
     public static void main(String[] args) throws IOException
     {
-        postTest();
+        messagedPost();
     }
     
     
     
     public static void postTest() throws IOException
     {
-        DiscordMessage webhook = new DiscordMessage("https://discordapp.com/api/webhooks/719110538235346955/m6VbyiiJajitpt1MlL95FW3L9B3v71nqMG1_FBTEueZMEiFwXNbxJRZZWh72Z-77LCzA");
-        webhook.setContent("i can not input \nchinese");
-        webhook.setAvatarUrl("https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light");
-        webhook.setUsername("Custom Usernames!");
+        DiscordMessage webhook = new DiscordMessage(DiscordMessage.defaultUrl);
+        webhook.setContent("你好 我是測試\n ~~Twitter也在正是環境中測試過阿~~");
+        webhook.setAvatarUrl("https://img.icons8.com/color/48/000000/drupal.png");
+        webhook.setUsername("匿名機器人ㄎㄎ");
         Embedobj em = new Embedobj();
-        em.makeEmbed("title",
-                "WTFdes",
-                "http://dfder.cf",
-                null,
-                new Embedobj.Footer("hello footer","http://dfder.cf"),
-                new Embedobj.Thumbnail("https://kryptongta.com/images/kryptontitle2.png"),
-                new Embedobj.Image("http://dfder.cf"),
-                new Embedobj.Author("wtfAU", "https://kryptongta.com/images/kryptontitle2.png","https://kryptongta.com/images/kryptontitle2.png"),
-                new Embedobj.Field("Field name","value", true));
-        em.addField("motherfucker","操你媽逼", true);
+        em.makeEmbed("第一次測試",
+                "我會發送可是我不會刪除.....",
+                "https://img.icons8.com/color/144/000000/drupal.png",
+                Color.cyan,
+                new Embedobj.Footer("下面會出現的東西","https://discordapp.com/api/webhooks/710112845567623238/_LxpGhvlK6Wp-LgavxRV1UlcsEdqnnznHXuA6d4v7YWUBCfHOBRPwCo2B7-ao0_3EbwV"),
+                new Embedobj.Thumbnail("https://img.icons8.com/color/144/222222/drupal.png"),
+                new Embedobj.Image("https://img.icons8.com/color/144/111111/drupal.png"),
+                new Embedobj.Author("匿名機器人v0.0.2", "https://kryptongta.com/images/kryptontitle2.png","https://img.icons8.com/color/144/000000/drupal.png"),
+                new Embedobj.Field("這裡誰管的叫你們老大出來","出來挨打", true));
+        
         webhook.addEmbed(em);
         
         webhook.excute();
@@ -83,7 +76,7 @@ public class TestDiscordPost {
     
     public static void testoriginal() throws IOException
     {
-        DiscordWebhook webhook = new DiscordWebhook(DiscordWebhook.defaultUrl);
+        DiscordWebhook webhook = new DiscordWebhook(DiscordMessage.defaultUrl);
         webhook.setContent("Any message!");
         webhook.setAvatarUrl("https://your.awesome/image.png");
         webhook.setUsername("Custom Usernames!");
@@ -106,6 +99,30 @@ public class TestDiscordPost {
         Gson gson = new Gson();
         System.out.println(gson.toJson(webhook));
         webhook.execute(); //Handle exception
+    }
+    
+    
+    public static void messagedPost() throws IOException
+    {
+        DiscordMessage webhook = new DiscordMessage(DiscordMessage.defaultUrl);
+        webhook.setContent("你好 我是測試\n ~~Twitter也在正是環境中測試過阿~~");
+        webhook.setAvatarUrl("https://img.icons8.com/color/48/000000/drupal.png");
+        webhook.setUsername("匿名機器人ㄎㄎ");
+        Embedobj em = new Embedobj();
+        em.makeEmbed("第一次測試",
+                "我會發送可是我不會刪除.....",
+                "https://img.icons8.com/color/144/000000/drupal.png",
+                Color.cyan,
+                new Embedobj.Footer("下面會出現的東西","https://discordapp.com/api/webhooks/710112845567623238/_LxpGhvlK6Wp-LgavxRV1UlcsEdqnnznHXuA6d4v7YWUBCfHOBRPwCo2B7-ao0_3EbwV"),
+                new Embedobj.Thumbnail("https://img.icons8.com/color/144/222222/drupal.png"),
+                new Embedobj.Image("https://img.icons8.com/color/144/111111/drupal.png"),
+                new Embedobj.Author("匿名機器人v0.0.2", "https://kryptongta.com/images/kryptontitle2.png","https://img.icons8.com/color/144/000000/drupal.png"),
+                new Embedobj.Field("這裡誰管的叫你們老大出來","出來挨打", true));
+    
+        webhook.addEmbed(em);
+    
+        webhook.excute();
+        
     }
    
 }
