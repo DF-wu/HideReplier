@@ -16,19 +16,39 @@
 <h1 id="title">我只會這個</h1>
 
 <div >
-  
 </div>
 
-<table border="1" cellspacing="1" cellpadding="1" id="messageForm">
+<table border="1" cellspacing="3" cellpadding="5" id="messageForm">
     <tr>
         <td>機器人名稱：</td>
-        <td>匿名機器人-<input id="input_botname" type="text" size="10"></td>
+        <td><input id="input_botname" type="text" size="10"></td>
         
     </tr>
     <tr>
         <td>內容:</td>
-        <td><textarea id="input_content" col="40" row="30"  ></textarea></td>
+        <td><textarea id="input_content" col="10" row="10" value=""></textarea>
+        </td>
     </tr>
+    <tr>
+        <td>
+            顏色(裝飾)
+        </td>
+        <td>
+            <div><input id="color" type="color"></div>
+        </td>      
+    </tr>
+    <tr>
+        <td>
+            圖片連結（可選）
+        </td>
+        <td >
+            <input id="img" value="static" type="text">       
+        </td>
+        <td>
+            <input id="isImgur" type="checkbox" >是imgur的網址嗎？
+        </td>
+        
+    </tr>  
 </table>
 <input id="summitPost" type="button" value="點我送出" onclick="postData()">
 <br>
@@ -36,9 +56,10 @@
 
 
 
+
 <script>
     var md = window.markdownit();
-    var result = md.render('#### 匿名回覆機器人 \n---');
+    var result = md.render('## 匿名回覆機器人 \n ##### 訊息支援部分markdown語法 你敢信？\n---');
     document.getElementById("title").innerHTML= result;
 
     
@@ -46,11 +67,25 @@
         url = "http://localhost:8080/HideBot/discord";
         content = document.getElementById("input_content").value;
         botname = document.getElementById("input_botname").value;
+        imgUrl = document.getElementById("img").value;
+        isImgur = document.getElementById("isImgur").value;
+        color = document.getElementById("color").value;
+        
+        if(isImgur){
+            covertImgurlink2Static(imgUrl);  
+        }
+        
 
         json = {
         username:botname,
         content: content, 
-    }
+        color: color,
+        imgUrl: imgUrl
+        }
+        
+        //print json to debug 
+        console.log(JSON.stringify(json) + "\n");
+
         // Default options are marked with *
         return fetch(url, {
           body: JSON.stringify(json), // must match 'Content-Type' header
@@ -65,8 +100,25 @@
           redirect: 'follow', // manual, *follow, error
           referrer: 'no-referrer', // *client, no-referrer
         })
-        .then(response => console.log(response.json()));
+        .then(response => response.json().then(
+            res => {
+                console.log("Server Response:\n");
+                console.log(res);
+            }
+        ));
     }  
+
+    function covertImgurlink2Static(url){      
+        return url.replace("//imgur.com","//i.imgur.com") + ".jpg";   
+    }
+
+    function testPost()
+    {
+        for(var i = 0; i <5; i++){
+            postData();
+        }
+        
+    }
     
 </script>
 </body>

@@ -22,8 +22,6 @@ public class DiscordMessage {
     @Id
     private String id;
     
-
-    
     public static String defaultUrl = "https://discordapp.com/api/webhooks/719110538235346955/m6VbyiiJajitpt1MlL95FW3L9B3v71nqMG1_FBTEueZMEiFwXNbxJRZZWh72Z-77LCzA";
     
     public String getUrl()
@@ -81,7 +79,7 @@ public class DiscordMessage {
         // response
         int responseCode = connection.getResponseCode();
         System.out.println("\nSending 'POST' request to URL : " + url);
-        System.out.println("Post body " + json);
+        //System.out.println("Post body " + json);
         System.out.println("Response Code : " + responseCode);
     
         

@@ -11,6 +11,5 @@ import java.util.ArrayList;
 // store posted post which had posted to discord
 
 public interface DiscordPostDataRepo extends MongoRepository<DiscordStoreData,String > {
-    ArrayList<DiscordStoreData> findAll();
     DiscordStoreData findBySerialNumberOrderBySerialNumberAsc();
 }

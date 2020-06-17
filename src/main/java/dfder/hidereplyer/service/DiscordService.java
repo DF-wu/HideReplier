@@ -3,6 +3,9 @@ package dfder.hidereplyer.service;
 
 import dfder.hidereplyer.Entity.DiscordMessage;
 import dfder.hidereplyer.Entity.DiscordStoreData;
+import dfder.hidereplyer.Entity.RecivedJSONofDiscordMessage;
+import dfder.hidereplyer.Entity.SerialCounter;
+import dfder.hidereplyer.repo.CounterRepo;
 import dfder.hidereplyer.repo.DiscordPostDataRepo;
 import dfder.hidereplyer.test.TestDiscordPost;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,32 +20,71 @@ import java.util.ArrayList;
 @Service
 public class DiscordService {
     
+  
     
     @Autowired
     private DiscordPostDataRepo repo;
-    private String url = "https://discordapp.com/api/webhooks/719110538235346955/m6VbyiiJajitpt1MlL95FW3L9B3v71nqMG1_FBTEueZMEiFwXNbxJRZZWh72Z-77LCzA";
+    @Autowired
+    private CounterRepo counterRepo;
+    
+    private SerialCounter sc;
+
+    
+    private static String  url = "https://discordapp.com/api/webhooks/719110538235346955/m6VbyiiJajitpt1MlL95FW3L9B3v71nqMG1_FBTEueZMEiFwXNbxJRZZWh72Z-77LCzA";
+    
+    @Autowired
+    public DiscordService(DiscordPostDataRepo repo, CounterRepo counterRepo)
+    {
+        this.repo = repo;
+        this.counterRepo = counterRepo;
+        sc = counterRepo.findAll().get(0);
+    }
+    
+    
     
     // post a post to discord
-    public DiscordMessage postApost(DiscordMessage discordMessage) throws IOException
+    public DiscordMessage postApost(RecivedJSONofDiscordMessage recivedJSONofDiscordMessage) throws IOException
     {
         final LocalDateTime TWtime = LocalDateTime.now(Clock.system(ZoneId.of("+8")));
     
-        for (int i = 10; i > 0; i--)
-        {
-            DiscordStoreData discordStoreData =
-                    new DiscordStoreData(TWtime,i, discordMessage);
-            repo.insert(discordStoreData);
-            discordMessage.excute();
-        }
+        //暫時想不到比較好的寫法 要讓瓶頸不會卡在DB
         
-        return discordMessage;
+        //++流水號
+        sc.plusCounter();
+        
+        //+流水號
+        DiscordMessage dm = recivedJSONofDiscordMessage;
+        DiscordStoreData discordStoreData =
+                new DiscordStoreData(TWtime, sc.getCounter(), dm);
+        repo.insert(discordStoreData);
+        recivedJSONofDiscordMessage.excute();
+        
+        //流水號存回去
+        counterRepo.save(sc);
+        return recivedJSONofDiscordMessage;
     }
+    
+   
     
     public ArrayList<DiscordStoreData> gethistorylist(){
-       return repo.findAll();
+        return (ArrayList<DiscordStoreData>) repo.findAll();
         
     }
     
+    public DiscordMessage initTheWorld(RecivedJSONofDiscordMessage recivedJSONofDiscordMessage) throws IOException
+    {
+        final LocalDateTime TWtime = LocalDateTime.now(Clock.system(ZoneId.of("+8")));
+        DiscordMessage dm = new DiscordMessage(DiscordMessage.defaultUrl);
+        DiscordStoreData discordStoreData =
+                new DiscordStoreData(TWtime, 1, dm);
+        repo.insert(discordStoreData);
+        dm.excute();
+        SerialCounter serialCounter = new SerialCounter();
+        serialCounter.setCounter(1);
+        counterRepo.save(serialCounter);
+        return dm;
+    }
+
     
     
     
