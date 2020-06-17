@@ -16,7 +16,7 @@ public class Embedobj {
     private Image image;
     private Author author;
     
-    private ArrayList<Field> fields = new ArrayList<>();
+    private ArrayList<Field> fields ;
     
     
     public ArrayList<Field> getFields(){
@@ -131,7 +131,14 @@ public class Embedobj {
         this.color = getDecimalColor(color);
         this.image=image;
         this.author = author;
-        this.fields.add(field);
+        
+        if (field != null ) {
+            if(fields == null)
+            {
+                this.fields = new ArrayList<>();
+            }
+            fields.add(field);
+        }
         return this;
     }
     

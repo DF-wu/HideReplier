@@ -5,7 +5,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "Counter")
-
 public class SerialCounter {
     @Id
     private String id;
@@ -21,4 +20,6 @@ public class SerialCounter {
     {
         this.counter = counter;
     }
+    
+    public void plusCounter() { ++counter; }
 }
