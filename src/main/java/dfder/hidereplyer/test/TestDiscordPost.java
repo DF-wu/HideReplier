@@ -1,17 +1,13 @@
 package dfder.hidereplyer.test;
 
 import com.google.gson.Gson;
-import dfder.hidereplyer.Entity.DiscordMessage;
+import dfder.hidereplyer.Entity.Discord.PostMessage;
 
-import dfder.hidereplyer.Entity.DiscordStoreData;
-import dfder.hidereplyer.Entity.Embedobj;
+import dfder.hidereplyer.Entity.Discord.Embedobj;
 import dfder.hidereplyer.resource.DiscordWebhook;
 
 import java.awt.*;
 import java.io.IOException;
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 //
 public class TestDiscordPost {
@@ -62,7 +58,7 @@ public class TestDiscordPost {
     
     public static void testoriginal() throws IOException
     {
-        DiscordWebhook webhook = new DiscordWebhook(DiscordMessage.defaultUrl);
+        DiscordWebhook webhook = new DiscordWebhook(PostMessage.defaultUrl);
         webhook.setContent("Any message!");
         webhook.setAvatarUrl("https://your.awesome/image.png");
         webhook.setUsername("Custom Usernames!");
@@ -91,7 +87,7 @@ public class TestDiscordPost {
     public static void messagedPost() throws IOException
     {
         //DiscordMessage webhook = new DiscordMessage("https://discordapp.com/api/webhooks/710112845567623238/_LxpGhvlK6Wp-LgavxRV1UlcsEdqnnznHXuA6d4v7YWUBCfHOBRPwCo2B7-ao0_3EbwV");
-        DiscordMessage webhook = new DiscordMessage(DiscordMessage.defaultUrl);
+        PostMessage webhook = new PostMessage(PostMessage.defaultUrl);
         //webhook.setContent("ㄟ不是我沒有權限刪除阿....");
         webhook.setAvatarUrl("https://img.icons8.com/color/144/000000/drupal.png");
         webhook.setUsername("匿名機器人ㄎㄎ");
