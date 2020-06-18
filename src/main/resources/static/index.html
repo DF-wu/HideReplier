@@ -69,7 +69,9 @@
     })
     
     function postData() {
-        url = "http://localhost:8080/HideBot/discord";
+        // url = "http://localhost:8080/HideBot/discord";  //local
+        url = "https://hidedbot.herokuapp.com/HideBot/discord"  // herokuapp
+
         content = document.getElementById("input_content").value;
         botname = document.getElementById("input_botname").value;
         imgUrl = document.getElementById("img").value;
