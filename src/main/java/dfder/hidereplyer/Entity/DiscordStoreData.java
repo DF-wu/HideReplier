@@ -12,21 +12,34 @@ import java.time.LocalDateTime;
 public class DiscordStoreData {
     @Id
     private String id;
+    
+
     @Field
-    private LocalDateTime timeStamp;
+    private long timeStamp;
     @Field
     private int serialNumber;
     @Field
     private DiscordMessage discordMessage;
-    @Field
-    private Color color;
     
-    public DiscordStoreData(LocalDateTime timeStamp, int serialNumber, DiscordMessage discordMessage, Color jsonColor)
+
+    
+    public DiscordStoreData(String id, long timeStamp, int serialNumber, DiscordMessage discordMessage)
     {
+        this.id = id;
         this.timeStamp = timeStamp;
         this.serialNumber = serialNumber;
         this.discordMessage = discordMessage;
-        this.color = jsonColor;
+    }
+    
+    public DiscordStoreData(long tWtimeSecont, int counter, DiscordMessage dm)
+    {
+        this.timeStamp = tWtimeSecont;
+        this.serialNumber = counter;
+        this.discordMessage = dm;
+    }
+    
+    public DiscordStoreData()
+    {
     }
     
     
@@ -46,16 +59,6 @@ public class DiscordStoreData {
         this.id = id;
     }
     
-    public LocalDateTime getTimeStamp()
-    {
-        return timeStamp;
-    }
-    
-    public void setTimeStamp(LocalDateTime timeStamp)
-    {
-        this.timeStamp = timeStamp;
-    }
-    
     public int getSerialNumber()
     {
         return serialNumber;
@@ -66,6 +69,17 @@ public class DiscordStoreData {
         this.serialNumber = serialNumber;
     }
     
+    public long getTimeStamp()
+    {
+        return timeStamp;
+    }
+    
+    public void setTimeStamp(long timeStamp)
+    {
+        this.timeStamp = timeStamp;
+    }
+    
+    
     public DiscordMessage getDiscordMessage()
     {
         return discordMessage;
@@ -74,15 +88,5 @@ public class DiscordStoreData {
     public void setDiscordMessage(DiscordMessage discordMessage)
     {
         this.discordMessage = discordMessage;
-    }
-    
-    public Color getColor()
-    {
-        return color;
-    }
-    
-    public void setColor(Color color)
-    {
-        this.color = color;
     }
 }

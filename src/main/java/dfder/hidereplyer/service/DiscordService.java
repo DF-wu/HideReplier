@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.io.IOException;
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 public class DiscordService {
@@ -44,7 +44,9 @@ public class DiscordService {
     public DiscordMessage postApost(RecivedJSONofDiscordMessage recivedJSONofDiscordMessage) throws IOException
     {
         final LocalDateTime TWtime = LocalDateTime.now(Clock.system(ZoneId.of("+8")));
-        
+        Instant instant = TWtime.toInstant(ZoneOffset.of("+8"));
+        long TWtimeSecont = instant.getEpochSecond();
+    
         //暫時想不到比較好的寫法 要讓瓶頸不會卡在DB
         
         //++流水號
@@ -53,9 +55,14 @@ public class DiscordService {
         //+流水號
         DiscordMessage dm = recivedJSONofDiscordMessage;  // 轉成discord要求的物件
         
-        //前端傳的hex轉成java的Color
-        Color jsonColor = Color.decode((String) recivedJSONofDiscordMessage.getExtra("color"));
+        //get color from client
+        // 把 # 吃掉
+        String hexColor = (String) recivedJSONofDiscordMessage.getExtra("color");
+        hexColor = hexColor.replace("#","");
+        hexColor = Integer.valueOf(hexColor,16).toString();
         
+        // 蓋回去 最後傳給discord的
+        recivedJSONofDiscordMessage.setExtras("color",hexColor);
         
         
         //0.0.2版格式欄位
@@ -73,7 +80,7 @@ public class DiscordService {
                 recivedJSONofDiscordMessage.getUsername(),
                 recivedJSONofDiscordMessage.getContent(),
                 "https://img.icons8.com/color/48/000000/drupal.png", // this post link
-                jsonColor,
+                hexColor,
                 null, // footer
                 new Embedobj.Thumbnail("https://img.icons8.com/color/48/000000/drupal.png"), //機器人縮圖
                 new Embedobj.Image((String) recivedJSONofDiscordMessage.getExtra("imgUrl")),  //上傳圖片連結
@@ -83,7 +90,8 @@ public class DiscordService {
         
         
         DiscordStoreData discordStoreData =
-                new DiscordStoreData(TWtime, sc.getCounter(), dm, jsonColor);
+                new DiscordStoreData(TWtimeSecont, sc.getCounter(), dm);
+        
         
         //清掉discord內文的部分
         recivedJSONofDiscordMessage.setContent("");
@@ -100,26 +108,29 @@ public class DiscordService {
    
     
     public ArrayList<DiscordStoreData> gethistorylist(){
-        return (ArrayList<DiscordStoreData>) repo.findAll();
+        ArrayList<DiscordStoreData> arr = (ArrayList<DiscordStoreData>)repo.findAll();
+        arr.sort(Comparator.comparingInt(DiscordStoreData::getSerialNumber));
+        return arr;
         
     }
     
-    public DiscordMessage initTheWorld(RecivedJSONofDiscordMessage recivedJSONofDiscordMessage) throws IOException
-    {
-        final LocalDateTime TWtime = LocalDateTime.now(Clock.system(ZoneId.of("+8")));
-        DiscordMessage dm = new DiscordMessage(DiscordMessage.defaultUrl);
-        Color jsonColor = Color.decode((String) recivedJSONofDiscordMessage.getExtra("color"));
-        DiscordStoreData discordStoreData =
-                new DiscordStoreData(TWtime, 1, dm, jsonColor);
-        repo.insert(discordStoreData);
-        dm.excute();
-        SerialCounter serialCounter = new SerialCounter();
-        serialCounter.setCounter(1);
-        counterRepo.save(serialCounter);
-        return dm;
-    }
-
-    
+//
+//    public DiscordMessage initTheWorld(RecivedJSONofDiscordMessage recivedJSONofDiscordMessage) throws IOException
+//    {
+//        final LocalDateTime TWtime = LocalDateTime.now(Clock.system(ZoneId.of("+8")));
+//        DiscordMessage dm = new DiscordMessage(DiscordMessage.defaultUrl);
+//        Color jsonColor = Color.decode((String) recivedJSONofDiscordMessage.getExtra("color"));
+//        DiscordStoreData discordStoreData =
+//                new DiscordStoreData(TWtime, 1, dm, jsonColor);
+//        repo.insert(discordStoreData);
+//        dm.excute();
+//        SerialCounter serialCounter = new SerialCounter();
+//        serialCounter.setCounter(1);
+//        counterRepo.save(serialCounter);
+//        return dm;
+//    }
+//
+//
     
     
     // -----------below for testing--------------

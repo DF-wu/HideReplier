@@ -10,10 +10,7 @@ import java.util.Map;
 
 public class RecivedJSONofDiscordMessage extends DiscordMessage{
     
-    public void setExtras(Map<String, Object> extras)
-    {
-        this.extras = extras;
-    }
+    
     
     public Map<String,Object> extras = new HashMap<>();
     
@@ -27,4 +24,13 @@ public class RecivedJSONofDiscordMessage extends DiscordMessage{
     {
         return this.extras.get(key);
     }
+    
+    
+    
+    public void setExtras(String key, Object val)
+    {
+
+        this.extras.put(key,val);
+    }
+    
 }
