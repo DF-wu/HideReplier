@@ -11,9 +11,13 @@
     <groupId>dfder</groupId>
     <artifactId>hidereplyer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>hidereplyer</name>
     <description>WBSE final project</description>
+
+
+
+
 
     <properties>
         <java.version>11</java.version>
