@@ -107,7 +107,7 @@ public class Embedobj {
     }
     
     
-    public static class Field{
+    public class Field{
         private String name;
         private String value;
         private boolean inline;

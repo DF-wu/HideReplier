@@ -77,13 +77,16 @@ public class DiscordService {
                 null, // footer
                 new Embedobj.Thumbnail("https://img.icons8.com/color/48/000000/drupal.png"), //機器人縮圖
                 new Embedobj.Image((String) recivedJSONofDiscordMessage.getExtra("imgUrl")),  //上傳圖片連結
-                new Embedobj.Author("匿名機器人v0.0.2 url就放靠北用的網址", "https://kryptongta.com/images/kryptontitle2.png","https://img.icons8.com/color/144/000000/drupal.png"),
-                null // Field
-        ));
+                new Embedobj.Author("匿名機器人v0.0.2", "https://kryptongta.com/images/kryptontitle2.png","https://img.icons8.com/color/144/000000/drupal.png"),
+                    null
+                ));
         
         
         DiscordStoreData discordStoreData =
                 new DiscordStoreData(TWtime, sc.getCounter(), dm, jsonColor);
+        
+        //清掉discord內文的部分
+        recivedJSONofDiscordMessage.setContent("");
         
         
         repo.insert(discordStoreData);
