@@ -22,7 +22,9 @@
     <tr>
         <td>機器人名稱：</td>
         <td><input id="input_botname" type="text" size="10"></td>
-        
+        <td rowspan = 3>
+            說明 還沒寫
+        </td>
     </tr>
     <tr>
         <td>內容:</td>
@@ -42,10 +44,10 @@
             圖片連結（可選）
         </td>
         <td >
-            <input id="img" value="static" type="text">       
+            <input id="img" value="" type="text">       
         </td>
         <td>
-            <input id="isImgur" type="checkbox" >是imgur的網址嗎？
+            <input id="isImgur" type="checkbox" >（Imgur圖床專用）<br>轉成靜態連結
         </td>
         
     </tr>  
@@ -62,17 +64,20 @@
     var result = md.render('## 匿名回覆機器人 \n ##### 訊息支援部分markdown語法 你敢信？\n---');
     document.getElementById("title").innerHTML= result;
 
+    window.addEventListener('load', function() {
+        console.log("被JS炸到體無完膚................................");
+    })
     
     function postData() {
         url = "http://localhost:8080/HideBot/discord";
         content = document.getElementById("input_content").value;
         botname = document.getElementById("input_botname").value;
         imgUrl = document.getElementById("img").value;
-        isImgur = document.getElementById("isImgur").value;
         color = document.getElementById("color").value;
         
-        if(isImgur){
-            covertImgurlink2Static(imgUrl);  
+        isImgur = document.getElementById("isImgur");
+        if(isImgur.checked) {
+            imgUrl = covertImgurlink2Static(imgUrl);  
         }
         
 
@@ -92,7 +97,7 @@
           cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
           credentials: 'same-origin', // include, same-origin, *omit
           headers: {
-            'user-agent': 'Mozilla/4.0 MDN Example',
+            'user-agent': 'Mozilla/4.0 DF QQ ',
             'content-type': 'application/json'
           },
           method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -108,17 +113,19 @@
         ));
     }  
 
-    function covertImgurlink2Static(url){      
-        return url.replace("//imgur.com","//i.imgur.com") + ".jpg";   
+    function covertImgurlink2Static(url) {      
+        return (url.replace("//imgur.com","//i.imgur.com") + ".jpg");   
     }
 
     function testPost()
     {
-        for(var i = 0; i <5; i++){
-            postData();
-        }
-        
+        isImgur = document.getElementById("isImgur");
+        console.log(isImgur.checked);
+        return isImgur.checked;
+    
     }
+
+    
     
 </script>
 </body>

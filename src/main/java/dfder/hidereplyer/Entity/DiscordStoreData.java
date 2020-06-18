@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 
 @Document(collection = "DiscordPostCollection")
@@ -17,12 +18,15 @@ public class DiscordStoreData {
     private int serialNumber;
     @Field
     private DiscordMessage discordMessage;
+    @Field
+    private Color color;
     
-    public DiscordStoreData(LocalDateTime timeStamp, int serialNumber, DiscordMessage discordMessage)
+    public DiscordStoreData(LocalDateTime timeStamp, int serialNumber, DiscordMessage discordMessage, Color jsonColor)
     {
         this.timeStamp = timeStamp;
         this.serialNumber = serialNumber;
         this.discordMessage = discordMessage;
+        this.color = jsonColor;
     }
     
     
@@ -70,5 +74,15 @@ public class DiscordStoreData {
     public void setDiscordMessage(DiscordMessage discordMessage)
     {
         this.discordMessage = discordMessage;
+    }
+    
+    public Color getColor()
+    {
+        return color;
+    }
+    
+    public void setColor(Color color)
+    {
+        this.color = color;
     }
 }
