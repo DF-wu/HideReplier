@@ -1,1 +1,1 @@
-web: java -jar target/hidereplyer.jar
+web: java -jar target/hidereplyer-0.0.1-SNAPSHOT.jar
