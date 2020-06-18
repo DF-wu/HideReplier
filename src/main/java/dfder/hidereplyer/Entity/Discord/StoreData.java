@@ -1,15 +1,12 @@
-package dfder.hidereplyer.Entity;
+package dfder.hidereplyer.Entity.Discord;
 
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.awt.*;
-import java.time.LocalDateTime;
-
 @Document(collection = "DiscordPostCollection")
-public class DiscordStoreData {
+public class StoreData {
     @Id
     private String id;
     
@@ -19,11 +16,12 @@ public class DiscordStoreData {
     @Field
     private int serialNumber;
     @Field
-    private DiscordMessage discordMessage;
-    
+    private PostMessage discordMessage;
+    @Field
+    private String posterIp;
 
     
-    public DiscordStoreData(String id, long timeStamp, int serialNumber, DiscordMessage discordMessage)
+    public StoreData(String id, long timeStamp, int serialNumber, PostMessage discordMessage)
     {
         this.id = id;
         this.timeStamp = timeStamp;
@@ -31,14 +29,15 @@ public class DiscordStoreData {
         this.discordMessage = discordMessage;
     }
     
-    public DiscordStoreData(long tWtimeSecont, int counter, DiscordMessage dm)
+    public StoreData(long tWtimeSecont, int counter, String posterIp, PostMessage dm)
     {
         this.timeStamp = tWtimeSecont;
         this.serialNumber = counter;
+        this.posterIp = posterIp;
         this.discordMessage = dm;
     }
     
-    public DiscordStoreData()
+    public StoreData()
     {
     }
     
@@ -80,13 +79,23 @@ public class DiscordStoreData {
     }
     
     
-    public DiscordMessage getDiscordMessage()
+    public PostMessage getDiscordMessage()
     {
         return discordMessage;
     }
     
-    public void setDiscordMessage(DiscordMessage discordMessage)
+    public void setDiscordMessage(PostMessage discordMessage)
     {
         this.discordMessage = discordMessage;
+    }
+    
+    public String getPosterIp()
+    {
+        return posterIp;
+    }
+    
+    public void setPosterIp(String posterIp)
+    {
+        this.posterIp = posterIp;
     }
 }

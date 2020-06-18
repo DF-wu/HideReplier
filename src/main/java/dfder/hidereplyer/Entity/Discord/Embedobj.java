@@ -1,6 +1,5 @@
-package dfder.hidereplyer.Entity;
+package dfder.hidereplyer.Entity.Discord;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Embedobj {
@@ -107,7 +106,7 @@ public class Embedobj {
     }
     
     
-    public class Field{
+    public static class Field{
         private String name;
         private String value;
         private boolean inline;

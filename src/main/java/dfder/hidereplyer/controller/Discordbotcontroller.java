@@ -2,9 +2,9 @@ package dfder.hidereplyer.controller;
 
 
 
-import dfder.hidereplyer.Entity.DiscordMessage;
-import dfder.hidereplyer.Entity.DiscordStoreData;
-import dfder.hidereplyer.Entity.RecivedJSONofDiscordMessage;
+import dfder.hidereplyer.Entity.Discord.PostMessage;
+import dfder.hidereplyer.Entity.Discord.StoreData;
+import dfder.hidereplyer.Entity.RecivedJSONofPostMessage;
 import dfder.hidereplyer.service.DiscordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,19 +23,19 @@ public class Discordbotcontroller {
     private DiscordService discordService;
     
     //post a post to discord
-    @PostMapping("/discord")
+    @PostMapping(value = "/discord", produces = MediaType.APPLICATION_JSON_VALUE)
     //@RequestMapping(produces = "application/json;charset=UTF-8")
-    public ResponseEntity<DiscordMessage> postToDiscord(@RequestBody RecivedJSONofDiscordMessage recivedJSONofDiscordMessage) throws IOException
+    public ResponseEntity<PostMessage> postToDiscord(@RequestBody RecivedJSONofPostMessage recivedJSONofPostMessage) throws IOException
     {
-        System.out.println(recivedJSONofDiscordMessage);
-        //return ResponseEntity.ok().body(discordService.initTheWorld(recivedJSONofDiscordMessage));
-        return ResponseEntity.ok().body(discordService.postApost(recivedJSONofDiscordMessage));
+        System.out.println(recivedJSONofPostMessage);
+        //return ResponseEntity.ok().body(discordService.initTheWorld(recivedJSONofPostMessage));
+        return ResponseEntity.ok().body(discordService.postApost(recivedJSONofPostMessage));
     }
 
     
     
     @GetMapping("/discord")
-    public ResponseEntity<ArrayList<DiscordStoreData>> getDiscordMessage()
+    public ResponseEntity<ArrayList<StoreData>> getDiscordMessage()
     {
         return ResponseEntity.ok().body(discordService.gethistorylist());
     }

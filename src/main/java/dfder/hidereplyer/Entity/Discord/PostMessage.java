@@ -1,24 +1,18 @@
-package dfder.hidereplyer.Entity;
+package dfder.hidereplyer.Entity.Discord;
 
 import com.google.gson.Gson;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 
-public class DiscordMessage {
+public class PostMessage {
     @Id
     private String id;
     
@@ -48,7 +42,7 @@ public class DiscordMessage {
     private ArrayList<Embedobj> embeds = new ArrayList<>();
     
     
-    public DiscordMessage()
+    public PostMessage()
     {
         this.url = defaultUrl;
     }
@@ -106,7 +100,7 @@ public class DiscordMessage {
         this.embeds.add(embedobj);
     }
     
-    public DiscordMessage(String url)
+    public PostMessage(String url)
     {
         this.url = url;
     }

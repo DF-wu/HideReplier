@@ -2,13 +2,12 @@ package dfder.hidereplyer.Entity;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.repository.NoRepositoryBean;
+import dfder.hidereplyer.Entity.Discord.PostMessage;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class RecivedJSONofDiscordMessage extends DiscordMessage{
+public class RecivedJSONofPostMessage extends PostMessage {
     
     
     

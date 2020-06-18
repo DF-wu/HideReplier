@@ -2,17 +2,14 @@ package dfder.hidereplyer.repo;
 
 
 
-import dfder.hidereplyer.Entity.DiscordStoreData;
+import dfder.hidereplyer.Entity.Discord.StoreData;
 import org.springframework.data.mongodb.repository.MongoRepository;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 // store posted post which had posted to discord
 
-public interface DiscordPostDataRepo extends MongoRepository<DiscordStoreData,String > {
-    DiscordStoreData findBySerialNumberOrderBySerialNumberAsc();
+public interface DiscordPostDataRepo extends MongoRepository<StoreData,String > {
+    StoreData findBySerialNumberOrderBySerialNumberAsc();
     
     
 }
