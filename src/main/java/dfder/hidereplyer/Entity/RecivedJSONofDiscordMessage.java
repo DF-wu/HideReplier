@@ -9,9 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RecivedJSONofDiscordMessage extends DiscordMessage{
-    @Id
-    private String id;
-    
     
     public void setExtras(Map<String, Object> extras)
     {
@@ -26,8 +23,8 @@ public class RecivedJSONofDiscordMessage extends DiscordMessage{
     }
     
     @JsonAnyGetter
-    public void getExtra(String key)
+    public Object getExtra(String key)
     {
-        this.extras.get(key);
+        return this.extras.get(key);
     }
 }
