@@ -100,7 +100,7 @@ public class TestDiscordPost {
         em.makeEmbed("機器人名字",//"不是我沒有權限刪除阿....",
                 "靠北訊息 ",
                 "https://img.icons8.com/color/288/000000/drupal.png",
-                Color.YELLOW,
+                "fff995",
                 null,//new Embedobj.Footer("下面會出現的東西","https://discordapp.com/api/webhooks/710112845567623238/_LxpGhvlK6Wp-LgavxRV1UlcsEdqnnznHXuA6d4v7YWUBCfHOBRPwCo2B7-ao0_3EbwV"),
                 new Embedobj.Thumbnail("https://img.icons8.com/color/48/000000/drupal.png"),
                 new Embedobj.Image("https://i.imgur.com/zul9zzl.jpg"),

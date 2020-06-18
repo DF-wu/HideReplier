@@ -2,14 +2,13 @@ package dfder.hidereplyer.Entity;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Embedobj {
     
     private String title;
     private String description;
     private String url;
-    private int color;
+    private String color;
     
     private Footer footer;
     private Thumbnail thumbnail;
@@ -57,15 +56,16 @@ public class Embedobj {
         this.url = url;
     }
     
-    public int getColor()
+    public String getColor()
     {
         return color;
     }
     
-    public void setColor(Color color)
+    public void setColor(String color)
     {
-        this.color = color.getRGB();
+        this.color = color;
     }
+    
     
     
     public static class Footer {
@@ -122,13 +122,13 @@ public class Embedobj {
     }
     
     
-    public Embedobj makeEmbed(String title, String description, String url, Color color, Footer footer, Thumbnail thumbnail, Image image, Author author , Field field ){
+    public Embedobj makeEmbed(String title, String description, String url, String color, Footer footer, Thumbnail thumbnail, Image image, Author author , Field field ){
         this.footer = footer;
         this.thumbnail = thumbnail;
         this.title = title;
         this.description= description;
         this.url = url;
-        this.color = getDecimalColor(color);
+        this.color = color;
         this.image=image;
         this.author = author;
         
@@ -142,10 +142,16 @@ public class Embedobj {
         return this;
     }
     
-    public int getDecimalColor(Color color){
-        int rgb = color.getRed();
-        rgb = (rgb << 8) + color.getGreen();
-        rgb = (rgb << 8) + color.getBlue();
-        return rgb;
-    }
+    
+    
+    
+    
+    
+//
+//    public int getDecimalColor(Color color){
+//        int rgb = color.getRed();
+//        rgb = (rgb << 8) + color.getGreen();
+//        rgb = (rgb << 8) + color.getBlue();
+//        return rgb;
+//    }
 }

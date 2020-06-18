@@ -47,7 +47,7 @@
             <input id="img" value="" type="text">       
         </td>
         <td>
-            <input id="isImgur" type="checkbox" >（Imgur圖床專用）<br>轉成靜態連結
+            <input id="isImgur" type="checkbox" > 貼imgur的bbcode
         </td>
         
     </tr>  
@@ -70,7 +70,8 @@
     
     function postData() {
         // url = "http://localhost:8080/HideBot/discord";  //local
-        url = "https://hidedbot.herokuapp.com/HideBot/discord"  // herokuapp
+        // url = "https://hidedbot.herokuapp.com/HideBot/discord"  // herokuapp
+        let url = window.location.origin + "/HideBot/discord" ;
 
         content = document.getElementById("input_content").value;
         botname = document.getElementById("input_botname").value;
@@ -79,7 +80,7 @@
         
         isImgur = document.getElementById("isImgur");
         if(isImgur.checked) {
-            imgUrl = covertImgurlink2Static(imgUrl);  
+            imgUrl = covertlink2Static(imgUrl);
         }
         
 
@@ -115,8 +116,9 @@
         ));
     }  
 
-    function covertImgurlink2Static(url) {      
-        return (url.replace("//imgur.com","//i.imgur.com") + ".png");   
+    function covertlink2Static(url) {
+        //[img]https://i.imgur.com/YI9xyAN.jpg[/img]
+        return (url.replace("[img]","").replace("[/img]","") );
     }
 
     function testPost()
@@ -125,6 +127,11 @@
         console.log(isImgur.checked);
         return isImgur.checked;
     
+    }
+
+
+    function time() {
+        new Date().getTime();
     }
 
     
