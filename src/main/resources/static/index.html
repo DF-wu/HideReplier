@@ -10,6 +10,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/11.0.0/markdown-it.min.js"></script>
 
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
 </head>
 <body>
@@ -17,35 +19,39 @@
 
 <div id="clientIp"></div>
 
-<table border="1" cellspacing="3" cellpadding="5" id="messageForm">
+<table class="table table-borderless" border="1" cellspacing="3" cellpadding="5" id="messageForm">
+
     <tr>
-        <td>機器人名稱：</td>
+        <th scope="col">機器人名稱：</th>
         <td><input id="input_botname" type="text" size="10" value="預設機器人:)"></td>
         <td rowspan = 3>
-            說明 還沒寫
+          
+            <a target="_blank" href="https://hackmd.io/@dfder/BJ2nFlFpI"> 使用說明
+            </a>
         </td>
         <td rowspan =4 >
             <p>成品長這樣(點開看大圖)</p>
-            <a href="https://i.imgur.com/2JtWzMG.png"><img src="https://i.imgur.com/2JtWzMG.png" width="300"></a>
+            <a href="https://i.imgur.com/2JtWzMG.png" "_bl"><img src="https://i.imgur.com/2JtWzMG.png" width="300"></a>
         </td>
     </tr>
+
     <tr>
-        <td>內容:</td>
+        <th scope="col">內容:</th>
         <td><textarea id="input_content" col="10" row="10" value=""></textarea>
         </td>
     </tr>
     <tr>
-        <td>
+        <th scope="col">
             顏色(裝飾)
-        </td>
+        </th>
         <td>
             <div><input id="color" type="color"></div>
         </td>      
     </tr>
     <tr>
-        <td>
-            圖片連結（可選）
-        </td>
+        <th scope="col">
+            圖片連結（可留空）
+        </th>
         <td >
             <input id="img" value="" type="text">       
         </td>
@@ -55,7 +61,7 @@
         
     </tr>  
 </table>
-<input id="summitPost" type="button" value="點我送出" onclick="postData()">
+<input id="summitPost" type="button" value="點我送出" class="btn btn-outline-primary" onclick="postData()">
 <br>
 <div id="postData">回傳資訊
 <ul>
@@ -69,11 +75,13 @@
 </div>
 
 <script>
-    var md = window.markdownit();
-    var result = md.render('## 匿名回覆機器人 \n ---');
-    document.getElementById("title").innerHTML= result;
-
+   
     window.addEventListener('load', function() { // <--- script tag前的東西都載入完了所以其實不用load
+        var md = window.markdownit();
+
+        var result = md.render('## 匿名回覆機器人 \n ---');
+        document.getElementById("title").innerHTML= result;
+    
         console.log("被JS炸到體無完膚................................");
 
         getIp().then(res => res.json()).then(getIpResponse => {
@@ -161,12 +169,13 @@
                     
                     document.getElementById("show_content").innerHTML = "內容： " + res.content;
                     
-                    document.getElementById("show_imgUrl").innerHTML = "圖片連結： " + res.imgUrl;
+                    document.getElementById("show_imgUrl").innerHTML = "圖片連結： " + res.extras["imgurl"];
 
-                    document.getElementById("show_color").innerHTML = "顏色： " + res.color;
+                    document.getElementById("show_color").innerHTML = "顏色： " + res.extras['color'];
    
-                    document.getElementById("show_ip").innerHTML = "ip： " + res.ip;
+                    document.getElementById("show_ip").innerHTML = "ip： " + res.extras["ip"];
 
+                    
           
 
                 }
