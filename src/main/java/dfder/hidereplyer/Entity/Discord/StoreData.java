@@ -10,7 +10,6 @@ public class StoreData {
     @Id
     private String id;
     
-
     @Field
     private long timeStamp;
     @Field
@@ -19,7 +18,8 @@ public class StoreData {
     private PostMessage discordMessage;
     @Field
     private String posterIp;
-
+    @Field
+    private String responseCode;
     
     public StoreData(String id, long timeStamp, int serialNumber, PostMessage discordMessage)
     {
@@ -97,5 +97,15 @@ public class StoreData {
     public void setPosterIp(String posterIp)
     {
         this.posterIp = posterIp;
+    }
+    
+    public String getResponseCode()
+    {
+        return responseCode;
+    }
+    
+    public void setResponseCode(String responseCode)
+    {
+        this.responseCode = responseCode;
     }
 }

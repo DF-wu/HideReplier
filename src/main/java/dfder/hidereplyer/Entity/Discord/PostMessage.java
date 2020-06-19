@@ -18,15 +18,8 @@ public class PostMessage {
     
     public static String defaultUrl = "https://discord.com/api/webhooks/REDACTED/REDACTED";
     public static String NTOUCS_DISCORD_HATE = "https://discord.com/api/webhooks/REDACTED/REDACTED";
-    public String getUrl()
-    {
-        return url;
-    }
     
-    public void setUrl(String url)
-    {
-        this.url = url;
-    }
+    
     
     @Field
     private String url;
@@ -41,7 +34,21 @@ public class PostMessage {
     @Field
     private ArrayList<Embedobj> embeds = new ArrayList<>();
     
-
+    public PostMessage()
+    {
+    }
+    
+    
+    public String getUrl()
+    {
+        return url;
+    }
+    
+    public void setUrl(String url)
+    {
+        this.url = url;
+    }
+    
     
     public void excute() throws IOException
     {
@@ -71,7 +78,7 @@ public class PostMessage {
         System.out.println("\nSending 'POST' request to URL : " + url);
         //System.out.println("Post body " + json);
         System.out.println("Response Code : " + responseCode);
-    
+        
         
 //        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 //        String inputLine;
