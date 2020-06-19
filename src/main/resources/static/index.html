@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hide Replyer</title>
+    <title>Hide Replier</title>
 
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
@@ -94,17 +94,26 @@
         <div>寫的很客家 實在沒時間了 請多包涵。</div>
         <div>歡迎使用 不歡迎爆破</div>
     </div>
-</div>
 
+</div>
+<div id="updateHistory">
+
+</div>
 
 <script>
    
     window.addEventListener('load', function() { // <--- script tag前的東西都載入完了所以其實不用load
         var md = window.markdownit();
 
-        var result = md.render('## 匿名回覆機器人 \n ---');
+        var result = md.render('## 匿名回覆機器人 \n 偷偷跟你說 訊息支援markdown語法喔 \n ---');
         document.getElementById("title").innerHTML= result;
-    
+
+        var updateMessage = "###### 隆重推出v0.2 \n " +
+            "+ 增加顏色記憶功能 自動記住你上次的顏色\n " +
+            "+ 增加avatarUrl功能 （測試中）\n "
+        result = md.render(updateMessage);
+        document.getElementById("updateHistory").innerHTML = result;
+
         console.log("被JS炸到體無完膚................................");
 
         getIp().then(res => res.json()).then(getIpResponse => {
