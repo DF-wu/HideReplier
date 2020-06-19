@@ -17,7 +17,7 @@ public class PostMessage {
     private String id;
     
     public static String defaultUrl = "https://discord.com/api/webhooks/REDACTED/REDACTED";
-    
+    public static String NTOUCS_DISCORD_HATE = "https://discord.com/api/webhooks/REDACTED/REDACTED";
     public String getUrl()
     {
         return url;
@@ -44,7 +44,7 @@ public class PostMessage {
     
     public PostMessage()
     {
-        this.url = defaultUrl;
+        this.url = NTOUCS_DISCORD_HATE;
     }
     
     public void excute() throws IOException
