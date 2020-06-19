@@ -112,6 +112,8 @@
             document.getElementById("clientIp").append("你的ip是 " + ip);
 
         })
+
+        document.getElementById("color").value = localStorage.getItem("color");
        
     })
     
@@ -140,6 +142,7 @@
             return;
         }
 
+        localStorage.setItem("color",color);
 
         getIp().then(res => res.json()).then(getIpResponse => {
           // postData要做的事情放這邊  <-----
