@@ -90,7 +90,7 @@ public class DiscordService {
                 "https://img.icons8.com/color/48/000000/drupal.png", // this post's link
                 hexColor,
                 null ,// new Embedobj.Footer("來自： " + ip,""),  // footer
-                new Embedobj.Thumbnail("https://img.icons8.com/color/48/000000/drupal.png"), //機器人縮圖
+                new Embedobj.Thumbnail("https://i.imgur.com/cNH1Yx8.jpg"), //機器人縮圖
                 new Embedobj.Image((String) recivedJSONofDiscordMessage.getExtra("imgUrl")),  //上傳圖片連結
                 new Embedobj.Author("匿名機器人v0.1", "https://hidedbot.herokuapp.com/","https://img.icons8.com/color/144/000000/drupal.png"),
                 new Embedobj.Field("流水號", String.valueOf(sc.getCounter()) , true)
@@ -118,7 +118,9 @@ public class DiscordService {
                 );
         repo.insert(discordStoreData);
     
-    
+        // assign url
+        recivedJSONofDiscordMessage.setUrl(PostMessage.NTOUCS_DISCORD_HATE);
+        
         //清掉discord內文的部份 讓discord不會顯示content 而是只有embed內容
         recivedJSONofDiscordMessage.setContent("");
         // 送出post

@@ -41,11 +41,7 @@ public class PostMessage {
     @Field
     private ArrayList<Embedobj> embeds = new ArrayList<>();
     
-    
-    public PostMessage()
-    {
-        this.url = NTOUCS_DISCORD_HATE;
-    }
+
     
     public void excute() throws IOException
     {
