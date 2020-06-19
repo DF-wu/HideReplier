@@ -119,7 +119,7 @@ public class DiscordService {
         repo.insert(discordStoreData);
   
         
-        recivedJSONofDiscordMessage.setAvatarUrl("https://i.imgur.com/Y8H9d14.jpg");
+        
         
         // assign url
         recivedJSONofDiscordMessage.setUrl(PostMessage.NTOUCS_DISCORD_HATE);
