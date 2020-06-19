@@ -29,7 +29,8 @@ public class DiscordService {
     private SerialCounter sc;
 
     
-    private static String  url = "https://discord.com/api/webhooks/REDACTED/REDACTED";
+    private static String url = "https://discord.com/api/webhooks/REDACTED/REDACTED";
+            //url = "https://discord.com/api/webhooks/REDACTED/REDACTED";
     
     @Autowired
     public DiscordService(DiscordPostDataRepo repo, CounterRepo counterRepo)
