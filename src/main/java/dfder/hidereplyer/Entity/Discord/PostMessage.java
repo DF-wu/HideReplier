@@ -17,7 +17,7 @@ public class PostMessage {
     private String id;
     
     public static String defaultUrl = "https://discordapp.com/api/webhooks/719110538235346955/m6VbyiiJajitpt1MlL95FW3L9B3v71nqMG1_FBTEueZMEiFwXNbxJRZZWh72Z-77LCzA";
-    
+    public static String NTOUCS_DISCORD_HATE = "https://discordapp.com/api/webhooks/710112845567623238/_LxpGhvlK6Wp-LgavxRV1UlcsEdqnnznHXuA6d4v7YWUBCfHOBRPwCo2B7-ao0_3EbwV";
     public String getUrl()
     {
         return url;
@@ -44,7 +44,7 @@ public class PostMessage {
     
     public PostMessage()
     {
-        this.url = defaultUrl;
+        this.url = NTOUCS_DISCORD_HATE;
     }
     
     public void excute() throws IOException
