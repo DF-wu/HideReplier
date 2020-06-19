@@ -69,8 +69,14 @@
         <td>
             <input id="summitPost" type="button" value="點我送出" class="btn btn-outline-primary" onclick="postData()"></a>
         </td>
-        
     </tr>  
+    <th scope="col">
+        discord 頭像連結
+    </th>
+    <td>
+        <input id ="avatar" type="text">
+    </td>
+
 </table>
 
 <div id="postData" >回傳資訊
@@ -122,6 +128,7 @@
         imgUrl = document.getElementById("img").value;
         color = document.getElementById("color").value;
         isImgur = document.getElementById("isImgur");
+        avatar = document.getElementById("avatar").value;
 
         imgUrl = covertlink2Static(imgUrl);
     
@@ -149,7 +156,8 @@
                 content: content, 
                 color: color,
                 imgUrl: imgUrl,
-                ip: ip
+                ip: ip,
+                avatarUrl:avatar
             }
             
             //print json to debug 
