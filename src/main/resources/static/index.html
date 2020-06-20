@@ -139,10 +139,10 @@
         imgUrl = document.getElementById("img").value;
         color = document.getElementById("color").value;
         isImgur = document.getElementById("isImgur");
-        avatar = document.getElementById("avatar").value;
+        avatar_url = document.getElementById("avatar").value;
 
         imgUrl = covertlink2Static(imgUrl);
-    
+        avatar_url = covertlink2Static(avatar)
         
 
         if( (botname == "") || (content == "")) 
@@ -169,7 +169,7 @@
                 color: color,
                 imgUrl: imgUrl,
                 ip: ip,
-                avatarUrl:avatar
+                avatar_url:avatar_url
             }
             
             //print json to debug 
