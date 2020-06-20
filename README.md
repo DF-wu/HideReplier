@@ -77,4 +77,7 @@ tags: HideReplier
 - v0.1
     - 世界的初始
 
+### Contribution
+@k3kdude for the DiscordWebhook Java base concept implement 
+@stanley2058 for the AMAZING web UI improvement.
 
