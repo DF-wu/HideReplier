@@ -87,20 +87,20 @@ public class TestDiscordPost {
     public static void messagedPost() throws IOException
     {
         //DiscordMessage webhook = new DiscordMessage("https://discordapp.com/api/webhooks/710112845567623238/_LxpGhvlK6Wp-LgavxRV1UlcsEdqnnznHXuA6d4v7YWUBCfHOBRPwCo2B7-ao0_3EbwV");
-        PostMessage webhook = new PostMessage(PostMessage.defaultUrl);
+        PostMessage webhook = new PostMessage(PostMessage.NTOUCS_DISCORD_HATE);
         //webhook.setContent("ㄟ不是我沒有權限刪除阿....");
         webhook.setAvatarUrl("https://img.icons8.com/color/144/000000/drupal.png");
         webhook.setUsername("匿名機器人ㄎㄎ");
         //webhook.setTts(true);
         Embedobj em = new Embedobj();
         em.makeEmbed("機器人名字",//"不是我沒有權限刪除阿....",
-                "靠北訊息 ",
+                "右邊會動了",
                 "https://img.icons8.com/color/288/000000/drupal.png",
-                "fff995",
+                Integer.valueOf("fff995",16).toString() ,
                 null,//new Embedobj.Footer("下面會出現的東西","https://discordapp.com/api/webhooks/710112845567623238/_LxpGhvlK6Wp-LgavxRV1UlcsEdqnnznHXuA6d4v7YWUBCfHOBRPwCo2B7-ao0_3EbwV"),
-                new Embedobj.Thumbnail("https://img.icons8.com/color/48/000000/drupal.png"),
+                new Embedobj.Thumbnail("https://cdn.discordapp.com/attachments/591643710454890505/723846103006445618/ue01.gif"),
                 new Embedobj.Image("https://i.imgur.com/zul9zzl.jpg"),
-                new Embedobj.Author("匿名機器人v0.0.2 訊息就放靠北用的網址", "https://kryptongta.com/images/kryptontitle2.png","https://img.icons8.com/color/144/000000/drupal.png"),
+                new Embedobj.Author("哈囉你好嗎", "https://kryptongta.com/images/kryptontitle2.png","https://img.icons8.com/color/144/000000/drupal.png"),
                 null//new Embedobj.Field("這裡誰管的叫你們老大出來","NOVA", true)
         );
     
