@@ -61,7 +61,7 @@ tags: HideReplier
     4. 複製`BBcode`連結並貼到回覆機器人之圖片連結欄位裡面即可![](https://i.imgur.com/FTNzuEt.png )
 
 
-## TODO
+## 進度
 - TODO:
     - [x] 歷史記錄功能
     - [ ] 前端顯示歷史記錄
@@ -70,6 +70,7 @@ tags: HideReplier
     - [x] ~~Color轉成java物件儲存~~
     - [x] 統一轉為HEX color儲存
     - [x] imgur平台圖片格式問題
+    - [ ] 前端顯示ip地址資訊（地區、電信業者等）
 - TOFIX:
     - [x] 時區修正
     - [x] 把discord wehook的JSON annotation用java bean完整實做出來
@@ -86,6 +87,11 @@ tags: HideReplier
     - [ ] 把敏感資料如DB密碼或webhook密碼從git大海中移除
 
 ## 更新紀錄
+
+
+- HOTFIX v0.3.1
+    - 修正功能異常
+        - PR沒看清楚 被陰了
 
 - 隆重推出 v0.3 代號： AKS
     - 前端大更新 感謝@stanley2058的貢獻
