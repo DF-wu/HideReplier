@@ -1,5 +1,42 @@
+---
+tags: HideReplier
+---
+
 # HideReplier
-## 系統介紹
+
+[TOC]
+
+---
+# 系統介紹
+
+## 簡介
+- 本機器人的開發動機：
+    1. ~~WBSE課程說要寫專案~~
+    2. 由於某資工系上Discord開了一個黑特區，很不巧的在這個群組中又是實名制，有時候無形的壓力會造成同學不敢抒發意見。因此開發一個可以匿名回覆的機器人
+    3. 想要做一個discord平台的關鍵字alertor，~~很遺憾的走偏了變成寫回覆機器人~~
+## 匿名回覆機器人教學
+### 如何使用
+#### 介面介紹
+- 一圖流
+- ~~客家風格~~ 
+- <h3>簡潔明了</h3> 
+- ~~沒有時間寫css也不會寫....~~
+    - ![](https://i.imgur.com/JPOJWJM.jpg)
+
+#### 圖片連結說明
+- 必須是靜態連結
+    - 例如 `http://dfder.tw/87.jpg`
+- 為了方便大家使用，針對[Imgur圖床](https://imgur.com/)實做了轉換器
+    - ~~迷之音：imgur很慢 94ㄌㄙ~~
+- 使用步驟：
+    1. 到imgur網站，點擊`new Post`![](https://i.imgur.com/rWKAPmW.jpg)
+    
+    2. 照指示上傳圖片 ![](https://i.imgur.com/SF1xZF5.png)
+    
+    3. 點`get share links`![](https://i.imgur.com/JQvCU3w.png)
+    
+    4. 複製`BBcode`連結並貼到回覆機器人之圖片連結欄位裡面即可![](https://i.imgur.com/FTNzuEt.png)
+
 
 ## TODO
 - TODO:
@@ -39,3 +76,5 @@
 
 - v0.1
     - 世界的初始
+
+
