@@ -95,14 +95,14 @@ function submitPost() {
     };
     localStorage.setItem("color", colorInput.value);
 
-    // fetch(BackendUrl, {
-    //     body: JSON.stringify(postBody),
-    //     method: 'POST',
-    //     mode: 'cors',
-    //     headers: {
-    //         "content-type": "application/json"
-    //     }
-    // }).then(res => res.json()).then(res => alert("發送成功!!"));
+    fetch(BackendUrl, {
+        body: JSON.stringify(postBody),
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            "content-type": "application/json"
+        }
+    }).then(res => res.json()).then(res => alert("發送成功!!"));
 }
 
 inputs.forEach(inp => inp.addEventListener('keydown', () => submit.disabled = true));
