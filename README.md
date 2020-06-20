@@ -5,10 +5,14 @@ tags: HideReplier
 # HideReplier
 
 [TOC]
-
 ---
-# 系統介紹
+### 重要聲明
+- 系統仍在開發中，請不要惡意破壞或惡意測試 DDOS 或 大量的request都是不允許的。
+- 請大家好好愛惜他 他會慢慢成長~~應該吧~~。
+- 歡迎開issue或發PR給我。
 
+# 系統介紹
+- [機器人連結](https://hidedbot.herokuapp.com/)
 ## 簡介
 - ~~首先 你要是國立臺灣海洋大學資工系相關人事 不然可以左轉了~~
 - 本專案是給 海大資工discord群組使用 
