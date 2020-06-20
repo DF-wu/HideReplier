@@ -2,288 +2,81 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hide Replier</title>
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/11.0.0/markdown-it.min.js"></script>
-
-    <!-- CSS only -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <style>
-        #postData{
-            display: flex;
-        }
-
-        #postData ul{
-            width: 50%;
-        }
-    </style>
+    <link rel="stylesheet" href="index.css">
+    <script src="index.js" defer></script>
 </head>
 <body>
-<h1 id="title">我只會這個</h1>
-
-<div id="clientIp"></div>
-
-<table class="table table-borderless" border="1" cellspacing="3" cellpadding="5" id="messageForm">
-
-    <tr>
-        <th scope="col">機器人名稱：</th>
-        <td><input id="input_botname" type="text" size="10" value="預設機器人:)"></td>
-        <td rowspan = 3>
-          
-            <a target="_blank" href="https://hackmd.io/@dfder/BJ2nFlFpI"> 使用說明
-            </a>
-        </td>
-        <td rowspan =4 >
-            <p>成品長這樣(點開看大圖)</p>
-            <a href="https://i.imgur.com/2JtWzMG.png" target ="_blank"><img src="https://i.imgur.com/2JtWzMG.png" width="300"></a>
-        </td>
-    </tr>
-
-    <tr>
-        <th scope="col">內容:</th>
-        <td><textarea id="input_content" col="10" row="10" value=""></textarea>
-        </td>
-        <td>
-            
-        </td>
-    </tr>
-    <tr>
-        <th scope="col">
-            顏色(裝飾)
-        </th>
-        <td>
-            <div><input id="color" type="color"></div>
-        </td>      
-    </tr>
-    <tr>
-        <th scope="col">
-            圖片連結（可留空）
-        </th>
-        <td >
-            <input id="img" value="" type="text">       
-        </td>
-        <td>
-            <input id="summitPost" type="button" value="點我送出" class="btn btn-outline-primary" onclick="postData()"></a>
-        </td>
-    </tr>  
-    <th scope="col">
-        discord 頭像連結
-    </th>
-    <td>
-        <input id ="avatar" type="text" value="">
-    </td>
-
-</table>
-
-<div id="postData" >回傳資訊
-<ul>
-    <li id="show_username"></li>
-    <li id="show_content"></li>
-    <li id="show_imgUrl"></li>
-    <li id="show_color"></li>
-    <li id="show_ip"></li>
-</ul>
-
-    <div>
-        <div>認真**認真**認真 先說 別用壞他 別攻擊他 我有綁信用卡</div>
-        <div> 但是歡迎找bug或是想要給我issue或feedback的可以直接私訊我 github等整理好以後再公開給大家用</div>
-        <div>寫的很客家 實在沒時間了 請多包涵。</div>
-        <div>歡迎使用 不歡迎爆破</div>
+    <div class="topPanel">
+        <h1>匿名回覆機器人</h1>
+        [<b><a href="https://hackmd.io/@dfder/BJ2nFlFpI" target="_blank">使用說明</a></b>]
+        [<b><a href="https://github.com/DF-wu/HideReplier" target="_blank">Github</a></b>]
     </div>
-
-</div>
-<div id="updateHistory">
-
-</div>
-
-<script>
-   
-    window.addEventListener('load', function() { // <--- script tag前的東西都載入完了所以其實不用load
-        var md = window.markdownit();
-
-        var result = md.render('## 匿名回覆機器人 \n ### 偷偷跟你說'+
-        ' 訊息支援markdown語法喔  \n '+
-        '---\n' + 
-        '##### [GitHub頁面出來了 請給我星星撫慰我受傷的心靈](https://github.com/DF-wu/HideReplier)');
-        document.getElementById("title").innerHTML= result;
-
-        var updateMessage = "\n " +
-            "- 隆重推出v0.2.1 代號：感謝花生\n " +
-            "    - 修正avatar功能 已可正常運作 \n " +
-            "    - 增加連結範圍 現在圖片以及avatar欄位之imgur連結皆會自動轉換至合法格式\n " +
-            "        - 是**BBCODE** 請看使用說明的部分\n " +
-            "    - 預計逐步完成說明文件以及更新文件~~如果我的隊友沒因為我寫這個機器人而把大專案晾在一旁而把我砍了~~\n " +
-            "    - 其實是可以公開到Github了 但是現在repo裡面有db密碼 discordwebhook連結等等敏感資料\n" +
-            "        - ~~懶人我有點想直接推上去......~~ "
-        result = md.render(updateMessage);
-        document.getElementById("updateHistory").innerHTML = result;
-
-        console.log("被JS炸到體無完膚................................");
-
-        getIp().then(res => res.json()).then(getIpResponse => {
-            let ip = getIpResponse.origin.split(',')[0];
-            document.getElementById("clientIp").append("你的ip是 " + ip);
-
-        })
-
-        document.getElementById("color").value = localStorage.getItem("color");
-       
-    })
-    
-
-    
-    function postData() {
-
-        // url = "http://localhost:8080/HideBot/discord";  //local
-        // url = "https://hidedbot.herokuapp.com/HideBot/discord"  // herokuapp
-        let url = window.location.origin + "/HideBot/discord" ;
-
-        content = document.getElementById("input_content").value;
-        botname = document.getElementById("input_botname").value;
-        imgUrl = document.getElementById("img").value;
-        color = document.getElementById("color").value;
-        isImgur = document.getElementById("isImgur");
-        avatar_url = document.getElementById("avatar").value;
-
-        imgUrl = covertlink2Static(imgUrl);
-        avatar_url = covertlink2Static(avatar_url);
-        
-
-        if( (botname == "") || (content == "")) 
-        {
-            window.alert("機器人名字以及內容不可為空");
-            return;
-        }
-
-        localStorage.setItem("color",color);
-
-        getIp().then(res => res.json()).then(getIpResponse => {
-          // postData要做的事情放這邊  <-----
-          // postData要做的事情整個寫在這裡面  <-----
-            console.log(getIpResponse); // 你的回應
-            // getIpResponse ←這是啥？ response的body?
-                // 這是你呼叫那個外部api的結果，已經轉成js物件了
+    <div class="mainPanel">
+        <div class="inputForm">
+            <div>IP: <span id="ipDisplay"></span></div>
+            <label for="botNameInput">機器人名稱</label>
+            <input type="text" id="botNameInput" value="預設機器人:)">
+            <label for="colorInput">顏色(裝飾)</label>
+            <input type="color" id="colorInput">
+            <label for="avatarInput">頭像連結</label>
+            <input type="text" id="avatarInput">
+            <label for="imageInput">圖片連結（可留空）</label>
+            <input type="text" id="imageInput">
+            <label for="contentText">內容文字</label>
+            <textarea id="contentText"></textarea>
             
-            // 感恩 ！！！
-            let ip = getIpResponse.origin.split(',')[0];
+            <div id="errorDisplay"></div>
 
-            json = {
-                username:botname,
-                content: content, 
-                color: color,
-                avatar_url: avatar_url,
-                imgUrl: imgUrl,
-                ip: ip,
-
-            }
-            
-            //print json to debug 
-            console.log(JSON.stringify(json) + "\n");
-
-            // Default options are marked with *
-            fetch(url, { 
-                body: JSON.stringify(json), // must match 'Content-Type' header
-                // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                // credentials: 'same-origin', // include, same-origin, *omit
-                headers: {
-                    'user-agent': 'Mozilla/4.0 DF QQ ',
-                    'Content-Type': 'application/json'
-                },
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, cors, *same-origin
-                // redirect: 'follow', // manual, *follow, error
-                // referrer: 'no-referrer', // *client, no-referrer
-            })
-            .then(response => response.json()) // <--- .json() 會回傳一個promise所以可以用 .then繼續接
-                // 瞭解感恩  我以為.json()會回傳的是json String  其實是回傳 Promise<object>
-            .then(
-                res => {                // <--- res 已經是物件了
-                    console.log(res) // <---- 把這個印出來就知道我在說啥了
-                    //看懂了 res是body
-
-                    // 看你要res的哪個欄位阿
-                    // JSON.stringify()
-                    
-                    // got it
-                    // 666666666666666666666666666666
-                    // 東西做不完 文件寫不玩了ㄍ
-                    document.getElementById("show_username").innerHTML = "機器人名字： " + res.username;
-                    
-                    document.getElementById("show_content").innerHTML = "內容： " + res.content;
-                    
-                    document.getElementById("show_imgUrl").innerHTML = "圖片連結： " + res.extras["imgurl"];
-
-                    document.getElementById("show_color").innerHTML = "顏色： " + res.extras['color'];
-   
-                    document.getElementById("show_ip").innerHTML = "ip： " + res.extras["ip"];
-
-                    
-          
-
-                }
-            );
-
-
-        })
-        
-    }  
-
-    function covertlink2Static(url) {
-        //[img]https://i.imgur.com/uUsySxk.jpg[/img]
-        return (url.replace("[img]","").replace("[/img]","") );
-    }
-
-    function testPost()
-    {
-        isImgur = document.getElementById("isImgur");
-        console.log(isImgur.checked);
-        return isImgur.checked;
-    
-    }
-
-    function getIp() {
-        url = "https://httpbin.org/ip";
-        
-    
-        return fetch(url, {
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, same-origin, *omit
-            headers: {
-              'user-agent': 'Mozilla/4.0 DF QQ ',
-              'content-type': 'application/json'
-            },
-            method: 'GET', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, cors, *same-origin
-            redirect: 'follow', // manual, *follow, error
-            referrer: 'no-referrer', // *client, no-referrer
-            })
-            // 這段刪掉讓他直接回傳promise
-            // .then(function(response) {
-            //     console.log(response);
-            //     return response.json();
-            //   })
-            //   .then(function(myJson) {
-            //     console.log(myJson);
-            //   });
-
-    }
-
-    function time() {
-        new Date().getTime();
-    }
-
-
-
-    
-    
-    
-</script>
-
+            <div class="btnPanel">
+                <button id="preview">預覽</button>
+                <button id="submit" disabled="true">提交</button>
+            </div>
+        </div>
+        <div class="previewDiv">
+            <h3>預覽畫面</h3>
+            <div class="preview">
+                <div class="avatar">
+                    <img src="https://cdn.discordapp.com/avatars/710112845567623238/f377b595ef4e0ea17826d7afbb20633f.webp?size=128">
+                </div>
+                <div class="innerPanel">
+                    <div class="header">
+                        <span id="botNameDisplay">預設機器人:)</span>
+                        <div class="robotTag">機器人</div>
+                    </div>
+                    <div class="content">
+                        <div class="contentTopPanel">
+                            <div class="leftContent">
+                                <div id="infoDisplay">匿名機器人v0.2.1(點我去發文)</div>
+                                <div id="botNameWithColor">預設機器人:)</div>
+                                <div id="contentDisplay">我是內容</div>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>流水號</th>
+                                            <th>來自：</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>XXXX</td>
+                                            <td id="ipDisplayInContent"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="topImgDiv">
+                                <img src="https://i.imgur.com/7BH9WA2.jpg">
+                            </div>
+                        </div>
+                        <div class="contentImgDiv">
+                            <img src="https://i.imgur.com/zul9zzl.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-
-
 </html>
