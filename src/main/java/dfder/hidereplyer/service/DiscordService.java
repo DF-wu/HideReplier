@@ -50,6 +50,10 @@ public class DiscordService {
         // 轉出discord要求的物件
         PostMessage postMessage = recivedJSONofDiscordMessage;
         
+        //hotfix: 不知為何recivedJSONofDiscordMessage的avatar_url會收不到json 暫時指定處理
+        postMessage.setAvatarUrl((String) recivedJSONofDiscordMessage.getExtra("avatar_url"));
+        
+        
         //get color from client
         // 把 # 吃掉
         String hexColor = (String) recivedJSONofDiscordMessage.getExtra("color");
@@ -114,7 +118,7 @@ public class DiscordService {
         
         
         // assign url
-        recivedJSONofDiscordMessage.setUrl(PostMessage.NTOUCS_DISCORD_HATE);
+        recivedJSONofDiscordMessage.setUrl(PostMessage.defaultUrl);
         
         //清掉discord內文的部份 讓discord不會顯示content 而是只有embed內容
         recivedJSONofDiscordMessage.setContent("");

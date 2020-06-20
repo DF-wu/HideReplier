@@ -27,7 +27,7 @@ public class Discordbotcontroller {
     //@RequestMapping(produces = "application/json;charset=UTF-8")
     public ResponseEntity<PostMessage> postToDiscord(@RequestBody RecivedJSONofPostMessage recivedJSONofPostMessage) throws IOException
     {
-        System.out.println(recivedJSONofPostMessage);
+        //System.out.println(recivedJSONofPostMessage);
         //return ResponseEntity.ok().body(discordService.initTheWorld(recivedJSONofPostMessage));
         return ResponseEntity.ok().body(discordService.postApost(recivedJSONofPostMessage));
     }
