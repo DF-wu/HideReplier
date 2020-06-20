@@ -26,7 +26,7 @@ tags: HideReplier
 #### 圖片連結說明
 - 必須是靜態連結
     - 例如 `http://dfder.tw/87.jpg`
-- 為了方便大家使用，針對[Imgur圖床](https://imgur.com/)實做了轉換器
+- 為了方便大家使用，針對[Imgur圖床](https://imgur.com)實做了轉換器
     - ~~迷之音：imgur很慢 94ㄌㄙ~~
 - 使用步驟：
     1. 到imgur網站，點擊`new Post`![](https://i.imgur.com/rWKAPmW.jpg)
