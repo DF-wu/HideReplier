@@ -10,32 +10,39 @@ tags: HideReplier
 # 系統介紹
 
 ## 簡介
+- ~~首先 你要是國立臺灣海洋大學資工系相關人事 不然可以左轉了~~~
+- 本專案是給 海大資工discord群組使用 
+    - [github連結~~請去按星星~~ ](https://github.com/DF-wu/NTOUCS_DiscordInvitationPage)
+    - ~~按完以後這個也要按~~
+
+- [期末報告投影片連結](https://docs.google.com/presentation/d/1bW8c_qMBIMk7MU57SnitGGbVtT4q9azKrPZhveccIRA/edit)
+    - 做的hen爛 因為整個專案到demo前20分鐘才算是能拿上來講.....
+
 - 本機器人的開發動機：
     1. ~~WBSE課程說要寫專案~~
     2. 由於某資工系上Discord開了一個黑特區，很不巧的在這個群組中又是實名制，有時候無形的壓力會造成同學不敢抒發意見。因此開發一個可以匿名回覆的機器人
     3. ~~本來想要做一個discord平台的關鍵字alertor，很遺憾的走偏了變成寫回覆機器人~~
 
 
-## 匿名回覆機器人使用教學
-### 如何使用
+## 如何使用
 
-#### 介面介紹
+### 介面介紹
 
-##### 新版介面
+#### 新版介面
 - 神說要有UI，於是有了UI。
 - ~~有位朋友看不下去就生了新的UI出來了~~
 - 由於是期末個人專案，要說明一下那不是我做的QQ
 - **可以及時渲染！！！！！**
     - ![](https://i.imgur.com/q0gZLma.png)
 
-##### 舊版介面
+#### 舊版介面
 - ~~一圖流~~
 - ~~客家風格~~ 
 - 簡潔明了
 - ~~沒有時間寫css也不會寫....~~
 - ![](https://i.imgur.com/JPOJWJM.jpg)
 
-#### 圖片連結說明
+### 圖片連結說明
 - 必須是靜態連結
     - 例如 `http://dfder.tw/87.jpg`
 - 為了方便大家使用，針對[Imgur圖床](https://imgur.com)實做了轉換器
