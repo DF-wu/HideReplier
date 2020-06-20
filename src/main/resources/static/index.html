@@ -105,7 +105,10 @@
     window.addEventListener('load', function() { // <--- script tag前的東西都載入完了所以其實不用load
         var md = window.markdownit();
 
-        var result = md.render('## 匿名回覆機器人 \n 偷偷跟你說 訊息支援markdown語法喔 \n ---');
+        var result = md.render('## 匿名回覆機器人 \n ### 偷偷跟你說'+
+        ' 訊息支援markdown語法喔  \n '+
+        '---\n' + 
+        '##### [GitHub頁面出來了 請給我星星撫慰我受傷的心靈](https://github.com/DF-wu/HideReplier)');
         document.getElementById("title").innerHTML= result;
 
         var updateMessage = "\n " +

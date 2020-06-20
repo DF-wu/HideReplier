@@ -1,5 +1,25 @@
 # HideReplier
 ## 系統介紹
+
+## TODO
+- TODO:
+    - [x] 歷史記錄功能
+    - [ ] 前端顯示歷史記錄
+    - [x] 歷史紀錄加入流水號
+    - [x] 固定輸出格式
+    - [x] Color轉成java物件儲存
+    - [ ] imgur平台jpg png問題
+- TOFIX:
+    - [x] 時區修正
+    - [x] 把wehook的JSONobject用java beam代替
+    - [x] 找宇得大大救援findAll 的問題
+- TOIMPROVE:
+    - [ ] 各種安全問題
+    - [x] ip位置
+    - [ ] 把DiscordWebhook的功能完整做出來
+    - [ ] 多平台支援
+    - [ ] yude對imgur有意見 說要自己架圖床
+
 ## 更新紀錄
 
 - 緊急修復v0.2.1.1 
