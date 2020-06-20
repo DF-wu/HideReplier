@@ -90,7 +90,7 @@ public class DiscordService {
                 null ,// new Embedobj.Footer("來自： " + ip,""),  // footer
                 new Embedobj.Thumbnail("https://i.imgur.com/7BH9WA2.jpg"), //機器人縮圖
                 new Embedobj.Image((String) recivedJSONofDiscordMessage.getExtra("imgUrl")),  //上傳圖片連結
-                new Embedobj.Author("匿名機器人v0.2.1(點我去發文)", "https://hidedbot.herokuapp.com/","https://img.icons8.com/color/144/000000/drupal.png"),
+                new Embedobj.Author("匿名機器人v0.3(點我去發文)", "https://hidedbot.herokuapp.com/","https://img.icons8.com/color/144/000000/drupal.png"),
                 new Embedobj.Field("流水號", String.valueOf(sc.getCounter()) , true)
         );
         em.addField("來自： ", ip, true);
