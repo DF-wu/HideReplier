@@ -19,18 +19,12 @@ import java.util.Comparator;
 @Service
 public class DiscordService {
     
-  
-    
     @Autowired
     private DiscordPostDataRepo repo;
     @Autowired
     private CounterRepo counterRepo;
     
     private SerialCounter sc;
-
-    
-    private static String url = "https://discordapp.com/api/webhooks/710112845567623238/_LxpGhvlK6Wp-LgavxRV1UlcsEdqnnznHXuA6d4v7YWUBCfHOBRPwCo2B7-ao0_3EbwV";
-            //url = "https://discordapp.com/api/webhooks/719110538235346955/m6VbyiiJajitpt1MlL95FW3L9B3v71nqMG1_FBTEueZMEiFwXNbxJRZZWh72Z-77LCzA";
     
     @Autowired
     public DiscordService(DiscordPostDataRepo repo, CounterRepo counterRepo)
@@ -45,17 +39,16 @@ public class DiscordService {
     // post a post to discord
     public PostMessage postApost(RecivedJSONofPostMessage recivedJSONofDiscordMessage) throws IOException
     {
+        // 取得台灣時間 轉成Epoch秒 後使用long儲存  以便解回
         final LocalDateTime TWtime = LocalDateTime.now(Clock.system(ZoneId.of("+8")));
         Instant instant = TWtime.toInstant(ZoneOffset.of("+8"));
         long TWtimeSecont = instant.getEpochSecond();
-    
-        //暫時想不到比較好的寫法 要讓瓶頸不會卡在DB
         
         //++流水號
         sc.plusCounter();
-        
-        //+流水號
-        PostMessage postMessage = recivedJSONofDiscordMessage;  // 轉成discord要求的物件
+    
+        // 轉出discord要求的物件
+        PostMessage postMessage = recivedJSONofDiscordMessage;
         
         //get color from client
         // 把 # 吃掉
@@ -66,6 +59,7 @@ public class DiscordService {
         // 蓋回去 最後要傳回給discord的
         recivedJSONofDiscordMessage.setExtras("color",hexColor);
         
+        //把前端取得的ip取出
         String ip = (String) recivedJSONofDiscordMessage.getExtra("ip");
         
         //0.0.2版格式欄位
@@ -106,9 +100,6 @@ public class DiscordService {
         * ip 發文者ip
         * Discord Json 的java bean
         * */
-        
-        
-        
         StoreData discordStoreData =
                 new StoreData(
                         TWtimeSecont,
@@ -116,6 +107,7 @@ public class DiscordService {
                         ip,
                         postMessage
                 );
+        //存進DB
         repo.insert(discordStoreData);
   
         
@@ -127,7 +119,7 @@ public class DiscordService {
         //清掉discord內文的部份 讓discord不會顯示content 而是只有embed內容
         recivedJSONofDiscordMessage.setContent("");
         // 送出post
-        recivedJSONofDiscordMessage.excute();
+        postMessage.excute();
         // 把content補回來 不然前端沒有
         recivedJSONofDiscordMessage.setContent(discordFieldcontent);
         

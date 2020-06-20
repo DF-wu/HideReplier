@@ -16,9 +16,8 @@ public class PostMessage {
     @Id
     private String id;
     
-    public static String defaultUrl = "https://discordapp.com/api/webhooks/719110538235346955/m6VbyiiJajitpt1MlL95FW3L9B3v71nqMG1_FBTEueZMEiFwXNbxJRZZWh72Z-77LCzA";
-    public static String NTOUCS_DISCORD_HATE = "https://discordapp.com/api/webhooks/710112845567623238/_LxpGhvlK6Wp-LgavxRV1UlcsEdqnnznHXuA6d4v7YWUBCfHOBRPwCo2B7-ao0_3EbwV";
-    
+    public final static String defaultUrl = "https://discordapp.com/api/webhooks/719110538235346955/m6VbyiiJajitpt1MlL95FW3L9B3v71nqMG1_FBTEueZMEiFwXNbxJRZZWh72Z-77LCzA";
+    public final static String NTOUCS_DISCORD_HATE = "https://discordapp.com/api/webhooks/710112845567623238/_LxpGhvlK6Wp-LgavxRV1UlcsEdqnnznHXuA6d4v7YWUBCfHOBRPwCo2B7-ao0_3EbwV";
     
     
     @Field
@@ -28,7 +27,7 @@ public class PostMessage {
     @Field
     private String username;
     @Field
-    private String avatarUrl;
+    private String avatar_url;
     @Field
     private boolean tts;
     @Field
@@ -130,12 +129,12 @@ public class PostMessage {
     
     public String getAvatarUrl()
     {
-        return avatarUrl;
+        return avatar_url;
     }
     
     public void setAvatarUrl(String avatarUrl)
     {
-        this.avatarUrl = avatarUrl;
+        this.avatar_url = avatarUrl;
     }
     
     public boolean isTts()
