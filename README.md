@@ -10,7 +10,7 @@ tags: HideReplier
 # 系統介紹
 
 ## 簡介
-- ~~首先 你要是國立臺灣海洋大學資工系相關人事 不然可以左轉了~~~
+- ~~首先 你要是國立臺灣海洋大學資工系相關人事 不然可以左轉了~~
 - 本專案是給 海大資工discord群組使用 
     - [github連結~~請去按星星~~ ](https://github.com/DF-wu/NTOUCS_DiscordInvitationPage)
     - ~~按完以後這個也要按~~
