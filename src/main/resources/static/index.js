@@ -16,9 +16,14 @@ const contentDisplay = document.getElementById('contentDisplay');
 const ipDisplayInContent = document.getElementById('ipDisplayInContent');
 const errorDisplay = document.getElementById('errorDisplay');
 
+const ipCountry = document.getElementById('ipCountry');
+const ipCity = document.getElementById('ipCity');
+const ipISP = document.getElementById('ipISP');
+
 const avatarImg = document.querySelector('.avatar img');
 const contentImgDiv = document.querySelector('.contentImgDiv');
 const contentImg = document.querySelector('.contentImgDiv img');
+
 
 const inputs = [
     botNameInput,
@@ -30,16 +35,25 @@ const inputs = [
 
 const CorsAnyWhere = "https://cors-anywhere.herokuapp.com/";
 const GetIpAPI = "https://httpbin.org/ip";
+const GetIpCountry = "http://ip-api.com/json"
 const DefaultAvatarUrl = "https://cdn.discordapp.com/avatars/710112845567623238/f377b595ef4e0ea17826d7afbb20633f.webp?size=128";
 const BackendUrl = window.location.origin + "/HideBot/discord";
-
-
 let currentIp = null;
+
 
 fetch(GetIpAPI).then(res => res.json()).then(res => {
     const ip = res.origin.split(',')[0];
     currentIp = ipDisplay.innerHTML = ipDisplayInContent.innerHTML = ip;
+    
+
+    fetch(GetIpCountry + `/${currentIp}`).then(res => res.json()).then(res => {
+        ipCountry.innerHTML = res.country;
+        ipCity.innerHTML = res.city;
+        ipISP.innerHTML = res.isp;
+    });
 });
+
+
 
 if (localStorage.getItem("color")) contentDiv.style.borderColor = colorInput.value = localStorage.getItem("color");
 
