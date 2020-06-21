@@ -18,14 +18,14 @@ import java.util.Comparator;
 
 @Service
 public class DiscordService {
-    
+
     @Autowired
     private DiscordPostDataRepo repo;
     @Autowired
     private CounterRepo counterRepo;
-    
+
     private SerialCounter sc;
-    
+
     @Autowired
     public DiscordService(DiscordPostDataRepo repo, CounterRepo counterRepo)
     {
@@ -33,9 +33,9 @@ public class DiscordService {
         this.counterRepo = counterRepo;
         sc = counterRepo.findAll().get(0);
     }
-    
-    
-    
+
+
+
     // post a post to discord
     public PostMessage postApost(RecivedJSONofPostMessage recivedJSONofDiscordMessage) throws IOException
     {
@@ -43,29 +43,29 @@ public class DiscordService {
         final LocalDateTime TWtime = LocalDateTime.now(Clock.system(ZoneId.of("+8")));
         Instant instant = TWtime.toInstant(ZoneOffset.of("+8"));
         long TWtimeSecont = instant.getEpochSecond();
-        
+
         //++流水號
         sc.plusCounter();
-    
+
         // 轉出discord要求的物件
         PostMessage postMessage = recivedJSONofDiscordMessage;
-        
+
         //hotfix: 不知為何recivedJSONofDiscordMessage的avatar_url會收不到json 暫時指定處理
         postMessage.setAvatarUrl((String) recivedJSONofDiscordMessage.getExtra("avatar_url"));
-        
-        
+
+
         //get color from client
         // 把 # 吃掉
         String hexColor = (String) recivedJSONofDiscordMessage.getExtra("color");
         hexColor = hexColor.replace("#","");
         hexColor = Integer.valueOf(hexColor,16).toString();
-        
+
         // 蓋回去 最後要傳回給discord的
         recivedJSONofDiscordMessage.setExtras("color",hexColor);
-        
+
         //把前端取得的ip取出
         String ip = (String) recivedJSONofDiscordMessage.getExtra("ip");
-        
+
         //0.0.2版格式欄位
 //        em.makeEmbed("機器人名字",//"不是我沒有權限刪除阿....",
 //                "靠北訊息 ",
@@ -77,9 +77,9 @@ public class DiscordService {
 //                new Embedobj.Author("匿名機器人v0.0.2 訊息就放靠北用的網址", "https://kryptongta.com/images/kryptontitle2.png","https://img.icons8.com/color/144/000000/drupal.png"),
 //                null//new Embedobj.Field("這裡誰管的叫你們老大出來","NOVA", true)
 //        );
-        
+
         String discordFieldcontent = recivedJSONofDiscordMessage.getContent();
-        
+
         //新增Embed物件
         Embedobj em = new Embedobj();
         em.makeEmbed(
@@ -90,13 +90,13 @@ public class DiscordService {
                 null ,// new Embedobj.Footer("來自： " + ip,""),  // footer
                 new Embedobj.Thumbnail("https://i.imgur.com/7BH9WA2.jpg"), //機器人縮圖
                 new Embedobj.Image((String) recivedJSONofDiscordMessage.getExtra("imgUrl")),  //上傳圖片連結
-                new Embedobj.Author("匿名機器人v0.3(點我去發文)", "https://hidedbot.herokuapp.com/","https://img.icons8.com/color/144/000000/drupal.png"),
+                new Embedobj.Author("匿名機器人v0.3（點我去發文）", "https://hidedbot.herokuapp.com/","https://img.icons8.com/color/144/000000/drupal.png"),
                 new Embedobj.Field("流水號", String.valueOf(sc.getCounter()) , true)
         );
-        em.addField("來自： ", ip, true);
+        em.addField("來自：", ip, true);
         postMessage.addEmbed(em);
-       
-        
+
+
         //建構儲存的Entity
         /*
         * time台灣時間
@@ -113,35 +113,35 @@ public class DiscordService {
                 );
         //存進DB
         repo.insert(discordStoreData);
-  
-        
-        
-        
+
+
+
+
         // assign url
         recivedJSONofDiscordMessage.setUrl(PostMessage.NTOUCS_DISCORD_HATE);
-        
+
         //清掉discord內文的部份 讓discord不會顯示content 而是只有embed內容
         recivedJSONofDiscordMessage.setContent("");
         // 送出post
         postMessage.excute();
         // 把content補回來 不然前端沒有
         recivedJSONofDiscordMessage.setContent(discordFieldcontent);
-        
-    
+
+
         //流水號存回去
         counterRepo.save(sc);
         return recivedJSONofDiscordMessage;
     }
-    
-   
-    
+
+
+
     public ArrayList<StoreData> gethistorylist(){
         ArrayList<StoreData> arr = (ArrayList<StoreData>)repo.findAll();
         arr.sort(Comparator.comparingInt(StoreData::getSerialNumber));
         return arr;
-        
+
     }
-    
+
 //
 //    public DiscordMessage initTheWorld(RecivedJSONofDiscordMessage recivedJSONofDiscordMessage) throws IOException
 //    {
@@ -159,20 +159,20 @@ public class DiscordService {
 //    }
 //
 //
-    
-    
+
+
     // -----------below for testing--------------
-    
-    
+
+
     public void testService() throws IOException
     {
         TestDiscordPost t = new TestDiscordPost();
         t.postTest();
     }
-    
-    
-    
-    
-    
- 
+
+
+
+
+
+
 }
