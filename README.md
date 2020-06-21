@@ -1,32 +1,38 @@
----
-tags: HideReplier
----
-
 # HideReplier
+<!-- To be compatible with GitHub, you should maintain a table of content by yourself. Recommend to use markdown extension in vscode. -->
++ [重要聲明](#重要聲明)
++ [系統介紹](#系統介紹)
++ [簡介](#簡介)
++ [如何使用](#如何使用)
+  + [介面介紹](#介面介紹)
+    + [新版介面](#新版介面)
+    + [舊版介面](#舊版介面)
+  + [圖片連結說明](#圖片連結說明)
++ [進度](#進度)
++ [更新紀錄](#更新紀錄)
+  + [Contribution](#contribution)
 
-[TOC]
 ---
-### 重要聲明
-- 系統仍在開發中，請不要惡意破壞或惡意測試 DDOS 或 大量的request都是不允許的。
-- 請大家好好愛惜他 他會慢慢成長~~應該吧~~。
-- 歡迎開issue或發PR給我。
 
-# 系統介紹
+## 重要聲明
+- 系統仍在開發中，請不要惡意破壞或惡意測試 DDOS 或大量的request都是不允許的。
+- 請大家好好愛惜他 他會慢慢成長~~應該吧~~。
+- 歡迎開Issue或發PR給我。
+
+## 系統介紹
 - [機器人連結](https://hidedbot.herokuapp.com/)
+
 ## 簡介
 - ~~首先 你要是國立臺灣海洋大學資工系相關人事 不然可以左轉了~~
-- 本專案是給 海大資工discord群組使用 
-    - [github連結~~請去按星星~~ ](https://github.com/DF-wu/NTOUCS_DiscordInvitationPage)
+- 本專案是給 海大資工Discord群組使用
+    - [GitHub 連結~~請去按星星~~](https://github.com/DF-wu/NTOUCS_DiscordInvitationPage)
     - ~~按完以後這個也要按~~
-
 - [期末報告投影片連結](https://docs.google.com/presentation/d/1bW8c_qMBIMk7MU57SnitGGbVtT4q9azKrPZhveccIRA/edit)
     - 做的hen爛 因為整個專案到demo前20分鐘才算是能拿上來講.....
-
 - 本機器人的開發動機：
     1. ~~WBSE課程說要寫專案~~
     2. 由於某資工系上Discord開了一個黑特區，很不巧的在這個群組中又是實名制，有時候無形的壓力會造成同學不敢抒發意見。因此開發一個可以匿名回覆的機器人
     3. ~~本來想要做一個discord平台的關鍵字alertor，很遺憾的走偏了變成寫回覆機器人~~
-
 
 ## 如何使用
 
@@ -41,7 +47,7 @@ tags: HideReplier
 
 #### 舊版介面
 - ~~一圖流~~
-- ~~客家風格~~ 
+- ~~客家風格~~
 - 簡潔明了
 - ~~沒有時間寫css也不會寫....~~
 - ![](https://i.imgur.com/JPOJWJM.jpg)
@@ -53,13 +59,9 @@ tags: HideReplier
     - ~~迷之音：imgur很慢 94ㄌㄙ~~
 - 使用步驟：
     1. 到imgur網站，點擊`new Post`![](https://i.imgur.com/rWKAPmW.jpg)
-    
     2. 照指示上傳圖片 ![](https://i.imgur.com/SF1xZF5.png)
-    
     3. 點`get share links`![](https://i.imgur.com/JQvCU3w.png)
-    
     4. 複製`BBcode`連結並貼到回覆機器人之圖片連結欄位裡面即可![](https://i.imgur.com/FTNzuEt.png )
-
 
 ## 進度
 - TODO:
@@ -87,38 +89,28 @@ tags: HideReplier
     - [ ] 把敏感資料如DB密碼或webhook密碼從git大海中移除
 
 ## 更新紀錄
-
-
 - HOTFIX v0.3.1
     - 修正功能異常
         - PR沒看清楚 被陰了
-
 - 隆重推出 v0.3 代號： AKS
     - 前端大更新 感謝@stanley2058的貢獻
     - 現在前端可以即時渲染出discord訊息預覽
     - 增加系統的說明
-
-
-- 緊急修復v0.2.1.1 
+- 緊急修復v0.2.1.1
     - 修正頭像無功能問題
-
 - 隆重推出v0.2.1 代號：感謝花生
-    - 修正avatar功能 已可正常運作 
+    - 修正avatar功能 已可正常運作
     - 增加連結範圍 現在圖片以及avatar欄位之imgur連結皆會自動轉換至合法格式
         - 是**BBCODE** 請看使用說明的部分
     - 預計逐步完成說明文件以及更新文件~~如果我的隊友沒因為我寫這個機器人而把大專案晾在一旁而把我砍了~~
     - 其實是可以公開到Github了 但是現在repo裡面有db密碼 discordwebhook連結等等敏感資料
-        - ~~懶人我有點想直接推上去......~~ 
-    
+        - ~~懶人我有點想直接推上去......~~
 - 隆重推出v0.2
     - 增加顏色記憶功能 自動記住你上次的顏色
     - 增加avatarUrl功能 （測試中）
-
 - v0.1
     - 世界的初始
 
 ### Contribution
-@k3kdude for the DiscordWebhook Java base concept implement 
-
+@k3kdude for the DiscordWebhook Java base concept implement
 @stanley2058 for the AMAZING web UI improvement.
-
