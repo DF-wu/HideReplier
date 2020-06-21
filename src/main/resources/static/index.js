@@ -5,6 +5,9 @@ const imageInput = document.getElementById('imageInput');
 const contentText = document.getElementById('contentText');
 const contentDiv = document.querySelector('.content');
 
+const previewThumbnail = document.getElementById('previewThumbnail');
+const selectThumbnail = document.getElementById('selectThumbnail');
+
 const preview = document.getElementById('preview');
 const submit = document.getElementById('submit');
 
@@ -40,6 +43,14 @@ const DefaultAvatarUrl = "https://cdn.discordapp.com/avatars/710112845567623238/
 const BackendUrl = window.location.origin + "/HideBot/discord";
 let currentIp = null;
 
+
+const thumbnails =['https://cdn.discordapp.com/attachments/408969877580414976/714868499994116096/kyaru02.gif',
+'https://cdn.discordapp.com/attachments/591643710454890505/723846090247635084/kyaru01.gif',
+'https://cdn.discordapp.com/attachments/591643710454890505/723846093959594014/kyaru04.gif',
+'https://cdn.discordapp.com/attachments/591643710454890505/723846094353858580/kyaru03.gif',
+'https://cdn.discordapp.com/attachments/591643710454890505/723846098371739728/kyaru08.gif',
+'https://cdn.discordapp.com/attachments/591643710454890505/723846100032946206/peko01.gif',
+'https://cdn.discordapp.com/attachments/591643710454890505/723846103006445618/ue01.gif'];
 
 fetch(GetIpAPI).then(res => res.json()).then(res => {
     const ip = res.origin.split(',')[0];
@@ -92,6 +103,12 @@ function previewOption() {
     if (!errorDisplay.innerHTML) {
         submit.disabled = false;
     }
+
+    //根據選項改預覽小圖
+    previewThumbnail.src = thumbnails[selectThumbnail.selectedIndex];
+    
+    console.log(val);
+
 }
 
 function parseBBCode(str) {

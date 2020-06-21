@@ -26,7 +26,16 @@
             <input type="text" id="botNameInput" value="預設機器人:)">
             <label for="colorInput">顏色（裝飾）</label>
             <input type="color" id="colorInput">
-            <label for="avatarInput">頭像連結</label>
+            <select id="selectThumbnail" >
+                <option value="1">小圖：預設1</option> 
+                <option value="2">小圖：預設2</option>
+                <option value="3">小圖：預設3</option>
+                <option value="4">小圖：預設4</option>
+                <option value="5">小圖：預設5</option>
+                <option value="6">小圖：預設6</option>
+                <option value="7">小圖：預設7</option>
+            </select>
+            <label for="avatarInput">頭像連結（可留空）</label>
             <input type="text" id="avatarInput">
             <label for="imageInput">圖片連結（可留空）</label>
             <input type="text" id="imageInput">
@@ -73,7 +82,7 @@
                                 </table>
                             </div>
                             <div class="topImgDiv">
-                                <img src="https://i.imgur.com/7BH9WA2.jpg">
+                                <img id="previewThumbnail" src="https://cdn.discordapp.com/attachments/408969877580414976/714868499994116096/kyaru02.gif">
                             </div>
                         </div>
                         <div class="contentImgDiv">
