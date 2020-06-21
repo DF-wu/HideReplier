@@ -5,6 +5,7 @@ import dfder.hidereplyer.Entity.*;
 import dfder.hidereplyer.Entity.Discord.PostMessage;
 import dfder.hidereplyer.Entity.Discord.StoreData;
 import dfder.hidereplyer.Entity.Discord.Embedobj;
+import dfder.hidereplyer.configure.MyConfig;
 import dfder.hidereplyer.repo.CounterRepo;
 import dfder.hidereplyer.repo.DiscordPostDataRepo;
 import dfder.hidereplyer.test.TestDiscordPost;
@@ -19,22 +20,28 @@ import java.util.Comparator;
 @Service
 public class DiscordService {
 
-    @Autowired
-    private DiscordPostDataRepo repo;
-    @Autowired
-    private CounterRepo counterRepo;
 
+    private DiscordPostDataRepo repo;
+    private CounterRepo counterRepo;
+    private final MyConfig myConfig;
+    
     private SerialCounter sc;
 
     @Autowired
-    public DiscordService(DiscordPostDataRepo repo, CounterRepo counterRepo)
+    public DiscordService(DiscordPostDataRepo repo, CounterRepo counterRepo, MyConfig myConfig)
     {
         this.repo = repo;
         this.counterRepo = counterRepo;
         sc = counterRepo.findAll().get(0);
+        this.myConfig = myConfig;
     }
-
-
+    
+    
+    
+    public String getVersion()
+    {
+        return myConfig.getVersion();
+    }
 
     // post a post to discord
     public PostMessage postApost(RecivedJSONofPostMessage recivedJSONofDiscordMessage) throws IOException
@@ -169,10 +176,5 @@ public class DiscordService {
         TestDiscordPost t = new TestDiscordPost();
         t.postTest();
     }
-
-
-
-
-
-
+    
 }
