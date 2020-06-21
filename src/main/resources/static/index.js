@@ -35,7 +35,7 @@ const inputs = [
 
 const CorsAnyWhere = "https://cors-anywhere.herokuapp.com/";
 const GetIpAPI = "https://httpbin.org/ip";
-const GetIpCountry = "https://ip-api.com/json"
+const GetIpCountry = "http://ip-api.com/json"
 const DefaultAvatarUrl = "https://cdn.discordapp.com/avatars/710112845567623238/f377b595ef4e0ea17826d7afbb20633f.webp?size=128";
 const BackendUrl = window.location.origin + "/HideBot/discord";
 let currentIp = null;
@@ -46,7 +46,7 @@ fetch(GetIpAPI).then(res => res.json()).then(res => {
     currentIp = ipDisplay.innerHTML = ipDisplayInContent.innerHTML = ip;
     
 
-    fetch(GetIpCountry + `/${currentIp}`).then(res => res.json()).then(res => {
+    fetch(CorsAnyWhere + GetIpCountry + `/${currentIp}`).then(res => res.json()).then(res => {
         ipCountry.innerHTML = res.country;
         ipCity.innerHTML = res.city;
         ipISP.innerHTML = res.isp;
