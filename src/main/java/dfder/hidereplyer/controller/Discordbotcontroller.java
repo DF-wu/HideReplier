@@ -40,4 +40,9 @@ public class Discordbotcontroller {
         return ResponseEntity.ok().body(discordService.gethistorylist());
     }
     
+    @GetMapping("/discord/version")
+    public ResponseEntity<String> getVersion(){
+        return ResponseEntity.ok().body(discordService.getVersion());
+    }
+    
 }

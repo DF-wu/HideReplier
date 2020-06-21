@@ -30,7 +30,7 @@ class CorsConfig {
 
 }
 
-
+//忘了有沒有用處...
 class jsonConfig{
     @Bean
     public ObjectMapper ObjectMapper()
@@ -40,3 +40,4 @@ class jsonConfig{
         return objectMapper;
     }
 }
+
