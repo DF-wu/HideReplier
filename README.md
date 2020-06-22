@@ -72,12 +72,14 @@
     - [x] ~~Color轉成java物件儲存~~
     - [x] 統一轉為HEX color儲存
     - [x] imgur平台圖片格式問題
-    - [ ] 前端顯示ip地址資訊（地區、電信業者等）
+    - [x] 前端顯示ip地址資訊（地區、電信業者等）
 - TOFIX:
     - [x] 時區修正
     - [x] 把discord wehook的JSON annotation用java bean完整實做出來
     - [x] 找宇得大大救援findAll 的問題
 - TOIMPROVE:
+    - [ ] 可由流水號產生獨立url 並嵌入message
+    - [ ] 改由後端負責ip相關資料解析
     - [ ] 解決各種趕工造成的技術債
     - [ ] 各種安全問題
     - [x] ip位置

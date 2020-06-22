@@ -60,7 +60,8 @@ public class DiscordService {
         //hotfix: 不知為何recivedJSONofDiscordMessage的avatar_url會收不到json 暫時指定處理
         postMessage.setAvatarUrl((String) recivedJSONofDiscordMessage.getExtra("avatar_url"));
 
-
+        
+        
         //get color from client
         // 把 # 吃掉
         String hexColor = (String) recivedJSONofDiscordMessage.getExtra("color");
@@ -95,7 +96,7 @@ public class DiscordService {
                 "https://hidedbot.herokuapp.com/", // this post's link
                 hexColor,
                 null ,// new Embedobj.Footer("來自： " + ip,""),  // footer
-                new Embedobj.Thumbnail("https://i.imgur.com/7BH9WA2.jpg"), //機器人縮圖
+                new Embedobj.Thumbnail((String) recivedJSONofDiscordMessage.getExtra("thumbnail")), //機器人縮圖
                 new Embedobj.Image((String) recivedJSONofDiscordMessage.getExtra("imgUrl")),  //上傳圖片連結
                 new Embedobj.Author("匿名機器人v0.3（點我去發文）", "https://hidedbot.herokuapp.com/","https://img.icons8.com/color/144/000000/drupal.png"),
                 new Embedobj.Field("流水號", String.valueOf(sc.getCounter()) , true)
