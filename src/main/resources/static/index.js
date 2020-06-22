@@ -51,6 +51,7 @@ const thumbnails =['https://cdn.discordapp.com/attachments/408969877580414976/71
 'https://cdn.discordapp.com/attachments/591643710454890505/723846098371739728/kyaru08.gif',
 'https://cdn.discordapp.com/attachments/591643710454890505/723846100032946206/peko01.gif',
 'https://cdn.discordapp.com/attachments/591643710454890505/723846103006445618/ue01.gif'];
+var thumbnailLink ;
 
 fetch(GetIpAPI).then(res => res.json()).then(res => {
     const ip = res.origin.split(',')[0];
@@ -105,9 +106,7 @@ function previewOption() {
     }
 
     //根據選項改預覽小圖
-    previewThumbnail.src = thumbnails[selectThumbnail.selectedIndex];
-    
-    console.log(val);
+    thumbnailLink = previewThumbnail.src = thumbnails[selectThumbnail.selectedIndex];
 
 }
 
@@ -116,6 +115,7 @@ function parseBBCode(str) {
 }
 
 function submitPost() {
+ 
     const postBody = {
         username: botNameInput.value,
         content: contentText.value,
@@ -123,7 +123,9 @@ function submitPost() {
         avatar_url: avatarInput.value,
         imgUrl: imageInput.value,
         ip: currentIp,
+        thumbnail: thumbnailLink
     };
+
     localStorage.setItem("color", colorInput.value);
 
     fetch(BackendUrl, {
