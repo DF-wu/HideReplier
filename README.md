@@ -28,6 +28,7 @@
     - [GitHub 連結~~請去按星星~~](https://github.com/DF-wu/NTOUCS_DiscordInvitationPage)
     - ~~按完以後這個也要按~~
 - [期末報告投影片連結](https://docs.google.com/presentation/d/1bW8c_qMBIMk7MU57SnitGGbVtT4q9azKrPZhveccIRA/edit)
+    - 仍未更新成新版
     - 做的hen爛 因為整個專案到demo前20分鐘才算是能拿上來講.....
 - 本機器人的開發動機：
     1. ~~WBSE課程說要寫專案~~
