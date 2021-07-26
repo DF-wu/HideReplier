@@ -36,7 +36,10 @@ const inputs = [
     contentText
 ];
 
-const CorsAnyWhere = "https://cors-anywhere.herokuapp.com/";
+
+
+
+const CorsAnyWhere = "https://thingproxy.freeboard.io/fetch/";
 const GetIpAPI = "https://httpbin.org/ip";
 const GetIpCountry = "http://ip-api.com/json"
 const DefaultAvatarUrl = "https://cdn.discordapp.com/avatars/710112845567623238/f377b595ef4e0ea17826d7afbb20633f.webp?size=128";
