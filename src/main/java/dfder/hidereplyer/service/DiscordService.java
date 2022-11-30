@@ -93,12 +93,12 @@ public class DiscordService {
         em.makeEmbed(
                 recivedJSONofDiscordMessage.getUsername(),
                 discordFieldcontent,
-                "https://hidedbot.herokuapp.com/", // this post's link
+                myConfig.getHostURL(), // this post's link
                 hexColor,
                 null ,// new Embedobj.Footer("來自： " + ip,""),  // footer
                 new Embedobj.Thumbnail((String) recivedJSONofDiscordMessage.getExtra("thumbnail")), //機器人縮圖
                 new Embedobj.Image((String) recivedJSONofDiscordMessage.getExtra("imgUrl")),  //上傳圖片連結
-                new Embedobj.Author("匿名機器人v0.4（點我去發文）", "https://hidedbot.herokuapp.com/","https://img.icons8.com/color/144/000000/drupal.png"),
+                new Embedobj.Author("匿名機器人v0.4（點我去發文）", myConfig.getHostURL(), "https://img.icons8.com/color/144/000000/drupal.png"),
                 new Embedobj.Field("流水號", String.valueOf(sc.getCounter()) , true)
         );
         em.addField("來自：", ip, true);
