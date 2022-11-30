@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>dfder</groupId>
-    <artifactId>hidereplyer</artifactId>
+    <artifactId>hidereplier</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>hidereplyer</name>
