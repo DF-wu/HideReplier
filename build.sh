@@ -10,7 +10,7 @@ mvn -T 1C clean install -Dmaven.test.skip=true
 echo "build.sh : maven build successfully"
 
 echo "build.sh : start to copy built files"
-cp ./target/hidereplier-0.0.1.jar app.jar
+cp ./target/hidereplier-0.0.1-SNAPSHOT.jar app.jar
 echo "build.sh : cp apps from target directory to root directory"
 
 
