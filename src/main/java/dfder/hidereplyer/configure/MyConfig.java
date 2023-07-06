@@ -8,6 +8,16 @@ import org.springframework.context.annotation.Configuration;
 public class MyConfig {
     private static String version;
     private static String hostURL;
+    private static String DCWebhookURL;
+
+    public static String getDCWebhookURL() {
+        return DCWebhookURL;
+    }
+
+    public static void setDCWebhookURL(String DCWebhookURL) {
+        MyConfig.DCWebhookURL = DCWebhookURL;
+    }
+
 
     public String getHostURL() {
         return hostURL;
@@ -27,6 +37,7 @@ public class MyConfig {
     {
         this.version = version;
     }
+
     
     //-------------getter & setter end-----------
 }

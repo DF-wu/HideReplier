@@ -126,7 +126,7 @@ public class DiscordService {
 
 
         // assign url
-        recivedJSONofDiscordMessage.setUrl(PostMessage.NTOUCS_DISCORD_HATE);
+        recivedJSONofDiscordMessage.setUrl(myConfig.getDCWebhookURL());
 
         //清掉discord內文的部份 讓discord不會顯示content 而是只有embed內容
         recivedJSONofDiscordMessage.setContent("");

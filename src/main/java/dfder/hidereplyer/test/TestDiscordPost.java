@@ -86,8 +86,8 @@ public class TestDiscordPost {
     
     public static void messagedPost() throws IOException
     {
-        //DiscordMessage webhook = new DiscordMessage("https://discordapp.com/api/webhooks/710112845567623238/_LxpGhvlK6Wp-LgavxRV1UlcsEdqnnznHXuA6d4v7YWUBCfHOBRPwCo2B7-ao0_3EbwV");
-        PostMessage webhook = new PostMessage(PostMessage.NTOUCS_DISCORD_HATE);
+
+        PostMessage webhook = new PostMessage(PostMessage.defaultUrl);
         //webhook.setContent("ㄟ不是我沒有權限刪除阿....");
         webhook.setAvatarUrl("https://img.icons8.com/color/144/000000/drupal.png");
         webhook.setUsername("匿名機器人ㄎㄎ");
