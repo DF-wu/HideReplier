@@ -17,7 +17,7 @@ public class PostMessage {
     private String id;
     
     public final static String defaultUrl = "https://discord.com/api/webhooks/REDACTED/REDACTED";
-    public final static String NTOUCS_DISCORD_HATE = "https://discord.com/api/webhooks/REDACTED/REDACTED";
+
     
     
     @Field
