@@ -14,7 +14,7 @@ class CorsConfig {
     public FilterRegistrationBean corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
+//        config.setAllowCredentials(true);
         // 設置你要允許的網站域名，如果全允許則設為 *
         config.addAllowedOrigin("*");
         // 如果要限制 HEADER 或 METHOD 請自行更改
