@@ -28,6 +28,7 @@ export function InfoCard(props: InfoCardProps) {
           "shadow-md shadow-zinc-900"
         )}
       >
+        <h1 className="text-[22px] font-semibold">發文資訊</h1>
         <table className="max-w-[200px] border-collapse">
           <tbody>
             <tr>
