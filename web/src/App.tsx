@@ -1,17 +1,21 @@
+import { useState } from "react";
 import { Form } from "./components/Form";
 import { InfoCard } from "./components/InfoCard";
 import { NavLink } from "./components/NavLink";
 import { useAdvancedInfo } from "./services/query";
 import { cm } from "./utils/tailwindMerge";
+import { PartialContent } from "./types";
+import { Post } from "./components/Discord/Post";
 
 function App() {
   const advancedInfo = useAdvancedInfo();
+  const [content, setContent] = useState<PartialContent>({});
 
   return (
     <main
       className={cm(
         "w-full h-[100svh] bg-zinc-800 text-zinc-50",
-        "flex overflow-auto flex-col items-center"
+        "flex overflow-auto flex-row justify-center"
       )}
     >
       <div
@@ -30,7 +34,30 @@ function App() {
 
         <InfoCard {...advancedInfo} />
 
-        <Form ip={advancedInfo.ip} onSubmit={() => undefined} />
+        <div className="flex flex-row gap-8 pt-2">
+          <div className="flex-shrink-0">
+            <Post
+              avatar={content.avatar_url || "/icon.png"}
+              topTitle="匿名機器人v0.4 (點我去發文)"
+              mainTitle={content.username || ""}
+              trimColor={content.color}
+              content={content.content}
+              smallImage={content.thumbnail}
+              largeImage={content.imgUrl}
+              embeded={[
+                { field: "流水號", value: "XXXX" },
+                { field: "來自：", value: content.ip || "" },
+              ]}
+            />
+          </div>
+          <div className="flex-shrink-0">
+            <Form
+              ip={advancedInfo.ip}
+              onSubmit={() => undefined}
+              onFormDataChanged={setContent}
+            />
+          </div>
+        </div>
       </div>
     </main>
   );
