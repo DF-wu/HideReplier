@@ -1,6 +1,7 @@
 import { CSSProperties, SyntheticEvent } from "react";
+import { cm } from "../../utils/tailwindMerge";
 
-export type ImageSize = "large" | "small";
+export type ImageSize = "large" | "small" | "avatar";
 
 export type ImageProps = {
   url?: string;
@@ -18,6 +19,11 @@ const sizeMapping: Record<ImageSize, CSSProperties> = {
     maxWidth: 400,
     maxHeight: 300,
   },
+  avatar: {
+    width: 40,
+    height: 40,
+    objectFit: "cover",
+  },
 };
 
 export function Image(props: ImageProps) {
@@ -25,7 +31,10 @@ export function Image(props: ImageProps) {
 
   return (
     <img
-      className="rounded-[3px]"
+      className={cm({
+        "rounded-[3px]": props.size !== "avatar",
+        "rounded-full": props.size === "avatar",
+      })}
       style={{ ...sizeMapping[props.size] }}
       src={props.url}
       onLoad={props.onLoad}

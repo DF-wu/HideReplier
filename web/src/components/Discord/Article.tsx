@@ -85,18 +85,20 @@ export function Article(props: DiscordArticleProps) {
           </div>
           <Image url={smallImage} size="small" />
         </div>
-        <div>
-          <Image
-            onLoad={(e) => {
-              const img = e.target as HTMLImageElement;
-              const { width, height } = img.getBoundingClientRect();
-              if (width < height) return setPreferedWidth(undefined);
-              setPreferedWidth({ width: width + 28 });
-            }}
-            url={largeImage}
-            size="large"
-          />
-        </div>
+        {largeImage && (
+          <div>
+            <Image
+              onLoad={(e) => {
+                const img = e.target as HTMLImageElement;
+                const { width, height } = img.getBoundingClientRect();
+                if (width < height) return setPreferedWidth(undefined);
+                setPreferedWidth({ width: width + 28 });
+              }}
+              url={largeImage}
+              size="large"
+            />
+          </div>
+        )}
       </div>
     </div>
   );

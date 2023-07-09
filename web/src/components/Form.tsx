@@ -1,28 +1,44 @@
-import { useRef } from "react";
-import { Content } from "../types";
+import { useEffect, useRef } from "react";
+import { Content, PartialContent } from "../types";
 import { Button } from "./Button";
 import { Input } from "./Input";
 
 export type FormProps = {
   ip: string;
-  onSubmit: (content: Content) => void;
+  onSubmit?: (content: Content) => void;
+  onFormDataChanged?: (content: PartialContent) => void;
 };
 export function Form(props: FormProps) {
   const formRef = useRef<HTMLFormElement>(null);
+  const getFormData = () => {
+    if (!formRef.current) return;
+    return {
+      ...Object.fromEntries(new FormData(formRef.current)),
+      ip: props.ip,
+    };
+  };
+
+  const onFormDataChanged = () => {
+    const partialContent = PartialContent.safeParse(getFormData());
+    if (!partialContent.success) return console.error(partialContent.error);
+    props.onFormDataChanged?.(partialContent.data);
+  };
+
+  useEffect(() => {
+    onFormDataChanged();
+  }, [props.ip]);
+
   return (
     <form
       ref={formRef}
       onSubmit={(e) => {
         e.preventDefault();
         if (!formRef.current) return;
-        const content = Content.safeParse({
-          ...Object.fromEntries(new FormData(formRef.current)),
-          ip: props.ip,
-        });
+        const content = Content.safeParse(getFormData());
         if (!content.success) return console.error(content.error);
-        console.log(content.data);
-        props.onSubmit(content.data);
+        props.onSubmit?.(content.data);
       }}
+      onChange={onFormDataChanged}
       className="flex flex-col gap-3 w-[min(100%-1rem,300px)]"
     >
       <Input
@@ -47,8 +63,7 @@ export function Form(props: FormProps) {
         label="內容文字*"
       />
 
-      <div className="flex justify-between">
-        <Button variant="success">預覽</Button>
+      <div className="flex justify-end">
         <Button type="submit" variant="primary">
           提交
         </Button>
