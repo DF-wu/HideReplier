@@ -20,7 +20,7 @@ function App() {
     >
       <div
         className={cm(
-          "relative py-4 top-[5svh]",
+          "relative py-4 top-[5svh] h-fit",
           "flex flex-col items-center justify-center gap-3"
         )}
       >
@@ -34,7 +34,7 @@ function App() {
 
         <InfoCard {...advancedInfo} />
 
-        <div className="flex flex-row gap-8 pt-2">
+        <div className="flex flex-col gap-8 pt-2 justify-center sm:flex-row">
           <div className="flex-shrink-0">
             <Post
               avatar={content.avatar_url || "/icon.png"}
@@ -50,7 +50,7 @@ function App() {
               ]}
             />
           </div>
-          <div className="flex-shrink-0">
+          <div className="flex justify-center">
             <Form
               ip={advancedInfo.ip}
               onSubmit={() => undefined}
