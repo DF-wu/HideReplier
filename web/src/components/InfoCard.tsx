@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Button } from "./Button";
-import { cm } from "../utils/tailwind-merge";
+import { cm } from "../utils/tailwindMerge";
 
 export type InfoCardProps = {
   ip: string;

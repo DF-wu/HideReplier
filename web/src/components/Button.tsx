@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes, PropsWithChildren } from "react";
-import { cm } from "../utils/tailwind-merge";
+import { cm } from "../utils/tailwindMerge";
 
 export type ButtonVariant =
   | "default"

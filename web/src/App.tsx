@@ -1,7 +1,7 @@
 import { Form } from "./components/Form";
 import { InfoCard } from "./components/InfoCard";
 import { NavLink } from "./components/NavLink";
-import { cm } from "./utils/tailwind-merge";
+import { cm } from "./utils/tailwindMerge";
 
 function App() {
   return (

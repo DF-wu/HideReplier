@@ -1,5 +1,5 @@
 import { LinkIcon } from "@heroicons/react/24/outline";
-import { cm } from "../utils/tailwind-merge";
+import { cm } from "../utils/tailwindMerge";
 
 export type NavLinkProps = {
   text: string;
