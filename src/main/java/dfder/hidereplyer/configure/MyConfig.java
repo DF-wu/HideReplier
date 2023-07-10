@@ -17,6 +17,10 @@ public class MyConfig {
     @Value("${hidereplier.DCWebhook}")
     private String DCWebhook;
 
+    @Value("${TENOR_API_KEY}")
+    private String TENOR_API_KEY;
+
+
     public String getVersion() {
         return version;
     }
@@ -27,6 +31,10 @@ public class MyConfig {
 
     public String getDCWebhook() {
         return DCWebhook;
+    }
+
+    public String getTENOR_API_KEY() {
+        return TENOR_API_KEY;
     }
 
 //-------------getter & setter end-----------
