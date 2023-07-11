@@ -22,9 +22,9 @@ echo "build-deploy.sh : building docker image"
 docker build . -t dfder/hidereplier
 echo "build-deploy.sh : docker build successfully"
 
-echo "build-deploy.sh : pushing to dockerhub"
+echo "build-deploy.sh : pushing docker image to dockerhub"
 docker push dfder/hidereplier
-echo "build-deploy.sh : uploaded."
+echo "build-deploy.sh : docker image uploaded."
 
 echo "build-deploy.sh : deploying to fly.io."
 flyctl deploy
