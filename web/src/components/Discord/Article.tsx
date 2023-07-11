@@ -2,6 +2,7 @@ import { HTMLProps, useRef, useState } from "react";
 import { cm } from "../../utils/tailwindMerge";
 import { Embeded } from "../../types";
 import { Image } from "./Image";
+import { highlightMentions } from "./Mention";
 
 export type DiscordArticleProps = {
   trimColor?: string;
@@ -30,6 +31,8 @@ export function Article(props: DiscordArticleProps) {
     { width: number } | undefined
   >(undefined);
 
+  const highlighted = highlightMentions(content);
+
   return (
     <div
       style={{
@@ -43,13 +46,7 @@ export function Article(props: DiscordArticleProps) {
       {...rest}
     >
       <div
-        style={
-          largeImage
-            ? {
-                ...preferedWidth,
-              }
-            : undefined
-        }
+        style={largeImage ? preferedWidth : undefined}
         className={cm(
           "bg-[#2B2D31] text-[14px] pl-3 pr-4 py-4 flex flex-col gap-4",
           "h-full w-[100%-4px] relative left-1 rounded-r",
@@ -66,7 +63,7 @@ export function Article(props: DiscordArticleProps) {
             )}
             {content && (
               <div ref={contentRef} className="text-[#ccc]">
-                {content}
+                {highlighted}
               </div>
             )}
             {embeded && embeded.length > 0 && (
