@@ -1,4 +1,12 @@
 # HideReplier
+
+-----------------
+**本repo是黑歷史，別看= =**
+**This repo is not good for mental health. Don't see.**
+
+-----------------
+
+
 <!-- To be compatible with GitHub, you should maintain a table of content by yourself. Recommend to use markdown extension in vscode. -->
 + [重要聲明](#重要聲明)
 + [系統介紹](#系統介紹)
