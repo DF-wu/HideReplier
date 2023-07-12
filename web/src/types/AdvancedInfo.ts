@@ -5,6 +5,7 @@ export const AdvancedInfo = z.object({
   isp: z.string().default(""),
   city: z.string().default(""),
   country: z.string().default(""),
+  timezone: z.string().default(""),
 });
 
 export type AdvancedInfo = z.infer<typeof AdvancedInfo>;
