@@ -1,26 +1,23 @@
 import { z } from "zod";
 import { AdvancedInfo } from "../types";
 
-const API_IP = "https://httpbin.org/ip";
-const API_COUNTRY = "https://ipwhois.app/json";
+const IP_API = "https://ipapi.co/json";
 
-const ipResSchema = z.object({ origin: z.string() });
 const ispResSchema = z.object({
-  country: z.string().default(""),
+  ip: z.string().default(""),
+  country_name: z.string().default(""),
   city: z.string().default(""),
-  isp: z.string().default(""),
+  org: z.string().default(""),
+  timezone: z.string().default(""),
 });
 
 export async function getAdvancedInfo(): Promise<AdvancedInfo> {
-  const result = await fetch(API_IP).then((res) => res.json());
-  const parsedIp = ipResSchema.safeParse(result);
-  if (!parsedIp.success) return Promise.reject("cannot retrive IP");
-  const ip = parsedIp.data.origin.split(",")[0];
-  const ispInfo = await fetch(`${API_COUNTRY}/${ip}`).then((res) => res.json());
-  const parsedIspInfo = ispResSchema.parse(ispInfo);
-
+  const result = await fetch(IP_API).then((res) => res.json());
+  const parsed = ispResSchema.safeParse(result);
+  if (!parsed.success) return Promise.reject("cannot retrive IP information");
   return AdvancedInfo.parse({
-    ip,
-    ...parsedIspInfo,
+    country: parsed.data.country_name,
+    isp: parsed.data.org,
+    ...parsed.data,
   });
 }
