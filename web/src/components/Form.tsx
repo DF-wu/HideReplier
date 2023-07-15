@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Content, PartialContent } from "../types";
 import { Button } from "./Button";
 import { Input } from "./Input";
+import { str2rgb } from "../utils/string2rgb";
 
 export type FormProps = {
   ip: string;
@@ -49,10 +50,15 @@ export function Form(props: FormProps) {
         defaultValue="預設機器人:)"
       />
       <Input fullWidth name="avatar_url" type="url" label="頭像連結" />
-      {/* TODO: 小圖 */}
-      <Input fullWidth name="thumbnail" type="url" label="小圖" />
+      <Input fullWidth name="thumbnail" type="url" label="小圖連結" />
       <Input fullWidth name="imgUrl" type="url" label="圖片連結" />
-      <Input fullWidth name="color" type="color" label="顏色（裝飾）" />
+      <Input
+        fullWidth
+        name="color"
+        type="color"
+        label="顏色（裝飾）"
+        defaultValue={str2rgb(props.ip)}
+      />
 
       <Input
         multiLine

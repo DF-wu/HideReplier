@@ -28,8 +28,16 @@ function App() {
           匿名回覆機器人
         </h1>
         <nav className="flex flex-row gap-5">
-          <NavLink text="使用說明" link="https://hackmd.io/@dfder/ByADyqspI" />
-          <NavLink text="GitHub" link="https://github.com/DF-wu/HideReplier" />
+          <NavLink
+            target="_blank"
+            text="使用說明"
+            link="https://hackmd.io/@dfder/ByADyqspI"
+          />
+          <NavLink
+            target="_blank"
+            text="GitHub"
+            link="https://github.com/DF-wu/HideReplier"
+          />
         </nav>
 
         <InfoCard {...advancedInfo} />
