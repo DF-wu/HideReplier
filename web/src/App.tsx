@@ -49,7 +49,9 @@ function App() {
     const result = await Swal.fire({
       icon: "question",
       title: "確定送出？",
-      html: <div className="text-left text-[1rem]">{Preview}</div>,
+      html: (
+        <div className="text-left text-[1rem] mx-auto w-fit">{Preview}</div>
+      ),
       showConfirmButton: true,
       confirmButtonText: "送出",
       showCancelButton: true,
