@@ -7,16 +7,18 @@ export type ImageInputProps = {
 } & InputProps;
 export function ImageInput(props: ImageInputProps) {
   const { onChange, onImageUrlChanged, ...rest } = props;
-  const [open, setOpen] = useState(false);
+  const [focus, setFocus] = useState(false);
+  const [containerFocus, setContainerFocus] = useState(false);
   const ref = useRef<HTMLInputElement>(null);
 
   return (
     <ImageSelectorPopover
-      open={open}
-      setOpen={setOpen}
+      open={focus || containerFocus}
+      setHasFocus={setContainerFocus}
       onImageSelected={(url) => {
         if (ref.current) ref.current.value = url;
-        setOpen(false);
+        setContainerFocus(false);
+        setFocus(false);
         onImageUrlChanged?.(url);
       }}
     >
@@ -28,7 +30,8 @@ export function ImageInput(props: ImageInputProps) {
           if (ref.current) onImageUrlChanged?.(ref.current.value);
           onChange?.(e);
         }}
-        onFocus={() => setOpen(true)}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setTimeout(() => setFocus(false), 0)}
       />
     </ImageSelectorPopover>
   );

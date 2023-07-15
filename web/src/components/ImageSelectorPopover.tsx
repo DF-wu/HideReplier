@@ -5,18 +5,23 @@ import { ImageSelector } from "./ImageSelector";
 export type ImageSelectorPopoverProps = {
   onImageSelected?: (imgUrl: string) => void;
   open: boolean;
-  setOpen: (open: boolean) => void;
+  setHasFocus?: (focus: boolean) => void;
   children?: ReactNode;
 };
 
 export function ImageSelectorPopover(props: ImageSelectorPopoverProps) {
   return (
     <Popover.Root open={props.open}>
-      <Popover.Trigger>{props.children}</Popover.Trigger>
+      <Popover.Trigger asChild>
+        <button tabIndex={-1} className="cursor-default">
+          {props.children}
+        </button>
+      </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content
+          onFocus={() => props.setHasFocus?.(true)}
+          onInteractOutside={() => props.setHasFocus?.(false)}
           onOpenAutoFocus={(e) => e.preventDefault()}
-          onPointerDownOutside={() => props.setOpen(false)}
           side="bottom"
           align="start"
           sideOffset={5}
