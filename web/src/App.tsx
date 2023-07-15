@@ -1,15 +1,63 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Form } from "./components/Form";
 import { InfoCard } from "./components/InfoCard";
 import { NavLink } from "./components/NavLink";
 import { useAdvancedInfo } from "./services/query";
 import { cm } from "./utils/tailwindMerge";
-import { PartialContent } from "./types";
+import { Content, PartialContent } from "./types";
 import { Post } from "./components/Discord/Post";
+import { sendPost } from "./services/api";
+import Swal from "./utils/sweetAlert2";
 
 function App() {
   const advancedInfo = useAdvancedInfo();
   const [content, setContent] = useState<PartialContent>({});
+
+  const Preview = (
+    <Post
+      avatar={content.avatar_url || "/icon.png"}
+      topTitle="匿名機器人v0.4 (點我去發文)"
+      mainTitle={content.username || ""}
+      trimColor={content.color}
+      content={content.content}
+      smallImage={content.thumbnail}
+      largeImage={content.imgUrl}
+      embeded={[
+        { field: "流水號", value: "XXXX" },
+        { field: "來自：", value: content.ip || "" },
+      ]}
+    />
+  );
+
+  const onSubmit = useCallback(async (post: Content) => {
+    try {
+      await sendPost(post);
+      Swal.fire({
+        icon: "success",
+        title: "發送成功！",
+      });
+    } catch (e) {
+      console.error(e);
+      Swal.fire({
+        icon: "error",
+        title: "發生未知錯誤！",
+      });
+    }
+  }, []);
+
+  const onPreSubmit = async (post: Content) => {
+    const result = await Swal.fire({
+      icon: "question",
+      title: "確定送出？",
+      html: <div className="text-left text-[1rem]">{Preview}</div>,
+      showConfirmButton: true,
+      confirmButtonText: "送出",
+      showCancelButton: true,
+      cancelButtonText: "取消",
+    });
+    if (!result.isConfirmed) return;
+    onSubmit(post);
+  };
 
   return (
     <main
@@ -43,25 +91,11 @@ function App() {
         <InfoCard {...advancedInfo} />
 
         <div className="flex flex-col gap-8 pt-2 justify-center sm:flex-row">
-          <div className="flex-shrink-0">
-            <Post
-              avatar={content.avatar_url || "/icon.png"}
-              topTitle="匿名機器人v0.4 (點我去發文)"
-              mainTitle={content.username || ""}
-              trimColor={content.color}
-              content={content.content}
-              smallImage={content.thumbnail}
-              largeImage={content.imgUrl}
-              embeded={[
-                { field: "流水號", value: "XXXX" },
-                { field: "來自：", value: content.ip || "" },
-              ]}
-            />
-          </div>
+          <div className="flex-shrink-0">{Preview}</div>
           <div className="flex justify-center">
             <Form
               ip={advancedInfo.ip}
-              onSubmit={() => undefined}
+              onSubmit={onPreSubmit}
               onFormDataChanged={setContent}
             />
           </div>

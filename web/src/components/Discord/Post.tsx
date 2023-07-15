@@ -10,7 +10,7 @@ export function Post(props: DiscordPostProps) {
 
   return (
     <div className="flex flex-row gap-4">
-      <div>
+      <div className="xs:block hidden">
         <Image url={avatar} size="avatar" />
       </div>
       <div className="flex flex-col gap-0.5">

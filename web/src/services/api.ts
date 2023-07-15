@@ -1,7 +1,12 @@
 import { z } from "zod";
-import { AdvancedInfo } from "../types";
+import { AdvancedInfo, Content } from "../types";
 
 const IP_API = "https://ipapi.co/json";
+const BACKEND_API =
+  (import.meta.env.DEV ? "http://localhost:8080" : window.location.origin) +
+  "/HideBot/discord";
+const DEFAULT_AVATAR =
+  "https://cdn.discordapp.com/avatars/710112845567623238/f377b595ef4e0ea17826d7afbb20633f.webp";
 
 const ispResSchema = z.object({
   ip: z.string().default(""),
@@ -19,5 +24,16 @@ export async function getAdvancedInfo(): Promise<AdvancedInfo> {
     country: parsed.data.country_name,
     isp: parsed.data.org,
     ...parsed.data,
+  });
+}
+
+export async function sendPost(post: Content) {
+  if (!post.avatar_url) post.avatar_url = DEFAULT_AVATAR;
+  await fetch(BACKEND_API, {
+    body: JSON.stringify(post),
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 }
