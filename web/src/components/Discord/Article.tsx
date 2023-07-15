@@ -3,7 +3,12 @@ import { cm } from "../../utils/tailwindMerge";
 import { Embeded } from "../../types";
 import { Image } from "./Image";
 import { highlightMentions } from "./Mention";
-import { toHTML } from "discord-markdown";
+
+let toHTML: ((source: string) => string) | undefined = undefined;
+(async () => {
+  const dcMark = await import("discord-markdown");
+  toHTML = dcMark.toHTML;
+})();
 
 export type DiscordArticleProps = {
   trimColor?: string;
@@ -13,7 +18,7 @@ export type DiscordArticleProps = {
   embeded?: Embeded[];
   smallImage?: string;
   largeImage?: string;
-} & HTMLProps<HTMLDivElement>;
+} & Omit<HTMLProps<HTMLDivElement>, "ref">;
 export function Article(props: DiscordArticleProps) {
   const {
     trimColor = "#000",
@@ -102,11 +107,15 @@ export function Article(props: DiscordArticleProps) {
   );
 }
 
+export default Article;
+
 function mapMarkdownToElement(content: ReactNode[]): ReactNode[] {
   return content.map((c, i) => {
     if (typeof c !== "string") return c;
+    const mapped = toHTML?.(c);
+    if (!mapped) return c;
     return (
-      <span key={`text-${i}`} dangerouslySetInnerHTML={{ __html: toHTML(c) }} />
+      <span key={`text-${i}`} dangerouslySetInnerHTML={{ __html: mapped }} />
     );
   });
 }

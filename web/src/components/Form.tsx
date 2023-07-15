@@ -93,3 +93,4 @@ export function Form(props: FormProps) {
     </form>
   );
 }
+export default Form;
