@@ -45,3 +45,4 @@ export function InfoCard(props: InfoCardProps) {
     </div>
   );
 }
+export default InfoCard;

@@ -1,32 +1,35 @@
-import { useCallback, useState } from "react";
-import { Form } from "./components/Form";
-import { InfoCard } from "./components/InfoCard";
+import { Suspense, lazy, useCallback, useState } from "react";
 import { NavLink } from "./components/NavLink";
 import { useAdvancedInfo } from "./services/query";
 import { cm } from "./utils/tailwindMerge";
 import { Content, PartialContent } from "./types";
-import { Post } from "./components/Discord/Post";
 import { sendPost } from "./services/api";
 import Swal from "./utils/sweetAlert2";
+
+const Post = lazy(() => import("./components/Discord/Post"));
+const Form = lazy(() => import("./components/Form"));
+const InfoCard = lazy(() => import("./components/InfoCard"));
 
 function App() {
   const advancedInfo = useAdvancedInfo();
   const [content, setContent] = useState<PartialContent>({});
 
   const Preview = (
-    <Post
-      avatar={content.avatar_url || "/icon.png"}
-      topTitle="匿名機器人v0.4 (點我去發文)"
-      mainTitle={content.username || ""}
-      trimColor={content.color}
-      content={content.content}
-      smallImage={content.thumbnail}
-      largeImage={content.imgUrl}
-      embeded={[
-        { field: "流水號", value: "XXXX" },
-        { field: "來自：", value: content.ip || "" },
-      ]}
-    />
+    <Suspense fallback={<span>Loading preview...</span>}>
+      <Post
+        avatar={content.avatar_url || "/icon.png"}
+        topTitle="匿名機器人v0.4 (點我去發文)"
+        mainTitle={content.username || ""}
+        trimColor={content.color}
+        content={content.content}
+        smallImage={content.thumbnail}
+        largeImage={content.imgUrl}
+        embeded={[
+          { field: "流水號", value: "XXXX" },
+          { field: "來自：", value: content.ip || "" },
+        ]}
+      />
+    </Suspense>
   );
 
   const onSubmit = useCallback(async (post: Content) => {
@@ -90,16 +93,20 @@ function App() {
           />
         </nav>
 
-        <InfoCard {...advancedInfo} />
+        <Suspense fallback={<span>Loading info...</span>}>
+          <InfoCard {...advancedInfo} />
+        </Suspense>
 
         <div className="flex flex-col gap-8 pt-2 justify-center sm:flex-row">
           <div className="flex-shrink-0">{Preview}</div>
           <div className="flex justify-center">
-            <Form
-              ip={advancedInfo.ip}
-              onSubmit={onPreSubmit}
-              onFormDataChanged={setContent}
-            />
+            <Suspense fallback={<span>Loading form...</span>}>
+              <Form
+                ip={advancedInfo.ip}
+                onSubmit={onPreSubmit}
+                onFormDataChanged={setContent}
+              />
+            </Suspense>
           </div>
         </div>
       </div>

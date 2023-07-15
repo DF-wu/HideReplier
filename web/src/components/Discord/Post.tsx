@@ -1,6 +1,9 @@
+import { Suspense, lazy } from "react";
 import { cm } from "../../utils/tailwindMerge";
-import { Article, DiscordArticleProps } from "./Article";
+import type { DiscordArticleProps } from "./Article";
 import { Image } from "./Image";
+
+const Article = lazy(() => import("./Article"));
 
 export type DiscordPostProps = {
   avatar: string;
@@ -29,8 +32,12 @@ export function Post(props: DiscordPostProps) {
             {new Date().toLocaleString()}
           </span>
         </div>
-        <Article {...rest} />
+        <Suspense fallback={<span>Loading...</span>}>
+          <Article {...rest} />
+        </Suspense>
       </div>
     </div>
   );
 }
+
+export default Post;
