@@ -2,6 +2,18 @@ import { useState } from "react";
 import { cm } from "../utils/tailwindMerge";
 import { Image } from "./Discord/Image";
 import GifPicker, { Theme } from "gif-picker-react";
+import imageList from "../images.json";
+
+const imgList: ReadonlyArray<string> = [
+  "https://cdn.discordapp.com/attachments/591643710454890505/723846090247635084/kyaru01.gif",
+  "https://cdn.discordapp.com/attachments/408969877580414976/714868499994116096/kyaru02.gif",
+  "https://cdn.discordapp.com/attachments/591643710454890505/723846094353858580/kyaru03.gif",
+  "https://cdn.discordapp.com/attachments/591643710454890505/723846093959594014/kyaru04.gif",
+  "https://cdn.discordapp.com/attachments/591643710454890505/723846098371739728/kyaru08.gif",
+  "https://cdn.discordapp.com/attachments/591643710454890505/723846100032946206/peko01.gif",
+  "https://cdn.discordapp.com/attachments/591643710454890505/723846103006445618/ue01.gif",
+  ...imageList,
+] as const;
 
 export type ImageSelectorTab = "built-in" | "tenor";
 
@@ -10,12 +22,12 @@ type ImageSelectorImplProps = {
 };
 function BuiltInSelector(props: ImageSelectorImplProps) {
   return (
-    <div className="flex justify-between flex-wrap p-2">
-      {defaultImageList.map((img, i) => (
+    <div className="flex justify-evenly flex-wrap p-2 max-h-80 overflow-auto">
+      {imgList.map((img, i) => (
         <div
           key={i}
           onClick={() => props.onImageSelected?.(img)}
-          className="hover:bg-zinc-500 p-1 cursor-pointer rounded-sm"
+          className="hover:bg-zinc-500 p-1 cursor-pointer rounded-sm min-w-[88px] min-h-[88px]"
         >
           <Image url={img} size="small" />
         </div>
@@ -98,13 +110,3 @@ export function ImageSelector(props: ImageSelectorProps) {
     </div>
   );
 }
-
-const defaultImageList: ReadonlyArray<string> = [
-  "https://cdn.discordapp.com/attachments/591643710454890505/723846090247635084/kyaru01.gif",
-  "https://cdn.discordapp.com/attachments/408969877580414976/714868499994116096/kyaru02.gif",
-  "https://cdn.discordapp.com/attachments/591643710454890505/723846094353858580/kyaru03.gif",
-  "https://cdn.discordapp.com/attachments/591643710454890505/723846093959594014/kyaru04.gif",
-  "https://cdn.discordapp.com/attachments/591643710454890505/723846098371739728/kyaru08.gif",
-  "https://cdn.discordapp.com/attachments/591643710454890505/723846100032946206/peko01.gif",
-  "https://cdn.discordapp.com/attachments/591643710454890505/723846103006445618/ue01.gif",
-] as const;

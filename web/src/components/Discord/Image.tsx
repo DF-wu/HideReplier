@@ -1,5 +1,6 @@
-import { CSSProperties, SyntheticEvent } from "react";
+import { CSSProperties, ImgHTMLAttributes, SyntheticEvent } from "react";
 import { cm } from "../../utils/tailwindMerge";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export type ImageSize = "large" | "small" | "avatar";
 
@@ -7,6 +8,7 @@ export type ImageProps = {
   url?: string;
   size: ImageSize;
   onLoad?: (e: SyntheticEvent<HTMLImageElement, Event>) => void;
+  loading?: ImgHTMLAttributes<HTMLImageElement>["loading"];
 };
 
 const sizeMapping: Record<ImageSize, CSSProperties> = {
@@ -30,14 +32,16 @@ export function Image(props: ImageProps) {
   if (!props.url) return null;
 
   return (
-    <img
+    <LazyLoadImage
       className={cm({
         "rounded-[3px]": props.size !== "avatar",
         "rounded-full": props.size === "avatar",
       })}
       style={{ ...sizeMapping[props.size] }}
       src={props.url}
-      onLoad={props.onLoad}
+      onLoadedData={props.onLoad}
+      loading={props.loading || "lazy"}
+      alt={props.url}
     />
   );
 }
