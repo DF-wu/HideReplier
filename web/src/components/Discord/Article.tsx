@@ -1,8 +1,9 @@
-import { HTMLProps, useRef, useState } from "react";
+import { HTMLProps, ReactNode, useRef, useState } from "react";
 import { cm } from "../../utils/tailwindMerge";
 import { Embeded } from "../../types";
 import { Image } from "./Image";
 import { highlightMentions } from "./Mention";
+import { toHTML } from "discord-markdown";
 
 export type DiscordArticleProps = {
   trimColor?: string;
@@ -32,6 +33,8 @@ export function Article(props: DiscordArticleProps) {
   >(undefined);
 
   const highlighted = highlightMentions(content);
+  const elements = mapMarkdownToElement(highlighted);
+  console.log(elements);
 
   return (
     <div
@@ -63,7 +66,7 @@ export function Article(props: DiscordArticleProps) {
             )}
             {content && (
               <div ref={contentRef} className="text-[#ccc]">
-                {highlighted}
+                {mapMarkdownToElement(highlighted)}
               </div>
             )}
             {embeded && embeded.length > 0 && (
@@ -99,4 +102,14 @@ export function Article(props: DiscordArticleProps) {
       </div>
     </div>
   );
+}
+
+function mapMarkdownToElement(content: ReactNode[]): ReactNode[] {
+  return content.map((c, i) => {
+    if (typeof c !== "string") return c;
+    console.log(toHTML(c));
+    return (
+      <span key={`text-${i}`} dangerouslySetInnerHTML={{ __html: toHTML(c) }} />
+    );
+  });
 }

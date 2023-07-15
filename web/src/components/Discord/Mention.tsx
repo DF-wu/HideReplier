@@ -19,12 +19,12 @@ export function Mention(props: DiscordMentionProps) {
   );
 }
 
+export type InputContent = Parameters<typeof reactStringReplace>[0];
+
 const mentionMatcher = /(?<=^|\s)(@here|@everyone)/g;
-export function highlightMentions(
-  content: string | null | undefined
-): ReactNode {
-  if (!content) return content;
-  return reactStringReplace(content, mentionMatcher, (matched) => (
-    <Mention content={matched} />
+export function highlightMentions(content: InputContent): ReactNode[] {
+  if (!content) return [content];
+  return reactStringReplace(content, mentionMatcher, (matched, i) => (
+    <Mention key={i} content={matched} />
   ));
 }
