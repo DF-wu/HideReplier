@@ -38,9 +38,6 @@ export function Form(props: FormProps) {
         if (!formRef.current) return;
         const content = Content.safeParse(getFormData());
         if (!content.success) return console.error(content.error);
-        if (!content.data.avatar_url) {
-          content.data.avatar_url = `${window.origin}/icon.png`;
-        }
         props.onSubmit?.(content.data);
       }}
       onChange={onFormDataChanged}

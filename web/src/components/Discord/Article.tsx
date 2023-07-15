@@ -33,8 +33,6 @@ export function Article(props: DiscordArticleProps) {
   >(undefined);
 
   const highlighted = highlightMentions(content);
-  const elements = mapMarkdownToElement(highlighted);
-  console.log(elements);
 
   return (
     <div
@@ -107,7 +105,6 @@ export function Article(props: DiscordArticleProps) {
 function mapMarkdownToElement(content: ReactNode[]): ReactNode[] {
   return content.map((c, i) => {
     if (typeof c !== "string") return c;
-    console.log(toHTML(c));
     return (
       <span key={`text-${i}`} dangerouslySetInnerHTML={{ __html: toHTML(c) }} />
     );
