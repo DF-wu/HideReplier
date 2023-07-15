@@ -3,6 +3,7 @@ import { Content, PartialContent } from "../types";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import { str2rgb } from "../utils/string2rgb";
+import { ImageInput } from "./ImageInput";
 
 export type FormProps = {
   ip: string;
@@ -37,6 +38,9 @@ export function Form(props: FormProps) {
         if (!formRef.current) return;
         const content = Content.safeParse(getFormData());
         if (!content.success) return console.error(content.error);
+        if (!content.data.avatar_url) {
+          content.data.avatar_url = `${window.origin}/icon.png`;
+        }
         props.onSubmit?.(content.data);
       }}
       onChange={onFormDataChanged}
@@ -49,9 +53,24 @@ export function Form(props: FormProps) {
         label="機器人名稱*"
         defaultValue="預設機器人:)"
       />
-      <Input fullWidth name="avatar_url" type="url" label="頭像連結" />
-      <Input fullWidth name="thumbnail" type="url" label="小圖連結" />
-      <Input fullWidth name="imgUrl" type="url" label="圖片連結" />
+      <ImageInput
+        onImageUrlChanged={onFormDataChanged}
+        fullWidth
+        name="avatar_url"
+        label="頭像連結"
+      />
+      <ImageInput
+        onImageUrlChanged={onFormDataChanged}
+        fullWidth
+        name="thumbnail"
+        label="小圖連結"
+      />
+      <ImageInput
+        onImageUrlChanged={onFormDataChanged}
+        fullWidth
+        name="imgUrl"
+        label="圖片連結"
+      />
       <Input
         fullWidth
         name="color"

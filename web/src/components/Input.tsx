@@ -1,4 +1,4 @@
-import { HTMLProps } from "react";
+import { HTMLProps, Ref } from "react";
 import { cm } from "../utils/tailwindMerge";
 
 export type CommonInputProps = {
@@ -9,11 +9,13 @@ export type CommonInputProps = {
 
 export type InputProps = {
   multiLine?: false;
+  inputRef?: Ref<HTMLInputElement>;
 } & HTMLProps<HTMLInputElement> &
   CommonInputProps;
 
 export type TextAreaProps = {
   multiLine: true;
+  inputRef?: Ref<HTMLTextAreaElement>;
 } & HTMLProps<HTMLTextAreaElement> &
   CommonInputProps;
 
@@ -41,7 +43,7 @@ export function Input(props: InputProps | TextAreaProps) {
   return (
     <div
       className={cm(
-        "flex flex-col gap-1 text-zinc-100",
+        "flex flex-col gap-1 text-zinc-100 items-start text-left",
         {
           "w-full": fullWidth,
         },
@@ -62,19 +64,24 @@ export function Input(props: InputProps | TextAreaProps) {
 
       {rest.multiLine ? (
         <textarea
+          ref={rest.inputRef}
           className={cm("min-h-[2rem]", inputClassName)}
           {...omitMultiLineProp(rest)}
         />
       ) : (
-        <input className={inputClassName} {...omitMultiLineProp(rest)} />
+        <input
+          ref={rest.inputRef}
+          className={inputClassName}
+          {...omitMultiLineProp(rest)}
+        />
       )}
     </div>
   );
 }
 
-function omitMultiLineProp<T extends { multiLine?: unknown }>(
-  p: T
-): Omit<T, "multiLine"> {
-  const { multiLine, ...rest } = p;
+function omitMultiLineProp<
+  T extends { inputRef?: unknown; multiLine?: unknown }
+>(p: T): Omit<T, "multiLine" | "inputRef"> {
+  const { multiLine, inputRef, ...rest } = p;
   return rest;
 }
