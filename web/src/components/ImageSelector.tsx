@@ -10,7 +10,7 @@ type ImageSelectorImplProps = {
 };
 function BuiltInSelector(props: ImageSelectorImplProps) {
   return (
-    <div className="flex justify-between flex-wrap p-2 bg-zinc-800">
+    <div className="flex justify-between flex-wrap p-2">
       {defaultImageList.map((img, i) => (
         <div
           key={i}
@@ -92,7 +92,7 @@ export type ImageSelectorProps = {
 export function ImageSelector(props: ImageSelectorProps) {
   const [tab, setTab] = useState<ImageSelectorTab>("built-in");
   return (
-    <div>
+    <div className="bg-zinc-700 rounded border-solid border border-zinc-600 shadow-lg">
       <ImageSelectorTabs tab={tab} setTab={setTab} />
       <div className="max-w-xs">{getSelector(tab, props.onImageSelected)}</div>
     </div>
