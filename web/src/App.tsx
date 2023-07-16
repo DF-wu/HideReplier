@@ -18,7 +18,7 @@ function App() {
     <Suspense fallback={<span>Loading preview...</span>}>
       <Post
         avatar={content.avatar_url || "/icon.png"}
-        topTitle="匿名機器人v0.6 (點我去發文)"
+        topTitle={`匿名機器人v${import.meta.env.VITE_BOT_VERSION} (點我去發文)`}
         mainTitle={content.username || ""}
         trimColor={content.color}
         content={content.content}
