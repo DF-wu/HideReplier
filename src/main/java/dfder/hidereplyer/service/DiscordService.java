@@ -88,6 +88,7 @@ public class DiscordService {
 
         String discordFieldcontent = recivedJSONofDiscordMessage.getContent();
         String botAuthor = "匿名機器人v" + myConfig.getVersion() + "（點我去發文）" ;
+
         //新增Embed物件
         Embedobj em = new Embedobj();
         em.makeEmbed(
