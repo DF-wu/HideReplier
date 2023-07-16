@@ -141,9 +141,6 @@ public class DiscordService {
         return recivedJSONofDiscordMessage;
     }
 
-    public String getTenorApiKey(){
-        return myConfig.getTENOR_API_KEY();
-    }
 
     public ArrayList<StoreData> gethistorylist(){
         ArrayList<StoreData> arr = (ArrayList<StoreData>)repo.findAll();

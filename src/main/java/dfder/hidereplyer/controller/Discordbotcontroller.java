@@ -32,11 +32,7 @@ public class Discordbotcontroller {
         return ResponseEntity.ok().body(discordService.postApost(recivedJSONofPostMessage));
     }
 
-    @GetMapping("/apiKey")
-    public ResponseEntity<String> getApikey(){
-        return ResponseEntity.ok().body(discordService.getTenorApiKey());
-    }
-    
+
     
     @GetMapping("/discord")
     public ResponseEntity<ArrayList<StoreData>> getDiscordMessage()
