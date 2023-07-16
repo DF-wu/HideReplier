@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Content, PartialContent } from "../types";
 import { Button } from "./Button";
 import { Input } from "./Input";
@@ -26,8 +26,12 @@ export function Form(props: FormProps) {
     props.onFormDataChanged?.(partialContent.data);
   };
 
+  const [color, setColor] = useState<string | undefined>(
+    props.ip ? str2rgb(props.ip) : ""
+  );
   useEffect(() => {
-    onFormDataChanged();
+    if (props.ip && !color) setColor(str2rgb(props.ip));
+    setTimeout(() => onFormDataChanged(), 0);
   }, [props.ip]);
 
   return (
@@ -73,7 +77,8 @@ export function Form(props: FormProps) {
         name="color"
         type="color"
         label="顏色（裝飾）"
-        defaultValue={str2rgb(props.ip)}
+        value={color}
+        onChange={(e) => setColor(e.currentTarget.value)}
       />
 
       <Input
