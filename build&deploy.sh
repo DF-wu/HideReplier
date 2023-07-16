@@ -8,7 +8,7 @@ echo "build-deploy.sh : start git pull"
 git pull
 echo "build-deploy.sh : git pull done."
 
-# WARN: please remember to set TENOR_API_KEY environment variable
+# WARN: please remember to set TENOR_API_KEY & BOT_VERSION environment variables
 echo "build-deploy.sh : start npm build"
 pushd web || exit 1
 ./build-in-docker.sh
