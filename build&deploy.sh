@@ -13,7 +13,7 @@ echo "build-deploy.sh : start npm build"
 pushd web || exit 1
 ./build-in-docker.sh
 rm -rf ../src/main/resources/static/*
-cp ./dist/* ../src/main/resources/static
+cp -r ./dist/* ../src/main/resources/static
 popd || exit 1
 echo "build-deploy.sh : done npm build"
 
