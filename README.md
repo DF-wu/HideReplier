@@ -28,7 +28,8 @@
 - 歡迎開Issue或發PR給我。
 
 ## 系統介紹
-- [機器人連結](https://hidedbot.herokuapp.com/)
+- ~~[機器人連結](https://hidedbot.herokuapp.com/)~~
+- ↑我怕她被幹壞，還是把連結存在dc吧。
 
 ## 簡介
 - ~~首先 你要是國立臺灣海洋大學資工系相關人事 不然可以左轉了~~
@@ -98,8 +99,15 @@
     - [ ] yude對imgur有意見 說要自己架圖床
     - [ ] ~~回想起一開始是要做alertor的初衷~~
     - [ ] 把敏感資料如DB密碼或webhook密碼從git大海中移除
-
+ 
 ## 更新紀錄
+- Initial Availability ?:)
+- HOTFIX v0.6.0
+  - update springboot to v3.0
+  - dc webhook token被幹走了，修正漏洞。
+- HOTFIX v0.5.0
+  - update dependency
+  - RIP heroku. migrate to fly.io
 - HOTFIX v0.4.1
     - 修正小圖無法如所選的問題
 - 隆重推出 v0.4  代號：凱留？
