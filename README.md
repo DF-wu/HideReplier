@@ -1,8 +1,8 @@
 # HideReplier
 
 -----------------
-**本repo是黑歷史，別看= =**
-**This repo is not good for mental health. Don't see.**
+**本repo code品質是黑歷史= =**
+**This repo code quality is not good for mental health. Don't see.**
 
 -----------------
 
