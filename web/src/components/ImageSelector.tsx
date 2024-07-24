@@ -4,7 +4,7 @@ import { Image } from "./Discord/Image";
 import GifPicker, { Theme } from "gif-picker-react";
 import imageList from "../images.json";
 
-const imgList: ReadonlyArray<string> = imageList as const;
+const imgList: ReadonlyArray<string> = imageList;
 
 export type ImageSelectorTab = "built-in" | "tenor";
 
