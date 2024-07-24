@@ -45,5 +45,5 @@ docker push dfder/hidereplier
 echo "build-deploy.sh : docker image uploaded."
 
 echo "build-deploy.sh : deploying to fly.io."
-flyctl deploy
+fly deploy
 echo "build-deploy.sh : deploying finished."
