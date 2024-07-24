@@ -18,7 +18,6 @@ popd || exit 1
 echo "build-deploy.sh : done npm build" | lolcat
 
 echo "build-deploy.sh : discord cdn prject pull" | lolcat
-mkdir cdn 
 git clone https://github.com/ShufflePerson/Discord_CDN.git ./cdn
 cp ./cdn/.env.sample .env
 echo "build-deploy.sh : discord cdn build" | lolcat
