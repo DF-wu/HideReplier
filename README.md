@@ -26,6 +26,7 @@
 ---
 ## building chain
 1. compile front-end pack (with tenor api key and Bot version in this stage)
+   - api key in dc manager channel. bot version is managing by my hand.....
 2. build maven project
 3. build as docker image
 4. deploy to fly.io platform
