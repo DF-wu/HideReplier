@@ -23,14 +23,18 @@ echo "build-deploy.sh : cdn folder deleted" | lolcat
 
 echo "build-deploy.sh : discord cdn prject pull" | lolcat
 git clone https://github.com/ShufflePerson/Discord_CDN.git ./cdn
+
 echo "build-deploy.sh : discord cdn prject pull done" | lolcat
-cp ../.env.sample .env
+cp .env.sample ./cdn/.env
+
+pushd cdn || exit 1
 echo "build-deploy.sh : discord cdn build" | lolcat
 docker run --rm \
   -v .:/cdn \
   --entrypoint /bin/sh \
   node:lts-alpine -c "cd /cdn && npm i && npm run setup"
 echo "build-deploy.sh : discord cdn build done" | lolcat
+popd || exit 1
 
 echo "build-deploy.sh : start maven build" | lolcat
 mvn -T 1C clean install -Dmaven.test.skip=true
