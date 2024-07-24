@@ -17,10 +17,14 @@ cp -r ./dist/* ../src/main/resources/static
 popd || exit 1
 echo "build-deploy.sh : done npm build" | lolcat
 
+echo "build-deploy.sh : preprare discord cdn prject pull" | lolcat
+rm -rf ./cdn
+echo "build-deploy.sh : cdn folder deleted" | lolcat
+
 echo "build-deploy.sh : discord cdn prject pull" | lolcat
-rm -rf .cdn
 git clone https://github.com/ShufflePerson/Discord_CDN.git ./cdn
-cp ./cdn/.env.sample .env
+echo "build-deploy.sh : discord cdn prject pull done" | lolcat
+cp ../.env.sample .env
 echo "build-deploy.sh : discord cdn build" | lolcat
 docker run --rm \
   -v .:/cdn \
