@@ -35,6 +35,12 @@
 
 
 ## 更新紀錄
+- Amazing announcement: v1.0.1
+  - migrate the avatar and icon from discord cdn to my github image pool.
+  - optimize the building time.
+  - colorful building message.
+  - fix some bugs.
+
 - Initial Availability ?:) V1.0.0
   - refactor everything
   - recode everything
