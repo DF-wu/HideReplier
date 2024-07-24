@@ -27,11 +27,10 @@
 ## building chain
 1. compile front-end pack (with tenor api key and Bot version in this stage)
    - api key in dc manager channel. bot version is managing by my hand.....
-2. build discord cdn
-3. build maven project
-4. build as docker image
-5. push to docker hub
-6. deploy to fly.io platform
+2. build maven project
+3. build as docker image
+4. push to docker hub
+5. deploy to fly.io platform
 
 
 
