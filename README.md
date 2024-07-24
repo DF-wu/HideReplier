@@ -8,19 +8,69 @@
 
 
 <!-- To be compatible with GitHub, you should maintain a table of content by yourself. Recommend to use markdown extension in vscode. -->
-+ [重要聲明](#重要聲明)
-+ [系統介紹](#系統介紹)
-+ [簡介](#簡介)
-+ [如何使用](#如何使用)
-  + [介面介紹](#介面介紹)
-    + [新版介面](#新版介面)
-    + [舊版介面](#舊版介面)
-  + [圖片連結說明](#圖片連結說明)
-+ [進度](#進度)
-+ [更新紀錄](#更新紀錄)
-  + [Contribution](#contribution)
+- [HideReplier](#hidereplier)
+  - [building chain](#building-chain)
+  - [更新紀錄](#更新紀錄)
+  - [重要聲明](#重要聲明)
+  - [系統介紹](#系統介紹)
+  - [簡介](#簡介)
+  - [如何使用](#如何使用)
+    - [介面介紹](#介面介紹)
+      - [最新版介面](#最新版介面)
+      - [新版介面(DEP)](#新版介面dep)
+      - [舊版介面](#舊版介面)
+    - [圖片連結說明](#圖片連結說明)
+  - [進度](#進度)
+    - [Contribution](#contribution)
 
 ---
+## building chain
+1. compile front-end pack (with tenor api key and Bot version in this stage)
+2. build maven project
+3. build as docker image
+4. deploy to fly.io platform
+
+
+
+## 更新紀錄
+- Initial Availability ?:) V1.0.0
+  - refactor everything
+  - recode everything
+  - ~~leaving everything as legacy.~~
+  - re-construct ci/cd chain.
+- HOTFIX v0.6.0
+  - update springboot to v3.0
+  - dc webhook token被幹走了，修正漏洞。
+- HOTFIX v0.5.0
+  - update dependency
+  - RIP heroku. migrate to fly.io
+- HOTFIX v0.4.1
+    - 修正小圖無法如所選的問題
+- 隆重推出 v0.4  代號：凱留？
+    - 新增小圖選項 現在可以用預設的小圖為你的訊息增添花樣
+    - ~~有乾爹要贊助那個欄位嗎XD~~
+    - ~~我跟公主連結不熟 圖是群裡抓的~~
+- HOTFIX v0.3.1
+    - 修正功能異常
+        - PR沒看清楚 被陰了
+- 隆重推出 v0.3 代號： AKS
+    - 前端大更新 感謝@stanley2058的貢獻
+    - 現在前端可以即時渲染出discord訊息預覽
+    - 增加系統的說明
+- 緊急修復v0.2.1.1
+    - 修正頭像無功能問題
+- 隆重推出v0.2.1 代號：感謝花生
+    - 修正avatar功能 已可正常運作
+    - 增加連結範圍 現在圖片以及avatar欄位之imgur連結皆會自動轉換至合法格式
+        - 是**BBCODE** 請看使用說明的部分
+    - 預計逐步完成說明文件以及更新文件~~如果我的隊友沒因為我寫這個機器人而把大專案晾在一旁而把我砍了~~
+    - 其實是可以公開到Github了 但是現在repo裡面有db密碼 discordwebhook連結等等敏感資料
+        - ~~懶人我有點想直接推上去......~~
+- 隆重推出v0.2
+    - 增加顏色記憶功能 自動記住你上次的顏色
+    - 增加avatarUrl功能 （測試中）
+- v0.1
+    - 世界的初始
 
 ## 重要聲明
 - 系統仍在開發中，請不要惡意破壞或惡意測試 DDOS 或大量的request都是不允許的。
@@ -106,41 +156,6 @@
     - [ ] ~~回想起一開始是要做alertor的初衷~~
     - [ ] 把敏感資料如DB密碼或webhook密碼從git大海中移除
  
-## 更新紀錄
-- Initial Availability ?:)
-- HOTFIX v0.6.0
-  - update springboot to v3.0
-  - dc webhook token被幹走了，修正漏洞。
-- HOTFIX v0.5.0
-  - update dependency
-  - RIP heroku. migrate to fly.io
-- HOTFIX v0.4.1
-    - 修正小圖無法如所選的問題
-- 隆重推出 v0.4  代號：凱留？
-    - 新增小圖選項 現在可以用預設的小圖為你的訊息增添花樣
-    - ~~有乾爹要贊助那個欄位嗎XD~~
-    - ~~我跟公主連結不熟 圖是群裡抓的~~
-- HOTFIX v0.3.1
-    - 修正功能異常
-        - PR沒看清楚 被陰了
-- 隆重推出 v0.3 代號： AKS
-    - 前端大更新 感謝@stanley2058的貢獻
-    - 現在前端可以即時渲染出discord訊息預覽
-    - 增加系統的說明
-- 緊急修復v0.2.1.1
-    - 修正頭像無功能問題
-- 隆重推出v0.2.1 代號：感謝花生
-    - 修正avatar功能 已可正常運作
-    - 增加連結範圍 現在圖片以及avatar欄位之imgur連結皆會自動轉換至合法格式
-        - 是**BBCODE** 請看使用說明的部分
-    - 預計逐步完成說明文件以及更新文件~~如果我的隊友沒因為我寫這個機器人而把大專案晾在一旁而把我砍了~~
-    - 其實是可以公開到Github了 但是現在repo裡面有db密碼 discordwebhook連結等等敏感資料
-        - ~~懶人我有點想直接推上去......~~
-- 隆重推出v0.2
-    - 增加顏色記憶功能 自動記住你上次的顏色
-    - 增加avatarUrl功能 （測試中）
-- v0.1
-    - 世界的初始
 
 ### Contribution
 @k3kdude for the DiscordWebhook Java base concept implement
