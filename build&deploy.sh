@@ -17,6 +17,17 @@ cp -r ./dist/* ../src/main/resources/static
 popd || exit 1
 echo "build-deploy.sh : done npm build"
 
+echo "build-deploy.sh : discord cdn prject pull"
+mkdir cdn 
+git clone https://github.com/ShufflePerson/Discord_CDN.git ./cdn
+cp ./cdn/.env.sample .env
+echo "build-deploy.sh : discord cdn build"
+docker run --rm \
+  -v .:/cdn \
+  --entrypoint /bin/sh \
+  node:lts-alpine -c "cd /cdn && npm i && npm run setup"
+echo "build-deploy.sh : discord cdn build done"
+
 echo "build-deploy.sh : start maven build"
 mvn -T 1C clean install -Dmaven.test.skip=true
 echo "build-deploy.sh : maven build successfully"
