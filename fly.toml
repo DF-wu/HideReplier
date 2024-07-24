@@ -14,6 +14,26 @@ processes = []
   allowed_public_ports = []
   auto_rollback = true
 
+
+# discord cdn
+[[services]]
+  http_checks = []
+  internal_port = 8087
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    force_https = false
+    handlers = ["http"]
+    port = 80
+
+
+# hidereplier
 [[services]]
   http_checks = []
   internal_port = 8080
@@ -25,10 +45,10 @@ processes = []
     soft_limit = 20
     type = "connections"
 
-  [[services.ports]]
-    force_https = true
-    handlers = ["http"]
-    port = 80
+  # [[services.ports]]
+  #   force_https = true
+  #   handlers = ["http"]
+  #   port = 80
 
   [[services.ports]]
     handlers = ["tls", "http"]
