@@ -35,6 +35,10 @@
 
 
 ## 更新紀錄
+- Health action: v1.0.2
+  - smaller image and runtime image usage now.
+
+
 - Amazing announcement: v1.0.1
   - migrate the avatar and icon from discord cdn to my github image pool.
   - optimize the building time.
