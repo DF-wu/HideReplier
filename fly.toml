@@ -3,7 +3,7 @@
 app = "hidereplier"
 kill_signal = "SIGINT"
 kill_timeout = 5
-processes = []
+# processes = []
 
 [build]
   image = "dfder/hidereplier:latest"
@@ -16,7 +16,9 @@ processes = []
 
 # hidereplier
 [[services]]
-  http_checks = []
+  http_checks = [
+    { interval = "30s", timeout = "10s", grace_period = "30s", method = "GET", path = "/actuator/health", protocol = "http" }
+  ]
   internal_port = 8080
   processes = ["app"]
   protocol = "tcp"
@@ -36,7 +38,7 @@ processes = []
     port = 443
 
   [[services.tcp_checks]]
-    grace_period = "1s"
-    interval = "15s"
-    restart_limit = 0
-    timeout = "2s"
+    grace_period = "30s"    # 增加寬限期
+    interval = "30s"        # 增加檢查間隔
+    restart_limit = 5       # 增加重試次數
+    timeout = "10s"         # 增加超時時間
