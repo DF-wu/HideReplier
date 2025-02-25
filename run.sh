@@ -11,17 +11,15 @@ fi
 
 # JVM options for fly.io low spec environment
 # UseContainerSupport: 啟用容器感知功能
-# MaxRAMPercentage: 設定最大記憶體使用率為40%
-# InitialRAMPercentage: 設定初始記憶體使用率為25%
-# Xss128k: 設定每個執行緒的堆疊大小為128KB
+# MaxRAMPercentage: 設定最大記憶體使用率為50%
+# InitialRAMPercentage: 設定初始記憶體使用率為50%
+# Xss256k: 設定每個執行緒的堆疊大小為256KB
 # UseSerialGC: 使用串行垃圾回收器以減少記憶體使用
 # TieredCompilation: 啟用分層編譯以優化效能
 
 JAVA_OPTS="\
     -XX:+UseContainerSupport \
-    -XX:MaxRAMPercentage=60.0 \
-    -XX:InitialRAMPercentage=25.0 \
-    -Xss128k \
+    -XX:MaxRAMPercentage=75.0 \
     -XX:+UseSerialGC \
     -XX:+TieredCompilation"
 
