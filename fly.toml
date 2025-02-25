@@ -1,6 +1,6 @@
 # 應用程式基本設定
 app = "hidereplier"
-primary_region = "ewr"  # 主要部署區域，建議設為 Hong Kong
+primary_region = "ewr" 
 
 # 應用程式終止設定
 kill_signal = "SIGINT"
