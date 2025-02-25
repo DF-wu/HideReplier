@@ -25,17 +25,17 @@ kill_timeout = 5
 [http_service]
   internal_port = 8080   # 容器內部端口
   force_https = true     # 強制使用 HTTPS
-  auto_stop_machines = true      # 自動停止未使用的機器
-  auto_start_machines = false     # 自動啟動需要的機器
+  auto_stop_machines = false     # 改為 false
+  auto_start_machines = true     # 改為 true
   min_machines_running = 1       # 最小運行機器數
   processes = ["app"]    # 處理程序名稱
 
   # 健康檢查設定
   [[http_service.checks]]
-    grace_period = "30s"         # 啟動後的寬限期
+    grace_period = "60s"         # 增加寬限期
     interval = "30s"             # 檢查間隔
     method = "GET"              # 檢查方法
-    timeout = "10s"             # 檢查超時
+    timeout = "20s"             # 增加超時時間
     path = "/actuator/health"   # 健康檢查路徑
 
   # TLS 和 HTTP 處理設定
