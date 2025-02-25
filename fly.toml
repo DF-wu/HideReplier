@@ -25,7 +25,7 @@ kill_timeout = 5
 [http_service]
   internal_port = 8080   # 容器內部端口
   force_https = true     # 強制使用 HTTPS
-  auto_stop_machines = false     # 改為 false
+  auto_stop_machines = "stop"     #  Options are "off", "stop", or "suspend"
   auto_start_machines = true     # 改為 true
   min_machines_running = 1       # 最小運行機器數
   processes = ["app"]    # 處理程序名稱
