@@ -32,10 +32,10 @@ kill_timeout = 5
 
   # 健康檢查設定
   [[http_service.checks]]
-    grace_period = "60s"         # 增加寬限期
-    interval = "60s"             # 檢查間隔
+    grace_period = "120s"         # 增加寬限期
+    interval = "120s"             # 檢查間隔
     method = "GET"              # 檢查方法
-    timeout = "30s"             # 增加超時時間
+    timeout = "60s"             # 增加超時時間
     path = "/actuator/health"   # 健康檢查路徑
 
   # TLS 和 HTTP 處理設定
