@@ -6,7 +6,7 @@
 # 所以這是先在外面build ，再把build好的檔案 copy到working dir 再tag
 printf "\n\n\n"
 # echo "########## BOT_VERSION: $BOT_VERSION"
-echo "########## BOT_VERSION: 1.0.2"
+echo "########## BOT_VERSION: 1.0.3"
 echo "########## TENOR_API_KEY: $TENOR_API_KEY"
 printf "\n\n\n"
 echo "build-deploy.sh : start git pull" | lolcat
