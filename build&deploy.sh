@@ -4,14 +4,17 @@
 # 不要在container裡面用maven build ， 不然會很慢
 # by stanley2058@yahoo.com.tw
 # 所以這是先在外面build ，再把build好的檔案 copy到working dir 再tag
+echo "build-deploy.sh : start git pull" | lolcat
+git pull
+echo "build-deploy.sh : git pull done." | lolcat
+
+# fronend need it
+export BOT_VERSION=1.0.3
 printf "\n\n\n"
 # echo "########## BOT_VERSION: $BOT_VERSION"
 echo "########## BOT_VERSION: 1.0.3"
 echo "########## TENOR_API_KEY: $TENOR_API_KEY"
 printf "\n\n\n"
-echo "build-deploy.sh : start git pull" | lolcat
-git pull
-echo "build-deploy.sh : git pull done." | lolcat
 
 
 # WARN: please remember to set TENOR_API_KEY & BOT_VERSION environment variables
