@@ -1,52 +1,51 @@
-# fly.toml file generated for hidereplier on 2022-12-01T00:41:53+08:00
-
+# 應用程式基本設定
 app = "hidereplier"
+primary_region = "hkg"  # 主要部署區域，建議設為 Hong Kong
+
+# 應用程式終止設定
 kill_signal = "SIGINT"
 kill_timeout = 5
-# processes = []
 
+# Docker 映像檔設定
 [build]
   image = "dfder/hidereplier:latest"
 
+# 環境變數設定區塊
 [env]
+  # 在此加入環境變數
+  # 範例: DATABASE_URL = "your-url"
 
-[experimental]
-  allowed_public_ports = []
-  auto_rollback = true
+# 資源限制設定
+[[vm]]
+  cpu_kind = "shared"    # CPU 類型：shared 或 performance
+  cpus = 1               # CPU 核心數
+  memory_mb = 256       # 記憶體限制 (MB)
 
-# hidereplier
-[[services]]
-  http_checks = [
-    { interval = "30s", timeout = "10s", grace_period = "30s", method = "GET", path = "/actuator/health", protocol = "http" }
-  ]
-  internal_port = 8080
-  processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
-  [services.concurrency]
-    hard_limit = 20
-    soft_limit = 15
-    type = "connections"
+# HTTP 服務設定
+[http_service]
+  internal_port = 8080   # 容器內部端口
+  force_https = true     # 強制使用 HTTPS
+  auto_stop_machines = true      # 自動停止未使用的機器
+  auto_start_machines = false     # 自動啟動需要的機器
+  min_machines_running = 1       # 最小運行機器數
+  processes = ["app"]    # 處理程序名稱
 
-  # [[services.ports]]
-  #   force_https = true
-  #   handlers = ["http"]
-  #   port = 80
-
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 443
-
-  # [[services.tcp_checks]]
-  #   grace_period = "30s"    # 增加寬限期
-  #   interval = "30s"        # 增加檢查間隔
-  #   restart_limit = 5       # 增加重試次數
-  #   timeout = "10s"         # 增加超時時間
-  
+  # 健康檢查設定
   [[http_service.checks]]
-    grace_period = "10s"
-    interval = "30s"
-    method = "GET"
-    timeout = "10s"
-    path = "/HideBot/discord/version"
+    grace_period = "30s"         # 啟動後的寬限期
+    interval = "30s"             # 檢查間隔
+    method = "GET"              # 檢查方法
+    timeout = "10s"             # 檢查超時
+    path = "/actuator/health"   # 健康檢查路徑
+
+  # TLS 和 HTTP 處理設定
+  [[http_service.ports]]
+    handlers = ["tls", "http"]
+    port = 443                  # HTTPS 端口
+
+  # 並發限制設定
+  [http_service.concurrency]
+    type = "connections"
+    hard_limit = 20            # 最大並發連接數
+    soft_limit = 15            # 軟限制並發連接數
 
