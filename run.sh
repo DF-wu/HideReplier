@@ -19,7 +19,6 @@ fi
 
 JAVA_OPTS="\
     -XX:+UseContainerSupport \
-    -XX:MaxRAMPercentage=75.0 \
     -XX:+UseSerialGC \
     -XX:+TieredCompilation"
 
