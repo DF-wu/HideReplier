@@ -37,8 +37,16 @@ kill_timeout = 5
     handlers = ["tls", "http"]
     port = 443
 
-  [[services.tcp_checks]]
-    grace_period = "30s"    # 增加寬限期
-    interval = "30s"        # 增加檢查間隔
-    restart_limit = 5       # 增加重試次數
-    timeout = "10s"         # 增加超時時間
+  # [[services.tcp_checks]]
+  #   grace_period = "30s"    # 增加寬限期
+  #   interval = "30s"        # 增加檢查間隔
+  #   restart_limit = 5       # 增加重試次數
+  #   timeout = "10s"         # 增加超時時間
+  
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    timeout = "10s"
+    path = "/HideBot/discord/version"
+
