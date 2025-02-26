@@ -8,12 +8,13 @@ echo "build-deploy.sh : start git pull" | lolcat
 git pull
 echo "build-deploy.sh : git pull done." | lolcat
 
-# fronend need it
+# frontend need it
 export BOT_VERSION=1.0.3
 printf "\n\n\n"
 # echo "########## BOT_VERSION: $BOT_VERSION"
 echo "########## BOT_VERSION: 1.0.3"
 echo "########## TENOR_API_KEY: $TENOR_API_KEY"
+echo "########## Discord DC_WEBHOOK_URL= $DC_WEBHOOK_URL"
 printf "\n\n\n"
 
 
