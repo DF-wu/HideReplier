@@ -20,7 +20,7 @@ fi
 JAVA_OPTS="\
     -XX:+UseContainerSupport \
     -XX:+UseSerialGC \
-    -Xss512k \
+    -Xss512k
 
 
 # 確保變數不為空
