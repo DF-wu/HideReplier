@@ -1,6 +1,7 @@
 # 應用程式基本設定
 app = "hidereplier"
-primary_region = "ewr" 
+primary_region = "ewr"
+swap_size_mb = 256
 
 # 應用程式終止設定
 kill_signal = "SIGINT"
@@ -20,7 +21,7 @@ kill_timeout = 5
   cpu_kind = "shared"    # CPU 類型：shared 或 performance
   cpus = 1               # CPU 核心數
   memory_mb = 256       # 記憶體限制 (MB)
-  swap_size_mb = 256
+
 # HTTP 服務設定
 [http_service]
   internal_port = 8082   # 容器內部端口
