@@ -21,7 +21,6 @@ JAVA_OPTS="\
     -XX:+UseContainerSupport \
     -XX:+UseSerialGC \
     -Xss512k \
-    -XX:+TieredCompilation"
 
 
 # 確保變數不為空
