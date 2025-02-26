@@ -23,7 +23,7 @@ kill_timeout = 5
 
 # HTTP 服務設定
 [http_service]
-  internal_port = 8080   # 容器內部端口
+  internal_port = 8082   # 容器內部端口
   force_https = true     # 強制使用 HTTPS
   auto_stop_machines = "stop"     #  Options are "off", "stop", or "suspend"
   auto_start_machines = true     # 改為 true
