@@ -1,7 +1,7 @@
 # 應用程式基本設定
 app = "hidereplier"
 primary_region = "ewr"
-swap_size_mb = 256
+swap_size_mb = 512
 
 # 應用程式終止設定
 kill_signal = "SIGINT"
