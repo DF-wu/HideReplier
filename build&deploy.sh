@@ -17,10 +17,14 @@ echo "########## TENOR_API_KEY: $TENOR_API_KEY"
 echo "########## DC_WEBHOOK_URL= $DC_WEBHOOK_URL"
 printf "\n\n\n"
 
-echo "build-deploy.sh : set up fly secrets" | lolcat
-fly secrets set DC_WEBHOOK_URL=$DC_WEBHOOK_URL
-fly secrets set TENOR_API_KEY=$TENOR_API_KEY
-echo "build-deploy.sh : fly secrets setting done" | lolcat
+echo "##############"
+echo "MAKE SURE YOU HAVE SET THE SECRET ENVIRONMENT VARIABLES"
+echo "#fly secrets set DC_WEBHOOK_URL=$DC_WEBHOOK_URL"
+echo "#fly secrets set TENOR_API_KEY=$TENOR_API_KEY"
+echo "##############"
+#fly secrets set DC_WEBHOOK_URL=$DC_WEBHOOK_URL
+#fly secrets set TENOR_API_KEY=$TENOR_API_KEY
+
 
 
 # WARN: please remember to set TENOR_API_KEY & BOT_VERSION environment variables
