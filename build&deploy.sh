@@ -9,13 +9,18 @@ git pull
 echo "build-deploy.sh : git pull done." | lolcat
 
 # frontend need it
-export BOT_VERSION=1.0.3
+export BOT_VERSION=1.0.4
 printf "\n\n\n"
 # echo "########## BOT_VERSION: $BOT_VERSION"
-echo "########## BOT_VERSION: 1.0.3"
+echo "########## BOT_VERSION: 1.0.4"
 echo "########## TENOR_API_KEY: $TENOR_API_KEY"
-echo "########## Discord DC_WEBHOOK_URL= $DC_WEBHOOK_URL"
+echo "########## DC_WEBHOOK_URL= $DC_WEBHOOK_URL"
 printf "\n\n\n"
+
+echo "build-deploy.sh : set up fly secrets" | lolcat
+fly secrets set DC_WEBHOOK_URL=$DC_WEBHOOK_URL
+fly secrets set TENOR_API_KEY=$TENOR_API_KEY
+echo "build-deploy.sh : fly secrets setting done" | lolcat
 
 
 # WARN: please remember to set TENOR_API_KEY & BOT_VERSION environment variables
