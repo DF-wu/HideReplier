@@ -14,8 +14,10 @@ kill_timeout = 5
 # 環境變數設定區塊
 [env]
   # 在此加入環境變數
-  # 範例: DATABASE_URL = "your-url"
-
+  # x is placeholder. It should be load via fly secrets in build&deploy.sh
+  BOT_VERSION=1.0.4
+  DC_WEBHOOK_URL=x
+  TENOR_API_KEY=x
 # 資源限制設定
 [[vm]]
   cpu_kind = "shared"    # CPU 類型：shared 或 performance
