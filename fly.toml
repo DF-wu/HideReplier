@@ -2,7 +2,7 @@
 app = "hidereplier"
 primary_region = "ewr"
 swap_size_mb = 512
-processes = ["SpringBootApp"]
+
 # 應用程式終止設定
 kill_signal = "SIGINT"
 kill_timeout = 5
@@ -28,7 +28,6 @@ kill_timeout = 5
   auto_stop_machines  = true     #  Options https://fly.io/docs/launch/autostop-autostart/
   auto_start_machines = true     # 改為 true
   min_machines_running = 1       # 最小運行機器數
-  processes = ["SpringBootApp"]    # 處理程序名稱
 
   # 健康檢查設定
   [[http_service.checks]]
