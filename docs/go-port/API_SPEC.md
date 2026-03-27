@@ -1,0 +1,92 @@
+# API Specification — HideReplier Go Port
+
+## 1. GET /
+
+### Purpose
+提供前端頁面。
+
+### Response
+- `200 text/html`
+
+## 2. GET /index.css
+提供前端樣式。
+
+## 3. GET /index.js
+提供前端邏輯。
+
+## 4. GET /thumbs/{name}.svg
+
+### Purpose
+提供本地縮圖資產。
+
+### Response
+- `200 image/svg+xml`
+
+## 5. GET /actuator/health
+
+### Response
+```json
+{"status":"UP"}
+```
+
+## 6. GET /HideBot/discord/version
+
+### Response
+```json
+"1.0.4"
+```
+
+## 7. GET /HideBot/discord
+
+### Response Shape
+```json
+[
+  {
+    "id": "...",
+    "timeStamp": 1710000000,
+    "serialNumber": 1,
+    "discordMessage": {
+      "url": "...",
+      "content": "...",
+      "username": "...",
+      "tts": false,
+      "extras": {
+        "imgUrl": "...",
+        "thumbnail": "...",
+        "color": "8150271",
+        "avatar_url": "",
+        "ip": "127.0.0.1"
+      },
+      "avatarUrl": ""
+    },
+    "posterIp": "127.0.0.1",
+    "responseCode": null
+  }
+]
+```
+
+## 8. POST /HideBot/discord
+
+### Request Shape
+```json
+{
+  "username": "ui-success",
+  "content": "hello",
+  "color": "#7c5cff",
+  "avatar_url": "",
+  "imgUrl": "https://i.imgur.com/zul9zzl.jpg",
+  "ip": "127.0.0.1",
+  "thumbnail": "http://127.0.0.1:18082/thumbs/01.svg"
+}
+```
+
+### Success Response
+- `200 application/json`
+
+### Failure Response
+- `500 application/json` when webhook dispatch fails or server-side processing fails.
+
+### Notes
+- `color` must be normalized from hex string to base-10 string before persistence/forwarding.
+- `avatar_url` and `imgUrl` must follow the same parsed/normalized semantics used in preview.
+- successful and failed submissions must not share the same persistence outcome.
