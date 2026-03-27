@@ -77,6 +77,10 @@ public class PostMessage {
         System.out.println("\nSending 'POST' request to URL : " + url);
         //System.out.println("Post body " + json);
         System.out.println("Response Code : " + responseCode);
+
+        if (responseCode < 200 || responseCode >= 300) {
+            throw new IOException("Discord webhook request failed with status " + responseCode);
+        }
         
         
 //        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
