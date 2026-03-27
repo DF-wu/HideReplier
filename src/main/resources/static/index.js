@@ -5,7 +5,6 @@ const imageInput = document.getElementById("imageInput");
 const contentText = document.getElementById("contentText");
 const contentDiv = document.querySelector(".content");
 
-const previewThumbnail = document.getElementById("previewThumbnail");
 const selectThumbnail = document.getElementById("selectThumbnail");
 
 const preview = document.getElementById("preview");
@@ -13,7 +12,6 @@ const submit = document.getElementById("submit");
 
 const ipDisplay = document.getElementById("ipDisplay");
 const botNameDisplay = document.getElementById("botNameDisplay");
-const infoDisplay = document.getElementById("infoDisplay");
 const botNameWithColor = document.getElementById("botNameWithColor");
 const contentDisplay = document.getElementById("contentDisplay");
 const ipDisplayInContent = document.getElementById("ipDisplayInContent");
@@ -26,6 +24,7 @@ const ipISP = document.getElementById("ipISP");
 const avatarImg = document.querySelector(".avatar img");
 const contentImgDiv = document.querySelector(".contentImgDiv");
 const contentImg = document.querySelector(".contentImgDiv img");
+const previewThumbnailImg = document.getElementById("previewThumbnail");
 
 const inputs = [botNameInput, colorInput, avatarInput, imageInput, contentText];
 
@@ -33,78 +32,112 @@ const GetIpAPI = "https://httpbin.org/ip";
 const GetIpCountry = "https://ipwhois.app/json";
 const DefaultAvatarUrl =
     "https://cdn.discordapp.com/avatars/710112845567623238/f377b595ef4e0ea17826d7afbb20633f.webp?size=128";
-const BackendUrl = window.location.origin + "/HideBot/discord";
-
+const BackendUrl = `${window.location.origin}/HideBot/discord`;
+const ThumbnailBaseUrl = `${window.location.origin}/thumbs`;
 const thumbnails = [
-    "https://cdn.discordapp.com/attachments/408969877580414976/714868499994116096/kyaru02.gif",
-    "https://cdn.discordapp.com/attachments/591643710454890505/723846090247635084/kyaru01.gif",
-    "https://cdn.discordapp.com/attachments/591643710454890505/723846093959594014/kyaru04.gif",
-    "https://cdn.discordapp.com/attachments/591643710454890505/723846094353858580/kyaru03.gif",
-    "https://cdn.discordapp.com/attachments/591643710454890505/723846098371739728/kyaru08.gif",
-    "https://cdn.discordapp.com/attachments/591643710454890505/723846100032946206/peko01.gif",
-    "https://cdn.discordapp.com/attachments/591643710454890505/723846103006445618/ue01.gif",
+    `${ThumbnailBaseUrl}/01.svg`,
+    `${ThumbnailBaseUrl}/02.svg`,
+    `${ThumbnailBaseUrl}/03.svg`,
+    `${ThumbnailBaseUrl}/04.svg`,
+    `${ThumbnailBaseUrl}/05.svg`,
+    `${ThumbnailBaseUrl}/06.svg`,
+    `${ThumbnailBaseUrl}/07.svg`
 ];
 
 let currentIp = null;
-let thumbnailLink;
+let thumbnailLink = thumbnails[0];
+
+const setText = (element, value) => {
+    element.textContent = value;
+};
+
+const setStatus = (message, state = "neutral") => {
+    setText(errorDisplay, message);
+    errorDisplay.dataset.state = state;
+};
+
+const markPreviewDirty = () => {
+    submit.disabled = true;
+    if (errorDisplay.dataset.state === "success") {
+        setStatus("", "neutral");
+    }
+};
+
+const setIpFallback = () => {
+    setText(ipDisplay, currentIp || "保護中");
+    setText(ipDisplayInContent, currentIp || "保護中");
+    setText(ipCountry, "定位保護中");
+    setText(ipCity, "定位保護中");
+    setText(ipISP, "定位保護中");
+};
 
 const getIpInfo = async () => {
-    const { origin } = await fetch(GetIpAPI).then((res) => res.json());
-    const ip = origin.split(",")[0];
-    currentIp = ipDisplay.innerHTML = ipDisplayInContent.innerHTML = ip;
+    try {
+        const { origin } = await fetch(GetIpAPI).then((res) => res.json());
+        const ip = origin.split(",")[0];
+        currentIp = ip;
+        setText(ipDisplay, ip);
+        setText(ipDisplayInContent, ip);
 
-    const { country, city, isp } = await fetch(
-        GetIpCountry + `/${currentIp}`
-    ).then((res) => res.json());
+        const { country, city, isp } = await fetch(`${GetIpCountry}/${currentIp}`).then(
+            (res) => res.json()
+        );
 
-    ipCountry.innerHTML = country;
-    ipCity.innerHTML = city;
-    ipISP.innerHTML = isp;
+        setText(ipCountry, country || "定位保護中");
+        setText(ipCity, city || "定位保護中");
+        setText(ipISP, isp || "定位保護中");
+    } catch (_error) {
+        setIpFallback();
+    }
 };
 getIpInfo();
 
-if (localStorage.getItem("color"))
-    contentDiv.style.borderColor = colorInput.value =
-        localStorage.getItem("color");
+const savedColor = localStorage.getItem("color") || "#7c5cff";
+contentDiv.style.borderColor = colorInput.value = savedColor;
+previewThumbnailImg.src = thumbnailLink;
+contentImgDiv.hidden = true;
 
 const imgOnError = (event) => {
     if (event.target === avatarImg) {
         avatarImg.src = DefaultAvatarUrl;
-        errorDisplay.innerHTML = "不支援的頭像連結";
+        setStatus("不支援的頭像連結", "error");
     } else {
         contentImgDiv.hidden = true;
-        errorDisplay.innerHTML = "不支援的圖片連結";
+        setStatus("不支援的圖片連結", "error");
     }
+
+    submit.disabled = true;
 };
 
 const previewOption = () => {
-    errorDisplay.innerHTML = "";
+    setStatus("", "neutral");
     if (!botNameInput.value || !contentText.value) {
-        errorDisplay.innerHTML = "機器人名字以及內容不可為空";
+        setStatus("機器人名字以及內容不可為空", "error");
+        submit.disabled = true;
         return;
     }
 
     contentImgDiv.hidden = true;
-    botNameDisplay.innerHTML = botNameWithColor.innerHTML = botNameInput.value;
+    setText(botNameDisplay, botNameInput.value);
+    setText(botNameWithColor, botNameInput.value);
     contentDiv.style.borderColor = colorInput.value;
-    contentDisplay.innerHTML = contentText.value;
+    setText(contentDisplay, contentText.value);
 
     const avatarUrl = parseBBCode(avatarInput.value.trim());
     const imgUrl = parseBBCode(imageInput.value.trim());
 
-    if (avatarUrl) avatarImg.src = avatarUrl;
+    avatarImg.src = avatarUrl || DefaultAvatarUrl;
     if (imgUrl) {
         contentImgDiv.hidden = false;
         contentImg.src = imgUrl;
     }
 
-    if (!errorDisplay.innerHTML) {
+    if (!errorDisplay.textContent) {
         submit.disabled = false;
     }
 
     //根據選項改預覽小圖
-    thumbnailLink = previewThumbnail.src =
-        thumbnails[selectThumbnail.selectedIndex];
+    thumbnailLink = previewThumbnailImg.src = thumbnails[selectThumbnail.selectedIndex];
 };
 
 const parseBBCode = (str) => {
@@ -112,32 +145,53 @@ const parseBBCode = (str) => {
 };
 
 const submitPost = async () => {
+    submit.disabled = true;
     const postBody = {
         username: botNameInput.value,
         content: contentText.value,
         color: colorInput.value,
-        avatar_url: avatarInput.value,
-        imgUrl: imageInput.value,
+        avatar_url: parseBBCode(avatarInput.value.trim()),
+        imgUrl: parseBBCode(imageInput.value.trim()),
         ip: currentIp,
         thumbnail: thumbnailLink,
     };
 
     localStorage.setItem("color", colorInput.value);
 
-    await fetch(BackendUrl, {
-        body: JSON.stringify(postBody),
-        method: "POST",
-        mode: "cors",
-        headers: {
-            "content-type": "application/json",
-        },
-    });
-    alert("發送成功!!");
+    try {
+        const response = await fetch(BackendUrl, {
+            body: JSON.stringify(postBody),
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "content-type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            setStatus("發送失敗，請稍後再試一次", "error");
+            return;
+        }
+
+        setStatus("發送成功，訊息已送出。", "success");
+    } catch (_error) {
+        setStatus("連線失敗，請稍後再試一次", "error");
+    } finally {
+        submit.disabled = false;
+    }
 };
 
-inputs.forEach((inp) =>
-    inp.addEventListener("keydown", () => (submit.disabled = true))
-);
+inputs.forEach((inp) => {
+    inp.addEventListener("input", markPreviewDirty);
+    inp.addEventListener("change", markPreviewDirty);
+});
+selectThumbnail.addEventListener("change", () => {
+    previewThumbnailImg.src = thumbnails[selectThumbnail.selectedIndex];
+    markPreviewDirty();
+});
+previewThumbnailImg.onerror = () => {
+    previewThumbnailImg.src = thumbnails[0];
+};
 avatarImg.onerror = imgOnError;
 contentImg.onerror = imgOnError;
 preview.onclick = previewOption;

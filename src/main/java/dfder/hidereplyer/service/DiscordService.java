@@ -58,8 +58,8 @@ public class DiscordService {
         applyClientOverrides(postMessage);
         postMessage.addEmbed(buildEmbed(postMessage, originalContent, posterIp, normalizedColor, serialCounter.getCounter()));
 
-        repo.insert(new StoreData(taiwanEpochSecond, serialCounter.getCounter(), posterIp, postMessage));
         dispatchToDiscord(postMessage, originalContent);
+        repo.insert(new StoreData(taiwanEpochSecond, serialCounter.getCounter(), posterIp, postMessage));
         counterRepo.save(serialCounter);
         return postMessage;
     }
