@@ -21,6 +21,8 @@ type Handler struct {
 	staticOpen fs.FS
 }
 
+// NewHandler wires the HTTP surface of the Go port around the Discord service
+// and the static frontend assets.
 func NewHandler(ctx context.Context, cfg config.Config, mongoStore *store.MongoStore, staticFS fs.FS) (http.Handler, error) {
 	discordService, err := service.NewDiscordService(ctx, cfg, mongoStore)
 	if err != nil {
@@ -34,6 +36,7 @@ func NewHandler(ctx context.Context, cfg config.Config, mongoStore *store.MongoS
 	}, nil
 }
 
+// ServeHTTP keeps the Go port route-compatible with the existing Spring Boot app.
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch {
 	case r.URL.Path == "/actuator/health" && r.Method == http.MethodGet:

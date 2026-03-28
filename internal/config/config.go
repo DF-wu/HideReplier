@@ -15,6 +15,8 @@ type Config struct {
 	StaticDir      string
 }
 
+// Load reads runtime configuration from environment variables and applies
+// safe local defaults only for non-secret values.
 func Load() Config {
 	return Config{
 		Port:           getenv("PORT", "8082"),
@@ -27,6 +29,7 @@ func Load() Config {
 	}
 }
 
+// Validate ensures the Go port fails fast when required runtime secrets are missing.
 func (c Config) Validate() error {
 	if c.DiscordWebhook == "" {
 		return fmt.Errorf("DC_WEBHOOK_URL is required")
@@ -39,6 +42,7 @@ func (c Config) Validate() error {
 	return nil
 }
 
+// ListenAddress returns the HTTP bind address used by the server.
 func (c Config) ListenAddress() string {
 	return fmt.Sprintf("0.0.0.0:%s", c.Port)
 }
