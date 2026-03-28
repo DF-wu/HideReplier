@@ -12,6 +12,9 @@
     --accent-warm: #ff9d5c;
     --success: #6de1b8;
     --danger: #ff7b7b;
+    --discord-accent: #7289da;
+    --content-text: #d7deea;
+    --content-muted: #8d98ac;
     --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
     --radius-xl: 28px;
     --radius-lg: 20px;
@@ -187,6 +190,12 @@ select {
     gap: 18px;
 }
 
+.fieldHint {
+    color: var(--text-soft);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
 .fieldGroup {
     display: flex;
     flex-direction: column;
@@ -197,6 +206,58 @@ select {
     display: grid;
     grid-template-columns: 140px minmax(0, 1fr);
     gap: 16px;
+}
+
+.thumbField {
+    min-width: 0;
+}
+
+.thumbnailPicker {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.thumbnailOption {
+    position: relative;
+    display: block;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.04);
+    cursor: pointer;
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.thumbnailOption:hover {
+    transform: translateY(-1px);
+    border-color: rgba(124, 92, 255, 0.42);
+}
+
+.thumbnailOption.is-active {
+    border-color: rgba(66, 217, 255, 0.75);
+    box-shadow: 0 0 0 4px rgba(66, 217, 255, 0.14);
+}
+
+.thumbnailOption img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.thumbnailOptionLabel {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    padding: 4px 7px;
+    border-radius: 999px;
+    background: rgba(7, 11, 20, 0.72);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
 }
 
 .fieldGroup label {
@@ -244,6 +305,7 @@ select {
     min-height: 24px;
     color: var(--danger);
     font-weight: 700;
+    line-height: 1.6;
 }
 
 #errorDisplay[data-state="success"] {
@@ -399,7 +461,7 @@ select {
     flex-direction: column;
     gap: 18px;
     padding: 18px;
-    border-left: 4px solid skyblue;
+    border-left: 4px solid var(--accent-strong);
     border-radius: 18px;
     background: linear-gradient(180deg, rgba(47, 49, 54, 0.96) 0%, rgba(35, 37, 42, 0.96) 100%);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -429,16 +491,21 @@ select {
 #botNameWithColor {
     font-size: 20px;
     font-weight: 800;
-    color: #7289da;
+    color: var(--discord-accent);
     letter-spacing: -0.03em;
 }
 
 #contentDisplay {
-    color: #d7deea;
+    color: var(--content-text);
     font-size: 15px;
     line-height: 1.7;
     white-space: pre-wrap;
     word-break: break-word;
+}
+
+.previewMeta {
+    color: var(--content-muted);
+    font-size: 13px;
 }
 
 table {
@@ -454,7 +521,7 @@ td {
 }
 
 th {
-    color: #8d98ac;
+    color: var(--content-muted);
     font-weight: 500;
 }
 
@@ -517,6 +584,10 @@ td {
         grid-template-columns: 1fr;
     }
 
+    .thumbnailPicker {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     .preview {
         padding: 18px;
     }
@@ -538,5 +609,9 @@ td {
 
     .preview {
         flex-direction: column;
+    }
+
+    .thumbnailPicker {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
