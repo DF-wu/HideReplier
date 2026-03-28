@@ -1,5 +1,7 @@
 package model
 
+// ReceivedPost is the persisted and API-returned message shape after the server
+// has normalized the incoming frontend payload.
 type ReceivedPost struct {
 	URL       string            `json:"url,omitempty" bson:"url,omitempty"`
 	Content   string            `json:"content,omitempty" bson:"content,omitempty"`
@@ -9,6 +11,7 @@ type ReceivedPost struct {
 	Extras    map[string]string `json:"extras,omitempty" bson:"extras,omitempty"`
 }
 
+// IncomingPost matches the real frontend request body posted by index.js.
 type IncomingPost struct {
 	Content   string `json:"content"`
 	Username  string `json:"username"`
@@ -20,6 +23,7 @@ type IncomingPost struct {
 	Thumbnail string `json:"thumbnail"`
 }
 
+// StoreData is the history record stored in MongoDB and returned by GET /HideBot/discord.
 type StoreData struct {
 	ID             string       `json:"id,omitempty" bson:"_id,omitempty"`
 	TimeStamp      int64        `json:"timeStamp" bson:"timeStamp"`
@@ -29,31 +33,37 @@ type StoreData struct {
 	ResponseCode   *string      `json:"responseCode" bson:"responseCode,omitempty"`
 }
 
+// SerialCounter stores the current anonymous post serial number.
 type SerialCounter struct {
 	ID      any `bson:"_id,omitempty"`
 	Counter int `bson:"counter"`
 }
 
+// EmbedField represents one Discord embed field entry.
 type EmbedField struct {
 	Name   string `json:"name"`
 	Value  string `json:"value"`
 	Inline bool   `json:"inline"`
 }
 
+// EmbedAuthor represents the author block in a Discord embed.
 type EmbedAuthor struct {
 	Name    string `json:"name"`
 	URL     string `json:"url,omitempty"`
 	IconURL string `json:"icon_url,omitempty"`
 }
 
+// EmbedThumbnail represents the small thumbnail image shown in the embed.
 type EmbedThumbnail struct {
 	URL string `json:"url,omitempty"`
 }
 
+// EmbedImage represents the large content image shown in the embed.
 type EmbedImage struct {
 	URL string `json:"url,omitempty"`
 }
 
+// DiscordEmbed is the payload block forwarded to the Discord webhook API.
 type DiscordEmbed struct {
 	Title       string          `json:"title,omitempty"`
 	Description string          `json:"description,omitempty"`
@@ -65,6 +75,7 @@ type DiscordEmbed struct {
 	Fields      []EmbedField    `json:"fields,omitempty"`
 }
 
+// DiscordWebhookPayload is the outbound webhook body sent to Discord.
 type DiscordWebhookPayload struct {
 	URL       string         `json:"-"`
 	Content   string         `json:"content,omitempty"`
@@ -74,6 +85,7 @@ type DiscordWebhookPayload struct {
 	Embeds    []DiscordEmbed `json:"embeds,omitempty"`
 }
 
+// HealthResponse mirrors the minimal /actuator/health response expected by Fly.io.
 type HealthResponse struct {
 	Status string `json:"status"`
 }

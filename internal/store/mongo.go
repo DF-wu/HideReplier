@@ -18,6 +18,7 @@ type MongoStore struct {
 	counterCol *mongo.Collection
 }
 
+// NewMongoStore opens the MongoDB collections used by the Go port.
 func NewMongoStore(ctx context.Context, cfg config.Config) (*MongoStore, error) {
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(cfg.MongoURI))
 	if err != nil {
@@ -34,10 +35,12 @@ func NewMongoStore(ctx context.Context, cfg config.Config) (*MongoStore, error) 
 	}, nil
 }
 
+// Close disconnects the shared MongoDB client.
 func (m *MongoStore) Close(ctx context.Context) error {
 	return m.client.Disconnect(ctx)
 }
 
+// LoadOrCreateCounter loads the serial counter document or creates it on first boot.
 func (m *MongoStore) LoadOrCreateCounter(ctx context.Context) (*model.SerialCounter, error) {
 	var counters []model.SerialCounter
 	cursor, err := m.counterCol.Find(ctx, bson.D{})
@@ -67,6 +70,7 @@ func (m *MongoStore) LoadOrCreateCounter(ctx context.Context) (*model.SerialCoun
 	return &initial, nil
 }
 
+// SaveCounter replaces the persisted counter document and fails if it matched nothing.
 func (m *MongoStore) SaveCounter(ctx context.Context, counter *model.SerialCounter) error {
 	result, err := m.counterCol.ReplaceOne(ctx, bson.M{"_id": counter.ID}, counter)
 	if err != nil {
@@ -80,11 +84,13 @@ func (m *MongoStore) SaveCounter(ctx context.Context, counter *model.SerialCount
 	return err
 }
 
+// InsertHistory stores one successful anonymous message submission.
 func (m *MongoStore) InsertHistory(ctx context.Context, data model.StoreData) error {
 	_, err := m.historyCol.InsertOne(ctx, data)
 	return err
 }
 
+// ListHistory returns all stored history rows sorted by serial number.
 func (m *MongoStore) ListHistory(ctx context.Context) ([]model.StoreData, error) {
 	var history []model.StoreData
 	cursor, err := m.historyCol.Find(ctx, bson.D{})
