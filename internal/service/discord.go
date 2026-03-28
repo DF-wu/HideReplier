@@ -34,6 +34,7 @@ type DiscordService struct {
 	counter *model.SerialCounter
 }
 
+// NewDiscordService loads the persisted counter state and prepares the webhook client.
 func NewDiscordService(ctx context.Context, cfg config.Config, mongoStore *store.MongoStore) (*DiscordService, error) {
 	counter, err := mongoStore.LoadOrCreateCounter(ctx)
 	if err != nil {
@@ -48,14 +49,18 @@ func NewDiscordService(ctx context.Context, cfg config.Config, mongoStore *store
 	}, nil
 }
 
+// GetVersion returns the configured bot version string exposed to the frontend.
 func (s *DiscordService) GetVersion() string {
 	return s.config.BotVersion
 }
 
+// GetHistory returns the stored anonymous message history sorted by serial number.
 func (s *DiscordService) GetHistory(ctx context.Context) ([]model.StoreData, error) {
 	return s.store.ListHistory(ctx)
 }
 
+// PostAnonymousMessage normalizes the frontend payload, sends the webhook,
+// and persists the history only after a successful dispatch.
 func (s *DiscordService) PostAnonymousMessage(ctx context.Context, post model.IncomingPost) (model.ReceivedPost, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
