@@ -44,10 +44,16 @@
                 <div class="sectionHeading">
                     <span class="sectionKicker">輸入面板</span>
                     <h2>設定訊息外觀</h2>
-                    <p>維持原本欄位與流程，但整理成更穩定、清楚、適合正式上線的輸入介面。</p>
+                    <p>把真正重要的設定放前面：先寫內容、再選小圖與顏色、最後補頭像或大圖，整體更接近可正式使用的工作流。</p>
                 </div>
 
                 <div class="inputForm">
+                    <div class="fieldGroup fieldGroupContentFirst">
+                        <label for="contentText">內容文字</label>
+                        <textarea id="contentText" placeholder="輸入想匿名送出的訊息內容"></textarea>
+                        <span class="fieldHint">預覽與送出會共用同一份內容，不會出現畫面和實際 payload 不一致。</span>
+                    </div>
+
                     <div class="fieldGroup fieldGroupCompact">
                         <label for="botNameInput">機器人名稱</label>
                         <input type="text" id="botNameInput" value="預設機器人:)">
@@ -60,7 +66,7 @@
                         </div>
                         <div class="fieldGroup thumbField">
                             <label for="selectThumbnail">小圖樣式</label>
-                            <select id="selectThumbnail">
+                            <select id="selectThumbnail" hidden>
                                 <option value="1">小圖：預設1</option>
                                 <option value="2">小圖：預設2</option>
                                 <option value="3">小圖：預設3</option>
@@ -69,22 +75,21 @@
                                 <option value="6">小圖：預設6</option>
                                 <option value="7">小圖：預設7</option>
                             </select>
+                            <div id="thumbnailPicker" class="thumbnailPicker" aria-label="小圖樣式選擇"></div>
+                            <span class="fieldHint">這裡會直接顯示可用的小圖，不用靠文字猜哪個是你要的樣式。</span>
                         </div>
                     </div>
 
                     <div class="fieldGroup">
                         <label for="avatarInput">頭像連結（可留空）</label>
                         <input type="text" id="avatarInput" placeholder="https://example.com/avatar.png">
+                        <span class="fieldHint">支援一般圖片網址與 [img]...[/img] 格式；留空時會用預設頭像。</span>
                     </div>
 
                     <div class="fieldGroup">
                         <label for="imageInput">圖片連結（可留空）</label>
                         <input type="text" id="imageInput" placeholder="https://example.com/image.png">
-                    </div>
-
-                    <div class="fieldGroup">
-                        <label for="contentText">內容文字</label>
-                        <textarea id="contentText" placeholder="輸入想匿名送出的訊息內容"></textarea>
+                        <span class="fieldHint">會先檢查基本網址格式，再讓你預覽與送出，避免明顯錯誤直接進 payload。</span>
                     </div>
 
                     <div id="errorDisplay" aria-live="polite"></div>
@@ -124,6 +129,7 @@
                                         <div id="infoDisplay">匿名機器人v0.4.1（點我去發文）</div>
                                         <div id="botNameWithColor">預設機器人:)</div>
                                         <div id="contentDisplay">我是內容</div>
+                                        <div class="previewMeta">送出後才會產生正式流水號與紀錄。</div>
                                         <table>
                                             <thead>
                                                 <tr>
@@ -133,14 +139,14 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>XXXX</td>
+                                                    <td>待生成</td>
                                                     <td id="ipDisplayInContent"></td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                     <div class="topImgDiv">
-                                        <img id="previewThumbnail" src="thumbs/01.svg" alt="小圖預覽">
+                                        <img id="previewThumbnail" src="thumbs/01.gif" alt="小圖預覽">
                                     </div>
                                 </div>
                                 <div class="contentImgDiv" hidden>
