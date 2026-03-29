@@ -28,7 +28,7 @@ const contentImgDiv = document.querySelector(".contentImgDiv");
 const contentImg = document.querySelector(".contentImgDiv img");
 const previewThumbnailImg = document.getElementById("previewThumbnail");
 
-const inputs = [botNameInput, colorInput, avatarInput, imageInput, contentText];
+const inputs = [botNameInput, colorInput, avatarInput, imageInput];
 
 const GetIpAPI = "https://httpbin.org/ip";
 const GetIpCountry = "https://ipwhois.app/json";
@@ -83,6 +83,24 @@ const markPreviewDirty = () => {
     submit.disabled = true;
     if (errorDisplay.dataset.state === "success") {
         setStatus("", "neutral");
+    }
+};
+
+const syncLiveContent = () => {
+    setText(contentDisplay, contentText.value || "");
+
+    if (submitting) {
+        return;
+    }
+
+    if (errorDisplay.dataset.state === "success") {
+        setStatus("", "neutral");
+    }
+
+    if (botNameInput.value && contentText.value && !errorDisplay.textContent) {
+        submit.disabled = false;
+    } else if (!contentText.value) {
+        submit.disabled = true;
     }
 };
 
@@ -268,6 +286,8 @@ inputs.forEach((inp) => {
     inp.addEventListener("input", markPreviewDirty);
     inp.addEventListener("change", markPreviewDirty);
 });
+contentText.addEventListener("input", syncLiveContent);
+contentText.addEventListener("change", syncLiveContent);
 selectThumbnail.addEventListener("change", () => {
     setThumbnailSelection(selectThumbnail.selectedIndex);
     markPreviewDirty();
@@ -279,3 +299,4 @@ avatarImg.onerror = imgOnError;
 contentImg.onerror = imgOnError;
 preview.onclick = previewOption;
 submit.onclick = submitPost;
+syncLiveContent();
