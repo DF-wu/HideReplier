@@ -8,99 +8,156 @@
     <script src="index.js" defer></script>
 </head>
 <body>
-    <div class="topPanel">
-        <h1>匿名回覆機器人</h1>
-        <div class="topLinks">
-            <a href="https://hackmd.io/@dfder/ByADyqspI" target="_blank" rel="noreferrer">使用說明</a>
-            <a href="https://github.com/DF-wu/HideReplier" target="_blank" rel="noreferrer">GitHub</a>
-        </div>
-        <div class="statusRow">
-            <span>IP：<span id="ipDisplay">保護中</span></span>
-            <span>國家：<span id="ipCountry">定位保護中</span></span>
-            <span>城市：<span id="ipCity">定位保護中</span></span>
-            <span>ISP：<span id="ipISP">定位保護中</span></span>
-        </div>
-    </div>
-
-    <div class="mainPanel">
-        <div class="inputForm">
-            <label for="botNameInput">機器人名稱</label>
-            <input type="text" id="botNameInput" value="預設機器人:)">
-
-            <label for="colorInput">顏色（裝飾）</label>
-            <input type="color" id="colorInput">
-
-            <label for="selectThumbnail">小圖樣式</label>
-            <select id="selectThumbnail">
-                <option value="1">小圖：預設1</option>
-                <option value="2">小圖：預設2</option>
-                <option value="3">小圖：預設3</option>
-                <option value="4">小圖：預設4</option>
-                <option value="5">小圖：預設5</option>
-                <option value="6">小圖：預設6</option>
-                <option value="7">小圖：預設7</option>
-            </select>
-
-            <label for="avatarInput">頭像連結（可留空）</label>
-            <input type="text" id="avatarInput" placeholder="https://example.com/avatar.png">
-
-            <label for="imageInput">圖片連結（可留空）</label>
-            <input type="text" id="imageInput" placeholder="https://example.com/image.png">
-
-            <label for="contentText">內容文字</label>
-            <textarea id="contentText" placeholder="輸入想匿名送出的訊息內容"></textarea>
-
-            <div id="errorDisplay" aria-live="polite"></div>
-
-            <div class="btnPanel">
-                <button id="preview" type="button">預覽</button>
-                <button id="submit" type="button" disabled>提交</button>
-            </div>
-        </div>
-
-        <div class="previewDiv">
-            <h3>預覽畫面</h3>
-            <div class="preview">
-                <div class="avatar">
-                    <img src="https://cdn.discordapp.com/avatars/710112845567623238/f377b595ef4e0ea17826d7afbb20633f.webp?size=128" alt="預覽頭像">
-                </div>
-                <div class="innerPanel">
-                    <div class="header">
-                        <span id="botNameDisplay">預設機器人:)</span>
-                        <div class="robotTag">機器人</div>
-                    </div>
-                    <div class="content">
-                        <div class="contentTopPanel">
-                            <div class="leftContent">
-                                <div id="infoDisplay">匿名機器人（點我去發文）</div>
-                                <div id="botNameWithColor">預設機器人:)</div>
-                                <div id="contentDisplay">我是內容</div>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>流水號</th>
-                                            <th>來自：</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>待生成</td>
-                                            <td id="ipDisplayInContent">保護中</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="topImgDiv">
-                                <img id="previewThumbnail" src="thumbs/01.gif" alt="小圖預覽">
-                            </div>
-                        </div>
-                        <div class="contentImgDiv" hidden>
-                            <img src="https://i.imgur.com/zul9zzl.jpg" alt="內容圖片預覽">
-                        </div>
-                    </div>
+    <div class="pageShell">
+        <header class="heroPanel">
+            <div class="heroCopy">
+                <span class="eyebrow">匿名發文工具</span>
+                <h1>匿名回覆機器人</h1>
+                <p class="heroDescription">快速整理匿名訊息的名稱、色彩、圖片與預覽內容，然後用更體面的方式送進 Discord webhook。</p>
+                <div class="heroLinks">
+                    <a href="https://hackmd.io/@dfder/ByADyqspI" target="_blank" rel="noreferrer">使用說明</a>
+                    <a href="https://github.com/DF-wu/HideReplier" target="_blank" rel="noreferrer">GitHub</a>
                 </div>
             </div>
-        </div>
+            <div class="heroStatusPanel">
+                <div class="statusCard">
+                    <span class="statusLabel">IP</span>
+                    <span class="statusValue" id="ipDisplay">保護中</span>
+                </div>
+                <div class="statusCard">
+                    <span class="statusLabel">國家</span>
+                    <span class="statusValue" id="ipCountry">定位保護中</span>
+                </div>
+                <div class="statusCard">
+                    <span class="statusLabel">城市</span>
+                    <span class="statusValue" id="ipCity">定位保護中</span>
+                </div>
+                <div class="statusCard">
+                    <span class="statusLabel">ISP</span>
+                    <span class="statusValue" id="ipISP">定位保護中</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="workspaceGrid">
+            <section class="controlPanel surfaceCard">
+                <div class="sectionHeading">
+                    <span class="sectionKicker">輸入面板</span>
+                    <h2>設定訊息外觀</h2>
+                    <p>把真正重要的設定放前面：先寫內容、再選小圖與顏色、最後補頭像或大圖，整體更接近可正式使用的工作流。</p>
+                </div>
+
+                <div class="inputForm">
+                    <div class="fieldGroup fieldGroupContentFirst">
+                        <label for="contentText">內容文字</label>
+                        <textarea id="contentText" placeholder="輸入想匿名送出的訊息內容"></textarea>
+                        <span class="fieldHint">按下預覽後才會解鎖提交，讓畫面和實際送出的內容保持一致。</span>
+                    </div>
+
+                    <div class="fieldGroup fieldGroupCompact">
+                        <label for="botNameInput">機器人名稱</label>
+                        <input type="text" id="botNameInput" value="預設機器人:)">
+                    </div>
+
+                    <div class="fieldRow">
+                        <div class="fieldGroup colorField">
+                            <label for="colorInput">顏色</label>
+                            <input type="color" id="colorInput">
+                        </div>
+                        <div class="fieldGroup thumbField">
+                            <label for="selectThumbnail">小圖樣式</label>
+                            <select id="selectThumbnail" hidden>
+                                <option value="1">小圖：預設1</option>
+                                <option value="2">小圖：預設2</option>
+                                <option value="3">小圖：預設3</option>
+                                <option value="4">小圖：預設4</option>
+                                <option value="5">小圖：預設5</option>
+                                <option value="6">小圖：預設6</option>
+                                <option value="7">小圖：預設7</option>
+                            </select>
+                            <div id="thumbnailPicker" class="thumbnailPicker" aria-label="小圖樣式選擇"></div>
+                            <span class="fieldHint">直接看得到每張小圖，選好後再按預覽即可。</span>
+                        </div>
+                    </div>
+
+                    <div class="fieldGroup">
+                        <label for="avatarInput">頭像連結（可留空）</label>
+                        <input type="text" id="avatarInput" placeholder="https://example.com/avatar.png">
+                        <span class="fieldHint">支援一般圖片網址與 [img]...[/img] 格式；留空時會用預設頭像。</span>
+                    </div>
+
+                    <div class="fieldGroup">
+                        <label for="imageInput">圖片連結（可留空）</label>
+                        <input type="text" id="imageInput" placeholder="https://example.com/image.png">
+                        <span class="fieldHint">如果圖片網址有問題，預覽區會直接回報，而不是讓你送出去才發現。</span>
+                    </div>
+
+                    <div id="errorDisplay" aria-live="polite"></div>
+
+                    <div class="btnPanel">
+                        <button id="preview" type="button">預覽</button>
+                        <button id="submit" type="button" disabled>提交</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="previewStage surfaceCard">
+                <div class="sectionHeading previewHeading">
+                    <span class="sectionKicker">即時預覽</span>
+                    <h2>Discord 風格預覽</h2>
+                    <p>你送出的訊息會以這種結構出現在匿名回覆機器人的 embed 內容裡。</p>
+                </div>
+
+                <div class="previewDiv">
+                    <div class="previewChrome">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="preview">
+                        <div class="avatar">
+                            <img src="https://cdn.discordapp.com/avatars/710112845567623238/f377b595ef4e0ea17826d7afbb20633f.webp?size=128" alt="預覽頭像">
+                        </div>
+                        <div class="innerPanel">
+                            <div class="header">
+                                <span id="botNameDisplay">預設機器人:)</span>
+                                <div class="robotTag">機器人</div>
+                            </div>
+                            <div class="content">
+                                <div class="contentTopPanel">
+                                    <div class="leftContent">
+                                        <div id="infoDisplay">匿名機器人v0.4.1（點我去發文）</div>
+                                        <div id="botNameWithColor">預設機器人:)</div>
+                                        <div id="contentDisplay">我是內容</div>
+                                        <div class="previewMeta">送出後才會產生正式流水號與紀錄。</div>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>流水號</th>
+                                                    <th>來自：</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>待生成</td>
+                                                    <td id="ipDisplayInContent">保護中</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="topImgDiv">
+                                        <img id="previewThumbnail" src="thumbs/01.gif" alt="小圖預覽">
+                                    </div>
+                                </div>
+                                <div class="contentImgDiv" hidden>
+                                    <img src="https://i.imgur.com/zul9zzl.jpg" alt="內容圖片預覽">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
 </body>
 </html>
