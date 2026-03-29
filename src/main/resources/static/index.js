@@ -4,16 +4,16 @@ const avatarInput = document.getElementById("avatarInput");
 const imageInput = document.getElementById("imageInput");
 const contentText = document.getElementById("contentText");
 const contentDiv = document.querySelector(".content");
+const infoDisplay = document.getElementById("infoDisplay");
 
-const previewThumbnail = document.getElementById("previewThumbnail");
 const selectThumbnail = document.getElementById("selectThumbnail");
+const thumbnailPicker = document.getElementById("thumbnailPicker");
 
 const preview = document.getElementById("preview");
 const submit = document.getElementById("submit");
 
 const ipDisplay = document.getElementById("ipDisplay");
 const botNameDisplay = document.getElementById("botNameDisplay");
-const infoDisplay = document.getElementById("infoDisplay");
 const botNameWithColor = document.getElementById("botNameWithColor");
 const contentDisplay = document.getElementById("contentDisplay");
 const ipDisplayInContent = document.getElementById("ipDisplayInContent");
@@ -26,6 +26,7 @@ const ipISP = document.getElementById("ipISP");
 const avatarImg = document.querySelector(".avatar img");
 const contentImgDiv = document.querySelector(".contentImgDiv");
 const contentImg = document.querySelector(".contentImgDiv img");
+const previewThumbnailImg = document.getElementById("previewThumbnail");
 
 const inputs = [botNameInput, colorInput, avatarInput, imageInput, contentText];
 
@@ -34,9 +35,8 @@ const GetIpCountry = "https://ipwhois.app/json";
 const DefaultAvatarUrl =
     "https://cdn.discordapp.com/avatars/710112845567623238/f377b595ef4e0ea17826d7afbb20633f.webp?size=128";
 const BackendUrl = `${window.location.origin}/HideBot/discord`;
-const VersionUrl = `${window.location.origin}/HideBot/discord/version`;
 const ThumbnailBaseUrl = `${window.location.origin}/thumbs`;
-
+const VersionUrl = `${window.location.origin}/HideBot/discord/version`;
 const thumbnails = [
     `${ThumbnailBaseUrl}/01.gif`,
     `${ThumbnailBaseUrl}/02.gif`,
@@ -44,7 +44,7 @@ const thumbnails = [
     `${ThumbnailBaseUrl}/04.gif`,
     `${ThumbnailBaseUrl}/05.gif`,
     `${ThumbnailBaseUrl}/06.gif`,
-    `${ThumbnailBaseUrl}/07.gif`,
+    `${ThumbnailBaseUrl}/07.gif`
 ];
 
 let currentIp = null;
@@ -94,6 +94,41 @@ const setIpFallback = () => {
     setText(ipISP, "定位保護中");
 };
 
+const setThumbnailSelection = (index) => {
+    selectThumbnail.selectedIndex = index;
+    thumbnailLink = thumbnails[index];
+    previewThumbnailImg.src = thumbnailLink;
+    document.querySelectorAll(".thumbnailOption").forEach((button, buttonIndex) => {
+        button.classList.toggle("is-active", buttonIndex === index);
+        button.setAttribute("aria-pressed", buttonIndex === index ? "true" : "false");
+    });
+};
+
+const buildThumbnailPicker = () => {
+    thumbnailPicker.innerHTML = "";
+    thumbnails.forEach((thumbnail, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "thumbnailOption";
+        button.setAttribute("aria-label", `預設小圖 ${index + 1}`);
+
+        const image = document.createElement("img");
+        image.src = thumbnail;
+        image.alt = `預設小圖 ${index + 1}`;
+
+        const label = document.createElement("span");
+        label.className = "thumbnailOptionLabel";
+        label.textContent = `#${index + 1}`;
+
+        button.append(image, label);
+        button.addEventListener("click", () => {
+            setThumbnailSelection(index);
+            markPreviewDirty();
+        });
+        thumbnailPicker.append(button);
+    });
+};
+
 const loadVersion = async () => {
     try {
         const version = await fetch(VersionUrl).then((res) => res.json());
@@ -127,7 +162,7 @@ const imgOnError = (event) => {
     if (event.target === avatarImg) {
         avatarImg.src = DefaultAvatarUrl;
         setStatus("不支援的頭像連結", "error");
-    } else if (event.target === contentImg) {
+    } else {
         contentImgDiv.hidden = true;
         setStatus("不支援的圖片連結", "error");
     }
@@ -137,12 +172,17 @@ const imgOnError = (event) => {
 
 const previewOption = () => {
     setStatus("", "neutral");
-
     if (!botNameInput.value || !contentText.value) {
         setStatus("機器人名字以及內容不可為空", "error");
         submit.disabled = true;
         return;
     }
+
+    contentImgDiv.hidden = true;
+    setText(botNameDisplay, botNameInput.value);
+    setText(botNameWithColor, botNameInput.value);
+    contentDiv.style.borderColor = colorInput.value;
+    setText(contentDisplay, contentText.value);
 
     const avatarUrl = parseBBCode(avatarInput.value.trim());
     const imgUrl = parseBBCode(imageInput.value.trim());
@@ -159,25 +199,13 @@ const previewOption = () => {
         return;
     }
 
-    setText(botNameDisplay, botNameInput.value);
-    setText(botNameWithColor, botNameInput.value);
-    setText(contentDisplay, contentText.value);
-    contentDiv.style.borderColor = colorInput.value;
-
     avatarImg.src = avatarUrl || DefaultAvatarUrl;
-
-    contentImgDiv.hidden = true;
     if (imgUrl) {
-        contentImg.src = imgUrl;
         contentImgDiv.hidden = false;
+        contentImg.src = imgUrl;
     }
 
-    thumbnailLink = thumbnails[selectThumbnail.selectedIndex];
-    previewThumbnail.src = thumbnailLink;
-
-    if (!errorDisplay.textContent) {
-        submit.disabled = false;
-    }
+    submit.disabled = false;
 };
 
 const submitPost = async () => {
@@ -228,21 +256,24 @@ const submitPost = async () => {
 };
 
 getIpInfo();
+buildThumbnailPicker();
 loadVersion();
 
 const savedColor = localStorage.getItem("color") || "#7c5cff";
 contentDiv.style.borderColor = colorInput.value = savedColor;
-previewThumbnail.src = thumbnailLink;
+setThumbnailSelection(0);
 contentImgDiv.hidden = true;
 
 inputs.forEach((inp) => {
     inp.addEventListener("input", markPreviewDirty);
     inp.addEventListener("change", markPreviewDirty);
 });
-selectThumbnail.addEventListener("change", markPreviewDirty);
-previewThumbnail.onerror = () => {
-    previewThumbnail.src = thumbnails[0];
-    thumbnailLink = thumbnails[0];
+selectThumbnail.addEventListener("change", () => {
+    setThumbnailSelection(selectThumbnail.selectedIndex);
+    markPreviewDirty();
+});
+previewThumbnailImg.onerror = () => {
+    setThumbnailSelection(0);
 };
 avatarImg.onerror = imgOnError;
 contentImg.onerror = imgOnError;
