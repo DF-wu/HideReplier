@@ -4,16 +4,16 @@ const avatarInput = document.getElementById("avatarInput");
 const imageInput = document.getElementById("imageInput");
 const contentText = document.getElementById("contentText");
 const contentDiv = document.querySelector(".content");
-const infoDisplay = document.getElementById("infoDisplay");
 
+const previewThumbnail = document.getElementById("previewThumbnail");
 const selectThumbnail = document.getElementById("selectThumbnail");
-const thumbnailPicker = document.getElementById("thumbnailPicker");
 
 const preview = document.getElementById("preview");
 const submit = document.getElementById("submit");
 
 const ipDisplay = document.getElementById("ipDisplay");
 const botNameDisplay = document.getElementById("botNameDisplay");
+const infoDisplay = document.getElementById("infoDisplay");
 const botNameWithColor = document.getElementById("botNameWithColor");
 const contentDisplay = document.getElementById("contentDisplay");
 const ipDisplayInContent = document.getElementById("ipDisplayInContent");
@@ -26,7 +26,6 @@ const ipISP = document.getElementById("ipISP");
 const avatarImg = document.querySelector(".avatar img");
 const contentImgDiv = document.querySelector(".contentImgDiv");
 const contentImg = document.querySelector(".contentImgDiv img");
-const previewThumbnailImg = document.getElementById("previewThumbnail");
 
 const inputs = [botNameInput, colorInput, avatarInput, imageInput, contentText];
 
@@ -35,8 +34,9 @@ const GetIpCountry = "https://ipwhois.app/json";
 const DefaultAvatarUrl =
     "https://cdn.discordapp.com/avatars/710112845567623238/f377b595ef4e0ea17826d7afbb20633f.webp?size=128";
 const BackendUrl = `${window.location.origin}/HideBot/discord`;
-const ThumbnailBaseUrl = `${window.location.origin}/thumbs`;
 const VersionUrl = `${window.location.origin}/HideBot/discord/version`;
+const ThumbnailBaseUrl = `${window.location.origin}/thumbs`;
+
 const thumbnails = [
     `${ThumbnailBaseUrl}/01.gif`,
     `${ThumbnailBaseUrl}/02.gif`,
@@ -44,13 +44,12 @@ const thumbnails = [
     `${ThumbnailBaseUrl}/04.gif`,
     `${ThumbnailBaseUrl}/05.gif`,
     `${ThumbnailBaseUrl}/06.gif`,
-    `${ThumbnailBaseUrl}/07.gif`
+    `${ThumbnailBaseUrl}/07.gif`,
 ];
 
 let currentIp = null;
 let thumbnailLink = thumbnails[0];
 let submitting = false;
-let hasPendingChanges = true;
 
 const setText = (element, value) => {
     element.textContent = value;
@@ -61,25 +60,7 @@ const setStatus = (message, state = "neutral") => {
     errorDisplay.dataset.state = state;
 };
 
-const markPreviewDirty = () => {
-    if (submitting) {
-        return;
-    }
-
-    hasPendingChanges = true;
-    submit.disabled = true;
-    if (errorDisplay.dataset.state === "success") {
-        setStatus("", "neutral");
-    }
-};
-
-const setIpFallback = () => {
-    setText(ipDisplay, currentIp || "保護中");
-    setText(ipDisplayInContent, currentIp || "保護中");
-    setText(ipCountry, "定位保護中");
-    setText(ipCity, "定位保護中");
-    setText(ipISP, "定位保護中");
-};
+const parseBBCode = (str) => str.replace("[img]", "").replace("[/img]", "").trim();
 
 const isValidHttpUrl = (value) => {
     if (!value) {
@@ -94,39 +75,23 @@ const isValidHttpUrl = (value) => {
     }
 };
 
-const setThumbnailSelection = (index) => {
-    selectThumbnail.selectedIndex = index;
-    thumbnailLink = thumbnails[index];
-    previewThumbnailImg.src = thumbnailLink;
-    document.querySelectorAll(".thumbnailOption").forEach((button, buttonIndex) => {
-        button.classList.toggle("is-active", buttonIndex === index);
-        button.setAttribute("aria-pressed", buttonIndex === index ? "true" : "false");
-    });
+const markPreviewDirty = () => {
+    if (submitting) {
+        return;
+    }
+
+    submit.disabled = true;
+    if (errorDisplay.dataset.state === "success") {
+        setStatus("", "neutral");
+    }
 };
 
-const buildThumbnailPicker = () => {
-    thumbnailPicker.innerHTML = "";
-    thumbnails.forEach((thumbnail, index) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "thumbnailOption";
-        button.setAttribute("aria-label", `預設小圖 ${index + 1}`);
-
-        const image = document.createElement("img");
-        image.src = thumbnail;
-        image.alt = `預設小圖 ${index + 1}`;
-
-        const label = document.createElement("span");
-        label.className = "thumbnailOptionLabel";
-        label.textContent = `#${index + 1}`;
-
-        button.append(image, label);
-        button.addEventListener("click", () => {
-            setThumbnailSelection(index);
-            markPreviewDirty();
-        });
-        thumbnailPicker.append(button);
-    });
+const setIpFallback = () => {
+    setText(ipDisplay, currentIp || "保護中");
+    setText(ipDisplayInContent, currentIp || "保護中");
+    setText(ipCountry, "定位保護中");
+    setText(ipCity, "定位保護中");
+    setText(ipISP, "定位保護中");
 };
 
 const loadVersion = async () => {
@@ -134,7 +99,7 @@ const loadVersion = async () => {
         const version = await fetch(VersionUrl).then((res) => res.json());
         setText(infoDisplay, `匿名機器人v${version}（點我去發文）`);
     } catch (_error) {
-        setText(infoDisplay, "匿名機器人（版本讀取失敗）");
+        setText(infoDisplay, "匿名機器人（點我去發文）");
     }
 };
 
@@ -157,20 +122,12 @@ const getIpInfo = async () => {
         setIpFallback();
     }
 };
-getIpInfo();
-buildThumbnailPicker();
-loadVersion();
-
-const savedColor = localStorage.getItem("color") || "#7c5cff";
-contentDiv.style.borderColor = colorInput.value = savedColor;
-setThumbnailSelection(0);
-contentImgDiv.hidden = true;
 
 const imgOnError = (event) => {
     if (event.target === avatarImg) {
         avatarImg.src = DefaultAvatarUrl;
         setStatus("不支援的頭像連結", "error");
-    } else {
+    } else if (event.target === contentImg) {
         contentImgDiv.hidden = true;
         setStatus("不支援的圖片連結", "error");
     }
@@ -180,17 +137,12 @@ const imgOnError = (event) => {
 
 const previewOption = () => {
     setStatus("", "neutral");
+
     if (!botNameInput.value || !contentText.value) {
         setStatus("機器人名字以及內容不可為空", "error");
         submit.disabled = true;
         return;
     }
-
-    contentImgDiv.hidden = true;
-    setText(botNameDisplay, botNameInput.value);
-    setText(botNameWithColor, botNameInput.value);
-    contentDiv.style.borderColor = colorInput.value;
-    setText(contentDisplay, contentText.value);
 
     const avatarUrl = parseBBCode(avatarInput.value.trim());
     const imgUrl = parseBBCode(imageInput.value.trim());
@@ -207,26 +159,34 @@ const previewOption = () => {
         return;
     }
 
+    setText(botNameDisplay, botNameInput.value);
+    setText(botNameWithColor, botNameInput.value);
+    setText(contentDisplay, contentText.value);
+    contentDiv.style.borderColor = colorInput.value;
+
     avatarImg.src = avatarUrl || DefaultAvatarUrl;
+
+    contentImgDiv.hidden = true;
     if (imgUrl) {
-        contentImgDiv.hidden = false;
         contentImg.src = imgUrl;
+        contentImgDiv.hidden = false;
     }
 
-    if (!errorDisplay.textContent && hasPendingChanges) {
+    thumbnailLink = thumbnails[selectThumbnail.selectedIndex];
+    previewThumbnail.src = thumbnailLink;
+
+    if (!errorDisplay.textContent) {
         submit.disabled = false;
     }
-};
-
-const parseBBCode = (str) => {
-    return str.replace("[img]", "").replace("[/img]", "").trim();
 };
 
 const submitPost = async () => {
     submitting = true;
     submit.disabled = true;
+    preview.disabled = true;
     const originalLabel = submit.textContent;
     submit.textContent = "發送中...";
+
     const postBody = {
         username: botNameInput.value,
         content: contentText.value,
@@ -251,34 +211,38 @@ const submitPost = async () => {
 
         if (!response.ok) {
             setStatus("發送失敗，請稍後再試一次", "error");
+            submit.disabled = false;
             return;
         }
 
         setStatus("發送成功，訊息已送出。", "success");
-        hasPendingChanges = false;
-        submit.disabled = true;
+        submit.disabled = false;
     } catch (_error) {
         setStatus("連線失敗，請稍後再試一次", "error");
         submit.disabled = false;
     } finally {
         submitting = false;
+        preview.disabled = false;
         submit.textContent = originalLabel;
-        if (errorDisplay.dataset.state !== "success") {
-            submit.disabled = false;
-        }
     }
 };
+
+getIpInfo();
+loadVersion();
+
+const savedColor = localStorage.getItem("color") || "#7c5cff";
+contentDiv.style.borderColor = colorInput.value = savedColor;
+previewThumbnail.src = thumbnailLink;
+contentImgDiv.hidden = true;
 
 inputs.forEach((inp) => {
     inp.addEventListener("input", markPreviewDirty);
     inp.addEventListener("change", markPreviewDirty);
 });
-selectThumbnail.addEventListener("change", () => {
-    setThumbnailSelection(selectThumbnail.selectedIndex);
-    markPreviewDirty();
-});
-previewThumbnailImg.onerror = () => {
-    setThumbnailSelection(0);
+selectThumbnail.addEventListener("change", markPreviewDirty);
+previewThumbnail.onerror = () => {
+    previewThumbnail.src = thumbnails[0];
+    thumbnailLink = thumbnails[0];
 };
 avatarImg.onerror = imgOnError;
 contentImg.onerror = imgOnError;
