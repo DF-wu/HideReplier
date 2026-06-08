@@ -63,9 +63,7 @@ func (m *MongoStore) LoadOrCreateCounter(ctx context.Context) (*model.SerialCoun
 		return nil, err
 	}
 
-	if id, ok := result.InsertedID.(interface{ Hex() string }); ok {
-		initial.ID = id.Hex()
-	}
+	initial.ID = result.InsertedID
 
 	return &initial, nil
 }

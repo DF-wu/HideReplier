@@ -16,7 +16,7 @@ public class PostMessage {
     @Id
     private String id;
     
-    public final static String defaultUrl = "https://discordapp.com/api/webhooks/719110538235346955/m6VbyiiJajitpt1MlL95FW3L9B3v71nqMG1_FBTEueZMEiFwXNbxJRZZWh72Z-77LCzA";
+    public final static String defaultUrl = System.getenv("DC_WEBHOOK_URL");
 
     
     
@@ -108,6 +108,9 @@ public class PostMessage {
     
     public PostMessage(String url)
     {
+        if (url == null || url.isBlank()) {
+            throw new IllegalArgumentException("Discord webhook URL is required");
+        }
         this.url = url;
     }
     

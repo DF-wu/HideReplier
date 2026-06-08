@@ -16,6 +16,7 @@ import (
 )
 
 type Handler struct {
+	config     config.Config
 	service    *service.DiscordService
 	staticFS   http.Handler
 	staticOpen fs.FS
@@ -30,6 +31,7 @@ func NewHandler(ctx context.Context, cfg config.Config, mongoStore *store.MongoS
 	}
 
 	return &Handler{
+		config:     cfg,
 		service:    discordService,
 		staticFS:   http.FileServer(http.FS(staticFS)),
 		staticOpen: staticFS,
@@ -43,6 +45,8 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusOK, model.HealthResponse{Status: "UP"})
 	case r.URL.Path == "/HideBot/discord/version" && r.Method == http.MethodGet:
 		writeJSON(w, http.StatusOK, h.service.GetVersion())
+	case r.URL.Path == "/HideBot/discord/targets" && r.Method == http.MethodGet:
+		writeJSON(w, http.StatusOK, h.config.PublicDiscordTargets())
 	case r.URL.Path == "/HideBot/discord" && r.Method == http.MethodGet:
 		h.handleGetHistory(w, r)
 	case r.URL.Path == "/HideBot/discord" && r.Method == http.MethodPost:
@@ -127,9 +131,14 @@ func shouldServeStatic(urlPath string) bool {
 	}
 
 	return strings.HasPrefix(urlPath, "/thumbs/") ||
+		strings.HasPrefix(urlPath, "/assets/") ||
 		strings.HasSuffix(urlPath, ".css") ||
 		strings.HasSuffix(urlPath, ".js") ||
+		strings.HasSuffix(urlPath, ".gif") ||
+		strings.HasSuffix(urlPath, ".ico") ||
+		strings.HasSuffix(urlPath, ".png") ||
 		strings.HasSuffix(urlPath, ".svg") ||
+		strings.HasSuffix(urlPath, ".webp") ||
 		strings.HasSuffix(urlPath, ".html")
 }
 

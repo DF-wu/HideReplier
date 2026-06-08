@@ -58,7 +58,7 @@ public class TestDiscordPost {
     
     public static void testoriginal() throws IOException
     {
-        DiscordWebhook webhook = new DiscordWebhook(PostMessage.defaultUrl);
+        DiscordWebhook webhook = new DiscordWebhook(requiredWebhookUrl());
         webhook.setContent("Any message!");
         webhook.setAvatarUrl("https://your.awesome/image.png");
         webhook.setUsername("Custom Usernames!");
@@ -87,7 +87,7 @@ public class TestDiscordPost {
     public static void messagedPost() throws IOException
     {
 
-        PostMessage webhook = new PostMessage(PostMessage.defaultUrl);
+        PostMessage webhook = new PostMessage(requiredWebhookUrl());
         //webhook.setContent("ㄟ不是我沒有權限刪除阿....");
         webhook.setAvatarUrl("https://img.icons8.com/color/144/000000/drupal.png");
         webhook.setUsername("匿名機器人ㄎㄎ");
@@ -97,7 +97,7 @@ public class TestDiscordPost {
                 "右邊會動了",
                 "https://img.icons8.com/color/288/000000/drupal.png",
                 Integer.valueOf("fff995",16).toString() ,
-                null,//new Embedobj.Footer("下面會出現的東西","https://discordapp.com/api/webhooks/710112845567623238/_LxpGhvlK6Wp-LgavxRV1UlcsEdqnnznHXuA6d4v7YWUBCfHOBRPwCo2B7-ao0_3EbwV"),
+                null,
                 new Embedobj.Thumbnail("https://cdn.discordapp.com/attachments/591643710454890505/723846103006445618/ue01.gif"),
                 new Embedobj.Image("https://i.imgur.com/zul9zzl.jpg"),
                 new Embedobj.Author("哈囉你好嗎", "https://kryptongta.com/images/kryptontitle2.png","https://img.icons8.com/color/144/000000/drupal.png"),
@@ -109,6 +109,13 @@ public class TestDiscordPost {
         webhook.excute();
         
     }
+
+    private static String requiredWebhookUrl() {
+        String webhookUrl = System.getenv("DC_WEBHOOK_URL");
+        if (webhookUrl == null || webhookUrl.isBlank()) {
+            throw new IllegalStateException("DC_WEBHOOK_URL is required for manual Discord post tests");
+        }
+        return webhookUrl;
+    }
    
 }
-

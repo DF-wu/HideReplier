@@ -8,6 +8,7 @@ type ReceivedPost struct {
 	Username  string            `json:"username,omitempty" bson:"username,omitempty"`
 	AvatarURL string            `json:"avatarUrl" bson:"avatar_url,omitempty"`
 	TTS       bool              `json:"tts,omitempty" bson:"tts,omitempty"`
+	TargetID  string            `json:"targetId,omitempty" bson:"targetId,omitempty"`
 	Extras    map[string]string `json:"extras,omitempty" bson:"extras,omitempty"`
 }
 
@@ -21,6 +22,7 @@ type IncomingPost struct {
 	ImageURL  string `json:"imgUrl"`
 	IP        string `json:"ip"`
 	Thumbnail string `json:"thumbnail"`
+	TargetID  string `json:"targetId"`
 }
 
 // StoreData is the history record stored in MongoDB and returned by GET /HideBot/discord.
