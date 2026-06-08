@@ -29,7 +29,9 @@
 2. run Go tests.
 3. build the Go server binary in the Docker multi-stage build.
 4. package the Vite `dist/` output and local `thumbs/` assets into the runtime image.
-5. deploy to Fly.io with `DC_WEBHOOK_URL` and `MONGO_URI` configured as secrets.
+5. deploy to Fly.io with the `Deploy to Fly.io` GitHub Actions workflow or `./build&deploy.sh` on a Fly-authenticated machine.
+
+Fly deployment requires Fly app secrets for `MONGO_URI` and either `DC_WEBHOOK_URL` or `DISCORD_TARGETS`. The GitHub Actions path also requires a `FLY_API_TOKEN` secret in the `hidedbot` environment.
 
 The Go version is the primary production runtime on `go-port`. The Java/Spring Boot code remains in `src/` as the legacy maintenance path.
 
