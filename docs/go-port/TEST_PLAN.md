@@ -11,12 +11,14 @@
 - embed 建構
 - BBCode 去除
 - config 解析
+- Discord target 選擇與 webhook URL redaction
 
 ### 2.2 Integration Tests
 - Mongo 初始化與 counter 載入
 - 成功 webhook 後寫入 history
 - 失敗 webhook 不寫入 history
 - version route
+- targets route
 - health route
 
 ### 2.3 End-to-End Tests
@@ -46,11 +48,18 @@
 - 預期 history 不增加
 
 ### TC-05 靜態資產
-- `/`, `/index.css`, `/index.js`, `/thumbs/01.svg`
+- `/`, `/assets/*.css`, `/assets/*.js`, `/icon.png`, `/thumbs/01.svg`, `/thumbs/01.gif`
 - 預期皆可正常提供
 
 ### TC-06 瀏覽器驗證
 - 在 sandbox 瀏覽器環境檢查畫面層級、互動與送出狀態
+
+### TC-07 多 Discord 目標
+- 設定 `DISCORD_TARGETS` 含兩個 webhook target
+- 呼叫 `/HideBot/discord/targets`
+- 預期回傳 target id/label/default 且不包含 webhook URL
+- 使用 `targetId` 成功送出
+- 使用未知 `targetId` 預期回非 2xx 且不寫入 history/counter
 
 ## 4. 完成標準
 

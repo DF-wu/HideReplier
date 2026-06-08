@@ -26,10 +26,11 @@
   "timeStamp": 1710000000,
   "serialNumber": 3599,
   "discordMessage": {
-    "url": "https://httpbin.org/post",
+    "url": "https://hidereplier.fly.dev/",
     "content": "ui success",
     "username": "ui-success",
     "tts": false,
+    "targetId": "main",
     "extras": {
       "imgUrl": "https://i.imgur.com/zul9zzl.jpg",
       "thumbnail": "http://127.0.0.1:18082/thumbs/01.svg",

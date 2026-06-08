@@ -25,6 +25,7 @@ Go 版本採用低依賴、低記憶體、容易部署的設計：
 - `BOT_VERSION`
 - `HOST_URL`
 - `DC_WEBHOOK_URL`
+- `DISCORD_TARGETS`
 - `MONGO_URI`
 - `MONGO_DATABASE`
 
@@ -33,6 +34,7 @@ Go 版本採用低依賴、低記憶體、容易部署的設計：
 - `/HideBot/discord` POST
 - `/HideBot/discord` GET
 - `/HideBot/discord/version` GET
+- `/HideBot/discord/targets` GET
 - `/actuator/health` GET
 
 ### 2.4 `internal/service`
@@ -40,6 +42,7 @@ Go 版本採用低依賴、低記憶體、容易部署的設計：
 - 顏色正規化
 - embed 建構
 - webhook dispatch
+- Discord target resolution
 - 成功後持久化
 - counter 載入/更新
 
@@ -56,26 +59,34 @@ Go 版本採用低依賴、低記憶體、容易部署的設計：
 ### POST /HideBot/discord
 1. decode JSON request
 2. normalize request values
-3. load and increment serial counter in memory
-4. build embed payload
-5. send webhook to Discord target
-6. 若成功：寫入 `DiscordPostCollection`
-7. 若成功：更新 `Counter`
-8. 回傳前端可用 JSON
+3. resolve configured Discord target by `targetId`
+4. load and increment serial counter in memory
+5. build embed payload
+6. send webhook to Discord target
+7. 若成功：寫入 `DiscordPostCollection`
+8. 若成功：更新 `Counter`
+9. 回傳前端可用 JSON
 
 ### GET /HideBot/discord
 1. 從 Mongo 讀取所有紀錄
 2. 依 `serialNumber` 排序
 3. 轉為 JSON 回傳
 
+### GET /HideBot/discord/targets
+1. 從 runtime config 讀取 Discord targets
+2. 移除 webhook URL
+3. 回傳前端可顯示的 `id`、`label`、`default`
+
 ## 4. 靜態前端設計
 
-靜態檔案沿用現有 `src/main/resources/static/` 內容，於 Go 版本中直接作為公開目錄提供：
+production Docker build 由 `web/` React/Vite 專案產生 `web/dist`，並於 runtime 設為 `STATIC_DIR`。既有 `src/main/resources/static/thumbs/` 縮圖資產會被複製到 runtime static 目錄以保留 `/thumbs/*` 相容路徑。
 
 - `/` → `index.html`
-- `/index.css`
-- `/index.js`
+- `/assets/*.css`
+- `/assets/*.js`
 - `/thumbs/*.svg`
+- `/thumbs/*.gif`
+- `/icon.png`
 
 ## 5. 失敗處理策略
 

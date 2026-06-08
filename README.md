@@ -25,12 +25,22 @@
 
 ---
 ## building chain
-1. compile front-end pack (with tenor api key and Bot version in this stage)
-   - api key in dc manager channel. bot version is managing by my hand.....
-2. build maven project
-3. build as docker image
-4. push to docker hub
-5. deploy to fly.io platform
+1. build the `web/` Vite frontend with bot version build args.
+2. run Go tests.
+3. build the Go server binary in the Docker multi-stage build.
+4. package the Vite `dist/` output and local `thumbs/` assets into the runtime image.
+5. deploy to Fly.io with `DC_WEBHOOK_URL` and `MONGO_URI` configured as secrets.
+
+The Go version is the primary production runtime on `go-port`. The Java/Spring Boot code remains in `src/` as the legacy maintenance path.
+
+## Discord targets
+
+Production can route posts to one or more Discord server/channel webhooks by setting runtime secrets:
+
+- Single target: set `DC_WEBHOOK_URL`.
+- Multiple targets: set `DISCORD_TARGETS` to a JSON array of `{ "id", "label", "webhookUrl", "default" }` objects.
+
+The frontend reads `/HideBot/discord/targets` and shows a channel selector when more than one target is configured. Webhook URLs are never returned by that API.
 
 
 
