@@ -8,6 +8,7 @@ export const Content = z.object({
   ip: z.string(),
   username: z.string(),
   thumbnail: z.string(),
+  targetId: z.string().optional(),
 });
 
 export type Content = z.infer<typeof Content>;
@@ -20,6 +21,7 @@ export const PartialContent = z.object({
   ip: z.string().optional(),
   username: z.string().optional(),
   thumbnail: z.string().optional(),
+  targetId: z.string().optional(),
 });
 
 export type PartialContent = z.infer<typeof PartialContent>;

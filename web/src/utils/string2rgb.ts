@@ -10,8 +10,8 @@ export function str2rgb(text: string): string {
   }
   let color = "#";
   for (let i = 0; i < 3; i++) {
-    let value = (hash >> (i * 8)) & 255;
-    let strVal = "00" + value.toString(16);
+    const value = (hash >> (i * 8)) & 255;
+    const strVal = "00" + value.toString(16);
     color += strVal.substring(strVal.length - 2);
   }
   return color;
