@@ -82,6 +82,8 @@ export function Input(props: InputProps | TextAreaProps) {
 function omitMultiLineProp<
   T extends { inputRef?: unknown; multiLine?: unknown }
 >(p: T): Omit<T, "multiLine" | "inputRef"> {
-  const { multiLine, inputRef, ...rest } = p;
+  const rest = { ...p };
+  delete rest.multiLine;
+  delete rest.inputRef;
   return rest;
 }

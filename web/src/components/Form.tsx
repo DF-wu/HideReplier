@@ -1,38 +1,47 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Content, PartialContent } from "../types";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import { str2rgb } from "../utils/string2rgb";
 import { ImageInput } from "./ImageInput";
+import { DiscordTarget } from "../services/api";
 
 export type FormProps = {
   ip: string;
+  discordTargets?: DiscordTarget[];
   onSubmit?: (content: Content) => void;
   onFormDataChanged?: (content: PartialContent) => void;
 };
 export function Form(props: FormProps) {
+  const {
+    ip,
+    discordTargets = [],
+    onFormDataChanged: emitFormDataChanged,
+    onSubmit,
+  } = props;
   const formRef = useRef<HTMLFormElement>(null);
-  const getFormData = () => {
+  const getFormData = useCallback(() => {
     if (!formRef.current) return;
     return {
       ...Object.fromEntries(new FormData(formRef.current)),
-      ip: props.ip,
+      ip,
     };
-  };
+  }, [ip]);
 
-  const onFormDataChanged = () => {
+  const onFormDataChanged = useCallback(() => {
     const partialContent = PartialContent.safeParse(getFormData());
     if (!partialContent.success) return console.error(partialContent.error);
-    props.onFormDataChanged?.(partialContent.data);
-  };
+    emitFormDataChanged?.(partialContent.data);
+  }, [emitFormDataChanged, getFormData]);
 
   const [color, setColor] = useState<string | undefined>(
-    props.ip ? str2rgb(props.ip) : ""
+    ip ? str2rgb(ip) : ""
   );
   useEffect(() => {
-    if (props.ip && !color) setColor(str2rgb(props.ip));
-    setTimeout(() => onFormDataChanged(), 0);
-  }, [props.ip]);
+    if (ip && !color) setColor(str2rgb(ip));
+    const timeout = window.setTimeout(() => onFormDataChanged(), 0);
+    return () => window.clearTimeout(timeout);
+  }, [color, ip, onFormDataChanged]);
 
   return (
     <form
@@ -42,7 +51,7 @@ export function Form(props: FormProps) {
         if (!formRef.current) return;
         const content = Content.safeParse(getFormData());
         if (!content.success) return console.error(content.error);
-        props.onSubmit?.(content.data);
+        onSubmit?.(content.data);
       }}
       onChange={onFormDataChanged}
       className="flex flex-col gap-3 w-[min(100%-1rem,300px)]"
@@ -54,6 +63,26 @@ export function Form(props: FormProps) {
         label="機器人名稱*"
         defaultValue="預設機器人:)"
       />
+      {discordTargets.length > 1 && (
+        <label className="flex flex-col gap-1 text-left text-zinc-100">
+          <span className="text-[0.9rem] font-medium">發送頻道</span>
+          <select
+            name="targetId"
+            defaultValue={
+              discordTargets.find((target) => target.default)?.id ||
+              discordTargets[0]?.id
+            }
+            onChange={onFormDataChanged}
+            className="w-full rounded border border-solid border-zinc-600 bg-zinc-700 px-2 py-1 text-zinc-100 hover:border-zinc-400 focus:border-zinc-400 focus:outline-none"
+          >
+            {discordTargets.map((target) => (
+              <option key={target.id} value={target.id}>
+                {target.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
       <ImageInput
         onImageUrlChanged={onFormDataChanged}
         fullWidth

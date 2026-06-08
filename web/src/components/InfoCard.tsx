@@ -9,7 +9,7 @@ export function InfoCard(props: InfoCardProps) {
       <Button
         disabled={!props.ip}
         onClick={() => {
-          Swal.fire({
+          void Swal.fire({
             title: <h1 className="text-[22px] font-semibold">發文資訊</h1>,
             html: (
               <table className="w-full border-collapse text-left">

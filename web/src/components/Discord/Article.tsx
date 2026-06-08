@@ -1,11 +1,12 @@
 import { HTMLProps, ReactNode, useRef, useState } from "react";
+import reactStringReplace from "react-string-replace";
 import { cm } from "../../utils/tailwindMerge";
 import { Embeded } from "../../types";
 import { Image } from "./Image";
-import { highlightMentions } from "./Mention";
+import { Mention } from "./Mention";
 
 let toHTML: ((source: string) => string) | undefined = undefined;
-(async () => {
+void (async () => {
   const dcMark = await import("discord-markdown");
   toHTML = dcMark.toHTML;
 })();
@@ -118,4 +119,15 @@ function mapMarkdownToElement(content: ReactNode[]): ReactNode[] {
       <span key={`text-${i}`} dangerouslySetInnerHTML={{ __html: mapped }} />
     );
   });
+}
+
+type InputContent = Parameters<typeof reactStringReplace>[0];
+
+const mentionMatcher = /(?<=^|\s)(@here|@everyone)/g;
+
+function highlightMentions(content: InputContent): ReactNode[] {
+  if (!content) return [content];
+  return reactStringReplace(content, mentionMatcher, (matched, i) => (
+    <Mention key={i} content={matched} />
+  ));
 }
