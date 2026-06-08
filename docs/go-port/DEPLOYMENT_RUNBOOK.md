@@ -50,6 +50,7 @@
 - 單 binary 啟動
 - 映像檔應使用 multi-stage build
 - production runtime 使用 Go binary；Java/Spring Boot 程式碼保留為 legacy 維護路徑，不參與 Fly production deploy
+- Java legacy runtime 維護分支為 `legacy-java`；`master` 以 Go runtime 為主線
 - Docker build 會把 `web/dist` 複製成 runtime `STATIC_DIR`，並保留 `/thumbs/*` 本地縮圖資產
 
 ## 5. 部署流程

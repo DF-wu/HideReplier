@@ -1,6 +1,6 @@
 # Go Port Documentation Set
 
-本目錄收錄 `go-port` 分支的 Go 版本移植文件。
+本目錄收錄 Go 版本移植文件。Go runtime 現在是 `master` 的主要 production runtime；Java/Spring Boot legacy runtime 保留在 `legacy-java` 分支維護。
 
 ## 文件清單
 
