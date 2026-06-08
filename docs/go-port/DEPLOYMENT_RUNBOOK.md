@@ -54,10 +54,11 @@
 
 ## 5. 部署流程
 
-1. 確認 Fly secrets 已設定：`MONGO_URI`，以及 `DC_WEBHOOK_URL` 或 `DISCORD_TARGETS`；必要時設定 `HOST_URL`、`MONGO_DATABASE`。
-2. 設定版本：`export BOT_VERSION=1.0.4`。
-3. 執行 `./build&deploy.sh`。
-4. 部署後檢查 `/actuator/health`、首頁、`/HideBot/discord/version` 與 `/HideBot/discord/targets`。
+1. 確認 Fly app secrets 已設定：`MONGO_URI`，以及 `DC_WEBHOOK_URL` 或 `DISCORD_TARGETS`；必要時設定 `HOST_URL`、`MONGO_DATABASE`。
+2. 在 GitHub environment `hidedbot` 設定 Actions secret `FLY_API_TOKEN`。
+3. 到 GitHub Actions 手動執行 `Deploy to Fly.io` workflow，輸入要顯示的 `bot_version`，預設為 `1.0.4`。
+4. 若在已登入 Fly CLI 的本機部署，設定版本：`export BOT_VERSION=1.0.4`，再執行 `./build&deploy.sh`。
+5. 部署後檢查 `/actuator/health`、首頁、`/HideBot/discord/version` 與 `/HideBot/discord/targets`。
 
 ## 6. 觀察項目
 
