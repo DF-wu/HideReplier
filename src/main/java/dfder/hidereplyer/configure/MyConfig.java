@@ -1,35 +1,37 @@
 package dfder.hidereplyer.configure;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-//@ConfigurationProperties(prefix = "hidereplier")
+@ConfigurationProperties(prefix = "hidereplier")
 public class MyConfig {
 
-    @Value("${hidereplier.version}")
     private String version;
-
-    @Value("${hidereplier.hostURL}")
-    private String hostURL;
-
-    @Value("${hidereplier.DCWebhook}")
-    private String DCWebhook;
-
+    private String hostUrl;
+    private String dcWebhook;
 
     public String getVersion() {
         return version;
     }
 
-    public String getHostURL() {
-        return hostURL;
+    public void setVersion(String version) {
+        this.version = version;
     }
 
-    public String getDCWebhook() {
-        return DCWebhook;
+    public String getHostUrl() {
+        return hostUrl;
     }
 
+    public void setHostUrl(String hostUrl) {
+        this.hostUrl = hostUrl;
+    }
 
-//-------------getter & setter end-----------
+    public String getDcWebhook() {
+        return dcWebhook;
+    }
+
+    public void setDcWebhook(String dcWebhook) {
+        this.dcWebhook = dcWebhook;
+    }
 }

@@ -10,7 +10,7 @@ export type ButtonVariant =
   | "danger"
   | "disabled";
 
-export const buttonColors: Record<ButtonVariant, string> = {
+const buttonColors: Record<ButtonVariant, string> = {
   default:
     "bg-zinc-500 focus:bg-zinc-400 hover:bg-zinc-400 text-zinc-50 focus:ring-zinc-300",
   primary:

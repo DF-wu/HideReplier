@@ -1,6 +1,8 @@
 #!/bin/bash
 # author: df
 # date: 2024-07-24
-# desc: entrypoint.sh to run multiple process in one container
+# desc: legacy wrapper retained for platforms that expect an entrypoint script
 
-java -Dspring.profiles.active=application -jar ../app.jar 
+set -euo pipefail
+
+exec /app/hidereplier-go

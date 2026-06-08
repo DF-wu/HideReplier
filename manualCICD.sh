@@ -1,4 +1,5 @@
 #!/bin/bash
-git pull && \
-sh build.sh && \
-fly deploy
+set -euo pipefail
+
+git pull --ff-only
+./build\&deploy.sh

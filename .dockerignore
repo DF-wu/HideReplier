@@ -1,2 +1,6 @@
-# God said "Don't copy these to your docker image"
-./web
+# Keep the frontend source in the Docker context so Fly remote builds can
+# compile Vite assets without a local prebuild step.
+web/node_modules
+web/dist
+web/.env
+target

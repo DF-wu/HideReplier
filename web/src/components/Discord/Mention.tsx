@@ -1,5 +1,3 @@
-import { ReactNode } from "react";
-import reactStringReplace from "react-string-replace";
 import { cm } from "../../utils/tailwindMerge";
 
 export type DiscordMentionProps = {
@@ -17,14 +15,4 @@ export function Mention(props: DiscordMentionProps) {
       {props.content}
     </span>
   );
-}
-
-export type InputContent = Parameters<typeof reactStringReplace>[0];
-
-const mentionMatcher = /(?<=^|\s)(@here|@everyone)/g;
-export function highlightMentions(content: InputContent): ReactNode[] {
-  if (!content) return [content];
-  return reactStringReplace(content, mentionMatcher, (matched, i) => (
-    <Mention key={i} content={matched} />
-  ));
 }
