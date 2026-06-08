@@ -6,6 +6,7 @@
 
 - 靜態單頁前端
 - 匿名 Discord webhook 發文
+- 多 Discord server/channel 目標選擇
 - 歷史查詢
 - 版本查詢
 - 健康檢查
@@ -21,8 +22,6 @@ Go 版本必須取代目前 Spring Boot 執行路徑，並滿足以下範圍：
 
 不在本次範圍內：
 
-- 新功能
-- 多租戶
 - OAuth / 登入系統
 - 分散式擴展
 
@@ -31,11 +30,11 @@ Go 版本必須取代目前 Spring Boot 執行路徑，並滿足以下範圍：
 ### 3.1 一般使用者
 - 透過前端頁面填寫機器人名稱、顏色、頭像、圖片、內容。
 - 預覽訊息外觀。
-- 送出到 Discord webhook。
+- 選擇可用的 Discord 發送目標並送出到 webhook。
 
 ### 3.2 維運者
 - 透過 Fly.io 部署 Go 版本。
-- 透過環境變數設定版本、MongoDB URI、Discord webhook URL。
+- 透過環境變數設定版本、MongoDB URI、Discord webhook URL 或多目標 webhook 清單。
 - 透過健康檢查驗證服務狀態。
 
 ## 4. 功能需求
@@ -78,6 +77,9 @@ Go 版本必須取代目前 Spring Boot 執行路徑，並滿足以下範圍：
 
 ### FR-08 錯誤回報
 前端在送出失敗時必須顯示失敗訊息，不能一律顯示成功。
+
+### FR-09 多 Discord 目標
+系統必須允許維運者用環境變數設定多個 Discord server/channel webhook 目標，並讓前端在送出前選擇目標。目標清單 API 不得洩漏 webhook URL。
 
 ## 5. 非功能需求
 
