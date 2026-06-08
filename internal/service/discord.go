@@ -14,7 +14,6 @@ import (
 
 	"github.com/DF-wu/HideReplier/internal/config"
 	"github.com/DF-wu/HideReplier/internal/model"
-	"github.com/DF-wu/HideReplier/internal/store"
 )
 
 const (
@@ -28,22 +27,29 @@ const (
 
 type DiscordService struct {
 	config  config.Config
-	store   *store.MongoStore
+	store   Store
 	client  *http.Client
 	mu      sync.Mutex
 	counter *model.SerialCounter
 }
 
+type Store interface {
+	LoadOrCreateCounter(ctx context.Context) (*model.SerialCounter, error)
+	SaveCounter(ctx context.Context, counter *model.SerialCounter) error
+	InsertHistory(ctx context.Context, data model.StoreData) error
+	ListHistory(ctx context.Context) ([]model.StoreData, error)
+}
+
 // NewDiscordService loads the persisted counter state and prepares the webhook client.
-func NewDiscordService(ctx context.Context, cfg config.Config, mongoStore *store.MongoStore) (*DiscordService, error) {
-	counter, err := mongoStore.LoadOrCreateCounter(ctx)
+func NewDiscordService(ctx context.Context, cfg config.Config, dataStore Store) (*DiscordService, error) {
+	counter, err := dataStore.LoadOrCreateCounter(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	return &DiscordService{
 		config:  cfg,
-		store:   mongoStore,
+		store:   dataStore,
 		client:  &http.Client{Timeout: 15 * time.Second},
 		counter: counter,
 	}, nil
@@ -70,6 +76,7 @@ func (s *DiscordService) PostAnonymousMessage(ctx context.Context, post model.In
 		Username:  post.Username,
 		AvatarURL: post.AvatarURL,
 		TTS:       post.TTS,
+		TargetID:  post.TargetID,
 		Extras: map[string]string{
 			colorKey:     post.Color,
 			avatarURLKey: post.AvatarURL,
@@ -89,12 +96,18 @@ func (s *DiscordService) PostAnonymousMessage(ctx context.Context, post model.In
 	normalized.AvatarURL = normalized.Extras[avatarURLKey]
 	normalized.Extras[colorKey] = strconv.Itoa(normalizedColor)
 
+	target, err := s.config.ResolveDiscordTarget(post.TargetID)
+	if err != nil {
+		return model.ReceivedPost{}, err
+	}
+	normalized.TargetID = target.ID
+
 	s.counter.Counter++
 	serialNumber := s.counter.Counter
 	timestamp := currentTaiwanEpochSecond()
 
 	payload := model.DiscordWebhookPayload{
-		URL:       s.config.DiscordWebhook,
+		URL:       target.WebhookURL,
 		Content:   "",
 		Username:  normalized.Username,
 		AvatarURL: normalized.AvatarURL,
@@ -109,7 +122,7 @@ func (s *DiscordService) PostAnonymousMessage(ctx context.Context, post model.In
 		return model.ReceivedPost{}, err
 	}
 
-	normalized.URL = s.config.DiscordWebhook
+	normalized.URL = s.config.HostURL
 	normalized.Content = originalContent
 
 	storeData := model.StoreData{
