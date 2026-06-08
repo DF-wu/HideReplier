@@ -33,7 +33,7 @@
 
 Fly deployment requires Fly app secrets for `MONGO_URI` and either `DC_WEBHOOK_URL` or `DISCORD_TARGETS`. The GitHub Actions path also requires a `FLY_API_TOKEN` secret in the `hidedbot` environment.
 
-The Go version is the primary production runtime on `go-port`. The Java/Spring Boot code remains in `src/` as the legacy maintenance path.
+The Go version is the primary production runtime on `master`. The Java/Spring Boot runtime is preserved on the `legacy-java` branch for legacy maintenance, and the Java source still remains in `src/` on `master` for reference and compatibility work.
 
 ## Discord targets
 
