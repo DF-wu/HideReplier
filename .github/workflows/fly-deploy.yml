@@ -1,0 +1,27 @@
+name: Deploy to Fly.io
+
+on:
+  workflow_dispatch:
+    inputs:
+      bot_version:
+        description: Bot version shown by the frontend and webhook embeds
+        required: false
+        default: 1.0.4
+
+jobs:
+  deploy:
+    name: Deploy Go runtime
+    runs-on: ubuntu-latest
+    environment: hidedbot
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          BOT_VERSION: ${{ inputs.bot_version }}
+        run: flyctl deploy --remote-only --build-arg "VITE_BOT_VERSION=${BOT_VERSION}"
