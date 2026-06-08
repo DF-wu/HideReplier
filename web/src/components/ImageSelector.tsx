@@ -28,10 +28,20 @@ function BuiltInSelector(props: ImageSelectorImplProps) {
 }
 
 function TenorSelector(props: ImageSelectorImplProps) {
+  const tenorApiKey = import.meta.env.VITE_TENOR_API_KEY;
+
+  if (!tenorApiKey) {
+    return (
+      <div className="px-4 py-5 text-sm leading-6 text-zinc-300">
+        Tenor 尚未設定
+      </div>
+    );
+  }
+
   return (
     <div>
       <GifPicker
-        tenorApiKey={import.meta.env.VITE_TENOR_API_KEY}
+        tenorApiKey={tenorApiKey}
         theme={Theme.DARK}
         clientKey="hide-bot"
         width="auto"

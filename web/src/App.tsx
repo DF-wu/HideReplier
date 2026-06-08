@@ -1,24 +1,35 @@
-import { Suspense, lazy, useCallback, useState } from "react";
+import { Suspense, lazy, useCallback, useEffect, useState } from "react";
 import { NavLink } from "./components/NavLink";
 import { useAdvancedInfo } from "./services/query";
 import { cm } from "./utils/tailwindMerge";
 import { Content, PartialContent } from "./types";
-import { sendPost } from "./services/api";
+import { DiscordTarget, getDiscordTargets, sendPost } from "./services/api";
 import Swal from "./utils/sweetAlert2";
 
 const Post = lazy(() => import("./components/Discord/Post"));
 const Form = lazy(() => import("./components/Form"));
 const InfoCard = lazy(() => import("./components/InfoCard"));
+const botVersion = import.meta.env.VITE_BOT_VERSION || "dev";
 
 function App() {
   const advancedInfo = useAdvancedInfo();
   const [content, setContent] = useState<PartialContent>({});
+  const [discordTargets, setDiscordTargets] = useState<DiscordTarget[]>([]);
+
+  useEffect(() => {
+    void getDiscordTargets()
+      .then(setDiscordTargets)
+      .catch((error) => {
+        console.error(error);
+        setDiscordTargets([]);
+      });
+  }, []);
 
   const Preview = (
     <Suspense fallback={<span>Loading preview...</span>}>
       <Post
         avatar={content.avatar_url || "/icon.png"}
-        topTitle={`匿名機器人v${import.meta.env.VITE_BOT_VERSION} (點我去發文)`}
+        topTitle={`匿名機器人v${botVersion} (點我去發文)`}
         mainTitle={content.username || ""}
         trimColor={content.color}
         content={content.content}
@@ -35,13 +46,13 @@ function App() {
   const onSubmit = useCallback(async (post: Content) => {
     try {
       await sendPost(post);
-      Swal.fire({
+      await Swal.fire({
         icon: "success",
         title: "發送成功！",
       });
     } catch (e) {
       console.error(e);
-      Swal.fire({
+      await Swal.fire({
         icon: "error",
         title: "發生未知錯誤！",
       });
@@ -61,7 +72,7 @@ function App() {
       cancelButtonText: "取消",
     });
     if (!result.isConfirmed) return;
-    onSubmit(post);
+    await onSubmit(post);
   };
 
   return (
@@ -103,7 +114,10 @@ function App() {
             <Suspense fallback={<span>Loading form...</span>}>
               <Form
                 ip={advancedInfo.ip}
-                onSubmit={onPreSubmit}
+                discordTargets={discordTargets}
+                onSubmit={(post) => {
+                  void onPreSubmit(post);
+                }}
                 onFormDataChanged={setContent}
               />
             </Suspense>
