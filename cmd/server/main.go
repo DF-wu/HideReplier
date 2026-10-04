@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"errors"
-	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -13,6 +12,7 @@ import (
 
 	"github.com/DF-wu/HideReplier/internal/app"
 	"github.com/DF-wu/HideReplier/internal/config"
+	"github.com/DF-wu/HideReplier/internal/service"
 	"github.com/DF-wu/HideReplier/internal/store"
 )
 
@@ -23,11 +23,6 @@ func main() {
 	cfg := config.Load()
 	if err := cfg.Validate(); err != nil {
 		log.Fatalf("invalid configuration: %v", err)
-	}
-
-	staticFS := os.DirFS(cfg.StaticDir)
-	if _, err := fs.Stat(staticFS, "index.html"); err != nil {
-		log.Fatalf("failed to locate static frontend assets in %s: %v", cfg.StaticDir, err)
 	}
 
 	mongoStore, err := store.NewMongoStore(ctx, cfg)
@@ -42,15 +37,21 @@ func main() {
 		}
 	}()
 
-	handler, err := app.NewHandler(ctx, cfg, mongoStore, staticFS)
+	discordService := service.NewDiscordService(cfg, mongoStore)
+
+	handler, err := app.NewHandler(cfg, discordService, os.DirFS(cfg.StaticDir))
 	if err != nil {
-		log.Fatalf("failed to initialize app: %v", err)
+		log.Fatalf("failed to initialize app (STATIC_DIR=%s): %v", cfg.StaticDir, err)
 	}
 
 	server := &http.Server{
 		Addr:              cfg.ListenAddress(),
 		Handler:           handler,
 		ReadHeaderTimeout: 10 * time.Second,
+		ReadTimeout:       30 * time.Second,
+		WriteTimeout:      60 * time.Second,
+		IdleTimeout:       120 * time.Second,
+		MaxHeaderBytes:    16 << 10,
 	}
 
 	go func() {
