@@ -57,20 +57,22 @@ Go 版本採用低依賴、低記憶體、容易部署的設計：
 ## 3. 請求流程
 
 ### POST /HideBot/discord
-1. decode JSON request
+1. decode JSON request（body 上限 64KB）
 2. normalize request values
 3. resolve configured Discord target by `targetId`
-4. load and increment serial counter in memory
+4. 以 `findOneAndUpdate` + `$inc` 在 Mongo 原子性地保留流水號（單一 round trip，無全域鎖；多實例安全）
 5. build embed payload
 6. send webhook to Discord target
 7. 若成功：寫入 `DiscordPostCollection`
-8. 若成功：更新 `Counter`
-9. 回傳前端可用 JSON
+8. 回傳前端可用 JSON
+
+> webhook 失敗時流水號不會回收，會留下空號。這是用「請求可完全並行」換來的；
+> 舊版以全域 mutex 把整段 webhook 往返串行化，在單核機器上會把所有發文排成一列。
 
 ### GET /HideBot/discord
-1. 從 Mongo 讀取所有紀錄
-2. 依 `serialNumber` 排序
-3. 轉為 JSON 回傳
+1. Mongo 端依 `serialNumber` 排序（啟動時會嘗試建立該欄位索引）
+2. 以 cursor 逐筆 decode 並直接串流寫出 JSON array，記憶體不隨歷史筆數成長
+3. `?limit=N` 時只取最新 N 筆（上限 5000），仍以升冪回傳
 
 ### GET /HideBot/discord/targets
 1. 從 runtime config 讀取 Discord targets

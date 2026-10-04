@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { Suspense, lazy, useState } from "react";
 import { cm } from "../utils/tailwindMerge";
 import { Image } from "./Discord/Image";
-import GifPicker, { Theme } from "gif-picker-react";
 import imageList from "../images.json";
+
+// gif-picker-react is only useful when a Tenor key is configured and the user
+// opens that tab, so keep it out of the Form chunk entirely.
+const TenorPicker = lazy(() => import("./TenorPicker"));
 
 const imgList: ReadonlyArray<string> = imageList;
 
@@ -40,13 +43,18 @@ function TenorSelector(props: ImageSelectorImplProps) {
 
   return (
     <div>
-      <GifPicker
-        tenorApiKey={tenorApiKey}
-        theme={Theme.DARK}
-        clientKey="hide-bot"
-        width="auto"
-        onGifClick={(gif) => props.onImageSelected?.(gif.url)}
-      />
+      <Suspense
+        fallback={
+          <div className="px-4 py-5 text-sm leading-6 text-zinc-300">
+            Loading Tenor...
+          </div>
+        }
+      >
+        <TenorPicker
+          tenorApiKey={tenorApiKey}
+          onImageSelected={props.onImageSelected}
+        />
+      </Suspense>
     </div>
   );
 }
