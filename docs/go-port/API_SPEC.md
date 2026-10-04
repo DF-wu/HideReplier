@@ -34,7 +34,7 @@
 
 ### Response
 ```json
-"1.0.4"
+"1.0.5"
 ```
 
 ## 7. GET /HideBot/discord

@@ -4,7 +4,7 @@ set -euo pipefail
 # Go is the primary runtime on this branch. Java/Spring Boot remains in src/ as
 # legacy code, but the production deploy path builds the Go binary and Vite UI.
 
-BOT_VERSION="${BOT_VERSION:-1.0.4}"
+BOT_VERSION="${BOT_VERSION:-1.0.5}"
 IMAGE_NAME="${IMAGE_NAME:-dfder/hidereplier}"
 
 echo "build-deploy: checking Go tests"

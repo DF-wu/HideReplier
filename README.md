@@ -56,6 +56,11 @@ The frontend reads `/HideBot/discord/targets` and shows a channel selector when 
 
 
 ## 更新紀錄
+- Diet edition: v1.0.5
+  - tuned for the 1 vCPU / 256MB Fly machine: precompressed assets with immutable caching, streamed history, atomic serial numbers, bounded pool and body sizes.
+  - frontend markdown chunk 910KB -> 41KB; Tenor picker lazy-loaded.
+  - smaller non-root image; faster health checks.
+
 - Health action: v1.0.2
   - smaller image and runtime image usage now.
 
