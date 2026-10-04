@@ -65,7 +65,7 @@ func TestPostAnonymousMessageDispatchesSelectedTargetAndRedactsWebhook(t *testin
 	defer opsWebhook.Close()
 
 	fakeStore := newFakeStore(41)
-	svc, err := NewDiscordService(ctx, config.Config{
+	svc := NewDiscordService(config.Config{
 		BotVersion: "test",
 		HostURL:    "https://hidereplier.example/",
 		DiscordTargets: []config.DiscordTarget{
@@ -73,9 +73,6 @@ func TestPostAnonymousMessageDispatchesSelectedTargetAndRedactsWebhook(t *testin
 			{ID: "ops", Label: "Ops", WebhookURL: opsWebhook.URL},
 		},
 	}, fakeStore)
-	if err != nil {
-		t.Fatalf("new service: %v", err)
-	}
 
 	result, err := svc.PostAnonymousMessage(ctx, model.IncomingPost{
 		Content:   "hello from ops",
@@ -120,8 +117,49 @@ func TestPostAnonymousMessageDispatchesSelectedTargetAndRedactsWebhook(t *testin
 	if stored.TargetID != "ops" {
 		t.Fatalf("expected stored target ops, got %q", stored.TargetID)
 	}
-	if fakeStore.counter.Counter != 42 {
-		t.Fatalf("expected counter 42, got %d", fakeStore.counter.Counter)
+	if fakeStore.counter != 42 {
+		t.Fatalf("expected counter 42, got %d", fakeStore.counter)
+	}
+	if fakeStore.history[0].SerialNumber != 42 {
+		t.Fatalf("expected stored serial 42, got %d", fakeStore.history[0].SerialNumber)
+	}
+	if stored.Extras[colorKey] != "8150271" {
+		t.Fatalf("expected normalized decimal color, got %q", stored.Extras[colorKey])
+	}
+}
+
+func TestPostAnonymousMessageDoesNotPersistWhenWebhookFails(t *testing.T) {
+	ctx := context.Background()
+
+	webhook := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusTooManyRequests)
+	}))
+	defer webhook.Close()
+
+	fakeStore := newFakeStore(10)
+	svc := NewDiscordService(config.Config{
+		BotVersion: "test",
+		HostURL:    "https://hidereplier.example/",
+		DiscordTargets: []config.DiscordTarget{
+			{ID: "main", Label: "Main", WebhookURL: webhook.URL, Default: true},
+		},
+	}, fakeStore)
+
+	_, err := svc.PostAnonymousMessage(ctx, model.IncomingPost{
+		Content:  "hello",
+		Username: "anonymous",
+		Color:    "#7c5cff",
+	})
+	if err == nil {
+		t.Fatal("expected webhook failure error")
+	}
+	if len(fakeStore.history) != 0 {
+		t.Fatalf("expected no history rows after failed dispatch, got %d", len(fakeStore.history))
+	}
+	// The serial is reserved atomically before dispatch, so a failure leaves a
+	// gap rather than reusing the number under a global lock.
+	if fakeStore.counter != 11 {
+		t.Fatalf("expected reserved serial 11, got %d", fakeStore.counter)
 	}
 }
 
@@ -136,18 +174,15 @@ func TestPostAnonymousMessageRejectsUnknownTargetBeforeDispatchAndPersistence(t 
 	defer webhook.Close()
 
 	fakeStore := newFakeStore(7)
-	svc, err := NewDiscordService(ctx, config.Config{
+	svc := NewDiscordService(config.Config{
 		BotVersion: "test",
 		HostURL:    "https://hidereplier.example/",
 		DiscordTargets: []config.DiscordTarget{
 			{ID: "main", Label: "Main", WebhookURL: webhook.URL, Default: true},
 		},
 	}, fakeStore)
-	if err != nil {
-		t.Fatalf("new service: %v", err)
-	}
 
-	_, err = svc.PostAnonymousMessage(ctx, model.IncomingPost{
+	_, err := svc.PostAnonymousMessage(ctx, model.IncomingPost{
 		Content:  "hello",
 		Username: "anonymous",
 		Color:    "#7c5cff",
@@ -163,34 +198,47 @@ func TestPostAnonymousMessageRejectsUnknownTargetBeforeDispatchAndPersistence(t 
 	if len(fakeStore.history) != 0 {
 		t.Fatalf("expected no history rows, got %d", len(fakeStore.history))
 	}
-	if fakeStore.counter.Counter != 7 {
-		t.Fatalf("expected counter to remain 7, got %d", fakeStore.counter.Counter)
+	if fakeStore.counter != 7 {
+		t.Fatalf("expected counter to remain 7, got %d", fakeStore.counter)
 	}
 }
 
 type fakeStore struct {
-	counter *model.SerialCounter
+	mu      sync.Mutex
+	counter int
 	history []model.StoreData
 }
 
 func newFakeStore(counter int) *fakeStore {
-	return &fakeStore{counter: &model.SerialCounter{ID: "counter", Counter: counter}}
+	return &fakeStore{counter: counter}
 }
 
-func (f *fakeStore) LoadOrCreateCounter(context.Context) (*model.SerialCounter, error) {
+func (f *fakeStore) NextSerial(context.Context) (int, error) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	f.counter++
 	return f.counter, nil
 }
 
-func (f *fakeStore) SaveCounter(_ context.Context, counter *model.SerialCounter) error {
-	f.counter = counter
-	return nil
-}
-
 func (f *fakeStore) InsertHistory(_ context.Context, data model.StoreData) error {
+	f.mu.Lock()
+	defer f.mu.Unlock()
 	f.history = append(f.history, data)
 	return nil
 }
 
-func (f *fakeStore) ListHistory(context.Context) ([]model.StoreData, error) {
-	return f.history, nil
+func (f *fakeStore) StreamHistory(_ context.Context, limit int64, fn func(model.StoreData) error) error {
+	f.mu.Lock()
+	rows := append([]model.StoreData(nil), f.history...)
+	f.mu.Unlock()
+
+	if limit > 0 && int64(len(rows)) > limit {
+		rows = rows[int64(len(rows))-limit:]
+	}
+	for _, row := range rows {
+		if err := fn(row); err != nil {
+			return err
+		}
+	}
+	return nil
 }

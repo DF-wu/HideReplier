@@ -8,7 +8,7 @@ BOT_VERSION="${BOT_VERSION:-1.0.4}"
 IMAGE_NAME="${IMAGE_NAME:-dfder/hidereplier}"
 
 echo "build-deploy: checking Go tests"
-go test ./...
+go test ./cmd/... ./internal/...
 
 echo "build-deploy: checking Vite frontend build"
 pushd web >/dev/null

@@ -17,6 +17,8 @@ kill_timeout = 5
 [env]
   # 在此加入環境變數
   BOT_VERSION="1.0.4"
+  # Go GC soft limit，留 ~60MB 給 OS / page cache；避免直接撞到 OOM。
+  GOMEMLIMIT="192MiB"
 # 資源限制設定
 [[vm]]
   cpu_kind = "shared"    # CPU 類型：shared 或 performance
@@ -31,12 +33,12 @@ kill_timeout = 5
   auto_start_machines = true     # 改為 true
   min_machines_running = 1       # 最小運行機器數
 
-  # 健康檢查設定
+  # 健康檢查設定（Go 版本幾乎秒開，不需要 Java 時代的長寬限期）
   [[http_service.checks]]
-    grace_period = "120s"         # 增加寬限期
-    interval = "120s"             # 檢查間隔
+    grace_period = "15s"        # 開機寬限期
+    interval = "30s"            # 檢查間隔
     method = "GET"              # 檢查方法
-    timeout = "60s"             # 增加超時時間
+    timeout = "5s"              # 超時時間
     path = "/actuator/health"   # 健康檢查路徑
 
   # TLS 和 HTTP 處理設定
@@ -45,7 +47,9 @@ kill_timeout = 5
     port = 443                  # HTTPS 端口
 
   # 並發限制設定
+  # 以 request 計數而非 connection：瀏覽器 keep-alive 會長時間佔住連線，
+  # 以 connection 計數 20 條很容易在少數人同時開頁時就被 proxy 排隊。
   [http_service.concurrency]
-    type = "connections"
-    hard_limit = 20            # 最大並發連接數
-    soft_limit = 15            # 軟限制並發連接數
+    type = "requests"
+    hard_limit = 100           # 最大同時處理的請求數
+    soft_limit = 60            # 超過即嘗試分流（單機時無影響）

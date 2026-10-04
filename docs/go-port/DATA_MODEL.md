@@ -47,9 +47,10 @@
 
 ## 4. Behavioral Rules
 
-1. `serialNumber` 必須只在成功 webhook 後被持久化。
-2. `timeStamp` 使用台灣時區 +8 對應的 epoch second。
-3. 歷史資料查詢需依 `serialNumber` 升冪排序。
+1. 歷史紀錄（含 `serialNumber`）必須只在成功 webhook 後被持久化。
+2. `Counter.counter` 以 `$inc` 原子遞增，在 webhook 之前保留號碼；webhook 失敗會留下空號。
+3. `timeStamp` 使用台灣時區 +8 對應的 epoch second。
+4. 歷史資料查詢需依 `serialNumber` 升冪排序；服務啟動時會嘗試建立 `{ serialNumber: 1 }` 索引（失敗僅警告）。
 
 ## 5. Go Struct Mapping Principles
 
