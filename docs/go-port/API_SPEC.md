@@ -9,10 +9,11 @@
 - `200 text/html`
 
 ## 2. GET /assets/*.css
-提供 Vite build 後的前端樣式。
+提供 Vite build 後的前端樣式。`Cache-Control: public, max-age=31536000, immutable`（檔名含 hash）。
 
 ## 3. GET /assets/*.js
-提供 Vite build 後的前端邏輯。
+提供 Vite build 後的前端邏輯。同上。當 client 送出 `Accept-Encoding: gzip` 且 image 內存在預先壓縮的 `.gz` 副本時，
+直接回傳該副本（`Content-Encoding: gzip`、`Vary: Accept-Encoding`），執行期不做壓縮。
 
 ## 4. GET /thumbs/{name}.{svg,gif}
 
@@ -37,6 +38,9 @@
 ```
 
 ## 7. GET /HideBot/discord
+
+### Query
+- `limit` (optional): 只回傳最新 N 筆（仍依 `serialNumber` 升冪）。省略或 `all` 代表全部；最大 5000。
 
 ### Response Shape
 ```json

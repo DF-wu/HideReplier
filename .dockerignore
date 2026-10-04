@@ -1,6 +1,21 @@
 # Keep the frontend source in the Docker context so Fly remote builds can
 # compile Vite assets without a local prebuild step.
+.git
+.github
+.serena
+.mvn
+docs
+img
+JmeterTest
+scripts
+target
 web/node_modules
 web/dist
 web/.env
-target
+src/main/java
+src/test
+*.md
+*.jar
+mvnw
+mvnw.cmd
+pom.xml

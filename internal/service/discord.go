@@ -6,10 +6,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"strconv"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/DF-wu/HideReplier/internal/config"
@@ -23,36 +23,48 @@ const (
 	ipKey         = "ip"
 	thumbnailKey  = "thumbnail"
 	imageURLKey   = "imgUrl"
+
+	// Discord never returns a meaningful body for webhook posts; cap how much
+	// we are willing to drain so a misbehaving upstream cannot eat memory.
+	maxWebhookResponseBytes = 64 << 10
 )
 
+var taiwanZone = time.FixedZone("Asia/Taipei", 8*60*60)
+
 type DiscordService struct {
-	config  config.Config
-	store   Store
-	client  *http.Client
-	mu      sync.Mutex
-	counter *model.SerialCounter
+	config config.Config
+	store  Store
+	client *http.Client
 }
 
 type Store interface {
-	LoadOrCreateCounter(ctx context.Context) (*model.SerialCounter, error)
-	SaveCounter(ctx context.Context, counter *model.SerialCounter) error
+	NextSerial(ctx context.Context) (int, error)
 	InsertHistory(ctx context.Context, data model.StoreData) error
-	ListHistory(ctx context.Context) ([]model.StoreData, error)
+	StreamHistory(ctx context.Context, limit int64, fn func(model.StoreData) error) error
 }
 
-// NewDiscordService loads the persisted counter state and prepares the webhook client.
-func NewDiscordService(ctx context.Context, cfg config.Config, dataStore Store) (*DiscordService, error) {
-	counter, err := dataStore.LoadOrCreateCounter(ctx)
-	if err != nil {
-		return nil, err
+// NewDiscordService prepares the webhook client. The HTTP transport keeps a
+// couple of warm connections to Discord so each post does not pay a fresh
+// TLS handshake on a CPU-starved machine.
+func NewDiscordService(cfg config.Config, dataStore Store) *DiscordService {
+	transport := &http.Transport{
+		Proxy: http.ProxyFromEnvironment,
+		DialContext: (&net.Dialer{
+			Timeout:   10 * time.Second,
+			KeepAlive: 30 * time.Second,
+		}).DialContext,
+		ForceAttemptHTTP2:   true,
+		MaxIdleConns:        4,
+		MaxIdleConnsPerHost: 2,
+		IdleConnTimeout:     90 * time.Second,
+		TLSHandshakeTimeout: 10 * time.Second,
 	}
 
 	return &DiscordService{
-		config:  cfg,
-		store:   dataStore,
-		client:  &http.Client{Timeout: 15 * time.Second},
-		counter: counter,
-	}, nil
+		config: cfg,
+		store:  dataStore,
+		client: &http.Client{Timeout: 15 * time.Second, Transport: transport},
+	}
 }
 
 // GetVersion returns the configured bot version string exposed to the frontend.
@@ -60,25 +72,35 @@ func (s *DiscordService) GetVersion() string {
 	return s.config.BotVersion
 }
 
-// GetHistory returns the stored anonymous message history sorted by serial number.
-func (s *DiscordService) GetHistory(ctx context.Context) ([]model.StoreData, error) {
-	return s.store.ListHistory(ctx)
+// StreamHistory streams stored anonymous messages sorted by serial number.
+func (s *DiscordService) StreamHistory(ctx context.Context, limit int64, fn func(model.StoreData) error) error {
+	return s.store.StreamHistory(ctx, limit, fn)
 }
 
-// PostAnonymousMessage normalizes the frontend payload, sends the webhook,
-// and persists the history only after a successful dispatch.
+// PostAnonymousMessage normalizes the frontend payload, reserves a serial
+// number, sends the webhook, and persists the history only after a successful
+// dispatch. Requests are fully concurrent: the serial number is reserved
+// atomically in the store, so a failed dispatch leaves a gap instead of
+// serializing every post behind a global lock.
 func (s *DiscordService) PostAnonymousMessage(ctx context.Context, post model.IncomingPost) (model.ReceivedPost, error) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
+	normalizedColor, err := normalizeColor(post.Color)
+	if err != nil {
+		return model.ReceivedPost{}, err
+	}
+
+	target, err := s.config.ResolveDiscordTarget(post.TargetID)
+	if err != nil {
+		return model.ReceivedPost{}, err
+	}
 
 	normalized := model.ReceivedPost{
 		Content:   post.Content,
 		Username:  post.Username,
 		AvatarURL: post.AvatarURL,
 		TTS:       post.TTS,
-		TargetID:  post.TargetID,
+		TargetID:  target.ID,
 		Extras: map[string]string{
-			colorKey:     post.Color,
+			colorKey:     strconv.Itoa(normalizedColor),
 			avatarURLKey: post.AvatarURL,
 			imageURLKey:  post.ImageURL,
 			ipKey:        post.IP,
@@ -86,59 +108,36 @@ func (s *DiscordService) PostAnonymousMessage(ctx context.Context, post model.In
 		},
 	}
 
-	originalContent := normalized.Content
-	posterIP := normalized.Extras[ipKey]
-	normalizedColor, err := normalizeColor(normalized.Extras[colorKey])
+	serialNumber, err := s.store.NextSerial(ctx)
 	if err != nil {
-		return model.ReceivedPost{}, err
+		return model.ReceivedPost{}, fmt.Errorf("reserve serial number: %w", err)
 	}
-
-	normalized.AvatarURL = normalized.Extras[avatarURLKey]
-	normalized.Extras[colorKey] = strconv.Itoa(normalizedColor)
-
-	target, err := s.config.ResolveDiscordTarget(post.TargetID)
-	if err != nil {
-		return model.ReceivedPost{}, err
-	}
-	normalized.TargetID = target.ID
-
-	s.counter.Counter++
-	serialNumber := s.counter.Counter
-	timestamp := currentTaiwanEpochSecond()
+	timestamp := time.Now().In(taiwanZone).Unix()
 
 	payload := model.DiscordWebhookPayload{
 		URL:       target.WebhookURL,
-		Content:   "",
 		Username:  normalized.Username,
 		AvatarURL: normalized.AvatarURL,
 		TTS:       normalized.TTS,
 		Embeds: []model.DiscordEmbed{
-			buildEmbed(s.config, normalized, originalContent, normalizedColor, posterIP, serialNumber),
+			buildEmbed(s.config, normalized, normalizedColor, serialNumber),
 		},
 	}
 
 	if err := s.dispatch(ctx, payload); err != nil {
-		s.counter.Counter--
 		return model.ReceivedPost{}, err
 	}
 
 	normalized.URL = s.config.HostURL
-	normalized.Content = originalContent
 
 	storeData := model.StoreData{
 		TimeStamp:      timestamp,
 		SerialNumber:   serialNumber,
 		DiscordMessage: normalized,
-		PosterIP:       posterIP,
+		PosterIP:       post.IP,
 	}
 
 	if err := s.store.InsertHistory(ctx, storeData); err != nil {
-		s.counter.Counter--
-		return model.ReceivedPost{}, err
-	}
-
-	if err := s.store.SaveCounter(ctx, s.counter); err != nil {
-		s.counter.Counter--
 		return model.ReceivedPost{}, err
 	}
 
@@ -163,7 +162,8 @@ func (s *DiscordService) dispatch(ctx context.Context, payload model.DiscordWebh
 		return err
 	}
 	defer resp.Body.Close()
-	_, _ = io.ReadAll(resp.Body)
+	// Drain (bounded) so the connection can be reused by the transport.
+	_, _ = io.Copy(io.Discard, io.LimitReader(resp.Body, maxWebhookResponseBytes))
 
 	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
 		return fmt.Errorf("discord webhook request failed with status %d", resp.StatusCode)
@@ -172,10 +172,10 @@ func (s *DiscordService) dispatch(ctx context.Context, payload model.DiscordWebh
 	return nil
 }
 
-func buildEmbed(cfg config.Config, post model.ReceivedPost, content string, normalizedColor int, posterIP string, serialNumber int) model.DiscordEmbed {
+func buildEmbed(cfg config.Config, post model.ReceivedPost, normalizedColor int, serialNumber int) model.DiscordEmbed {
 	return model.DiscordEmbed{
 		Title:       post.Username,
-		Description: content,
+		Description: post.Content,
 		URL:         cfg.HostURL,
 		Color:       normalizedColor,
 		Author: &model.EmbedAuthor{
@@ -187,7 +187,7 @@ func buildEmbed(cfg config.Config, post model.ReceivedPost, content string, norm
 		Image:     &model.EmbedImage{URL: post.Extras[imageURLKey]},
 		Fields: []model.EmbedField{
 			{Name: "流水號", Value: strconv.Itoa(serialNumber), Inline: true},
-			{Name: "來自：", Value: posterIP, Inline: true},
+			{Name: "來自：", Value: post.Extras[ipKey], Inline: true},
 		},
 	}
 }
@@ -204,9 +204,4 @@ func normalizeColor(value string) (int, error) {
 	}
 
 	return int(parsed), nil
-}
-
-func currentTaiwanEpochSecond() int64 {
-	location := time.FixedZone("Asia/Taipei", 8*60*60)
-	return time.Now().In(location).Unix()
 }

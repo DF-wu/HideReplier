@@ -27,9 +27,18 @@
 ## building chain
 1. build the `web/` Vite frontend with bot version build args.
 2. run Go tests.
-3. build the Go server binary in the Docker multi-stage build.
-4. package the Vite `dist/` output and local `thumbs/` assets into the runtime image.
+3. build the Go server binary in the Docker multi-stage build (`-trimpath -ldflags "-s -w"`).
+4. package the Vite `dist/` output and local `thumbs/` assets into the runtime image, with `.gz` siblings precompressed for every text asset.
 5. deploy to Fly.io with the `Deploy to Fly.io` GitHub Actions workflow or `./build&deploy.sh` on a Fly-authenticated machine.
+
+### Runtime footprint
+The production VM is a single shared vCPU with 256MB RAM, so the server is tuned to do as little work per request as possible:
+
+- `index.html` is held in memory; hashed `/assets/*` get a one-year immutable cache; precompressed `.gz` files are served as-is (no runtime gzip).
+- `GET /HideBot/discord` streams rows straight from the Mongo cursor (sorted server-side, indexed on `serialNumber`); `?limit=N` returns only the newest N.
+- Serial numbers are reserved with an atomic `$inc`, so posts run fully concurrently instead of queuing behind one global lock.
+- Mongo pool is capped at 8 connections, POST bodies at 64KB, and `GOMEMLIMIT` keeps the Go GC inside the VM budget.
+- The frontend no longer bundles all of highlight.js (the preview's markdown chunk went from ~910KB to ~41KB) and the Tenor picker loads only when its tab is opened.
 
 Fly deployment requires Fly app secrets for `MONGO_URI` and either `DC_WEBHOOK_URL` or `DISCORD_TARGETS`. The GitHub Actions path also requires a `FLY_API_TOKEN` secret in the `hidedbot` environment.
 
