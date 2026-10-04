@@ -6,7 +6,7 @@ on:
       bot_version:
         description: Bot version shown by the frontend and webhook embeds
         required: false
-        default: 1.0.4
+        default: 1.0.5
 
 jobs:
   deploy:
