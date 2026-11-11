@@ -22,6 +22,7 @@
     - [圖片連結說明](#圖片連結說明)
   - [進度](#進度)
     - [Contribution](#contribution)
+  - [Star 趨勢（Star History）](#star-趨勢star-history)
 
 ---
 ## building chain
@@ -199,3 +200,13 @@ The frontend reads `/HideBot/discord/targets` and shows a channel selector when 
 @k3kdude for the DiscordWebhook Java base concept implement
 @stanley2058 for the AMAZING web UI improvement.
 @penut85420 for cleaning up code and optimize the github README.md 
+
+## Star 趨勢（Star History）
+
+<a href="https://www.star-history.com/?repos=DF-wu/HideReplier&amp;type=date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=DF-wu/HideReplier&amp;type=Date&amp;theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=DF-wu/HideReplier&amp;type=Date" />
+    <img alt="GitHub stars over time for DF-wu/HideReplier" src="https://api.star-history.com/svg?repos=DF-wu/HideReplier&amp;type=Date" />
+  </picture>
+</a>
