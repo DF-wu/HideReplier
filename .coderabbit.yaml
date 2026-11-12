@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: en-US
+enable_free_tier: true
+tone_instructions: >-
+  Use concise engineering English. Prioritize actionable correctness, security,
+  and regression findings with concrete evidence. Avoid style-only nitpicks,
+  praise, and repeated summaries.
+reviews:
+  profile: chill
+  auto_approvals:
+    enabled: true
+  high_level_summary: false
+  poem: false
+  in_progress_fortune: false
+  sequence_diagrams: false
+  suggested_labels: false
+  suggested_reviewers: false
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 0
+    drafts: false
+    base_branches:
+      - ".*"
+  path_instructions:
+    - path: "internal/**"
+      instructions: >-
+        Check HTTP input validation, authorization and isolation of stored records
+        between users, MongoDB query scope, and Discord request error handling.
+        Preserve API response contracts and avoid leaking sensitive runtime values.
+    - path: "src/main/java/**"
+      instructions: >-
+        Check controller validation, authorization and repository query isolation,
+        and preserve the legacy Java API contract when comparing Go behavior.
+    - path: "web/src/**"
+      instructions: >-
+        Check form validation, safe rendering of user-provided content, API error
+        handling, and regressions in Discord post and embed payloads.
+chat:
+  auto_reply: false
+  art: false
