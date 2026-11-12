@@ -26,7 +26,7 @@
     "sweetalert2": "^11.4.8",
     "sweetalert2-react-content": "^5.0.7",
     "tailwind-merge": "^1.13.2",
-    "zod": "^3.21.4"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^4.29.9",
